@@ -8,11 +8,10 @@ import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class ErrorDTOFactory {
+public class ErrorDtoFactory {
     RuntimeException e;
-    String message;
 
-    public Map<String, String> toMap(){
+    public static Map<String, String> toMap(RuntimeException e){
         return new HashMap<>(Map.of(
                 "Error", e.getMessage()
         ));

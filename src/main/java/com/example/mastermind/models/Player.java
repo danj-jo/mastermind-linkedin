@@ -39,8 +39,10 @@ public class Player  {
         private String username;
         @Column(nullable = false)
         private String password;
+        @Column(nullable = false)
+        private String email;
+        @Column(nullable = false)
         private String role;
-
     }
 
 

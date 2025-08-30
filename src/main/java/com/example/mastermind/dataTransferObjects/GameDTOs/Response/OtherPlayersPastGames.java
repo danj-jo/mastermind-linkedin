@@ -11,11 +11,11 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OtherPlayersPastGames {
-    Difficulty difficulty;
-    String winningNumber;
-    Result result;
+    private Difficulty difficulty;
+    private String winningNumber;
+    private Result result;
 
-    public static Map<String,String> toMap(Difficulty difficulty, String winningNumber, Result result){
+    public static Map<String,String> toMap(Difficulty difficulty,String winningNumber, Result result){
         return new HashMap<>(Map.of(
                 "Difficulty",difficulty.toString(),
                 "Winning Number", winningNumber,

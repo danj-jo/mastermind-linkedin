@@ -13,14 +13,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CurrentUserPastGames {
-    private UUID gameId;
+    private static UUID gameId;
     private Difficulty difficulty;
     private Result result;
     private String winningNumber;
     private List<String> previousGuesses;
     boolean isFinished;
 
-    public  Map<String,String> toMap(){
+    private Map<String,String> toMap(){
         return new HashMap<>(Map.of("GameId", gameId.toString(),
                                     "Difficulty",difficulty.toString(),
                                     "Result", result.toString(),
@@ -29,4 +29,6 @@ public class CurrentUserPastGames {
                                     "Status",isFinished ? "Complete": "Incomplete"
         ));
     }
+
 }
+

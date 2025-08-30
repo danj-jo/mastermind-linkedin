@@ -73,22 +73,6 @@ public class AuthService {
             playerRepository.saveAndFlush(newPlayer);
     }
 
-    public UUID authenticatePlayer(UserLoginRequest existingUser){
-        String username = existingUser.getUsername();
-        String rawPassword = existingUser.getPassword();
-        Player authenticatedUser = new Player();
-            boolean isPresent = playerRepository.existsByUsername(username);
-            if(isPresent){
-                authenticatedUser = playerRepository.findByUsername(username);
-            }
-            if(!isPresent){
-                throw new RuntimeException("User does not exist.");
-            }
-            if (!passwordEncoder.matches(rawPassword, authenticatedUser.getPassword())) {
-                throw new BadCredentialsException("Please check password.");
-            }
 
-       return authenticatedUser.getPlayerId();
-    }
 
 }

@@ -1,6 +1,8 @@
 "use client"
 import React, {useEffect, useRef, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import {useParams} from "react-router";
+
 const GameBoard: React.FC = () => {
 
     const navigate = useNavigate();
@@ -9,6 +11,7 @@ const GameBoard: React.FC = () => {
     const inputRefs = useRef([]);
     const [feedback, setFeedback] = useState("")
     const [result, setResult] = useState("")
+    const gameId = useParams();
     useEffect(() => {
         let fields = localStorage.getItem("fields");
         let numOfFields = Number(fields);
@@ -43,19 +46,22 @@ const GameBoard: React.FC = () => {
         try {
             const newGuess = values.toString().replace(/,/g, "");
             setGuess(newGuess)
-            const response = await fetch("http://localhost:8080/games/guess", {
+            const response = await fetch("http://localhost:8080/update", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "guess": newGuess }),
+                body: JSON.stringify({
+                    "gameId": gameId,
+                    "guess": guess
+                }),
                 credentials: "include"
             });
-                const data = await response.json();
-                console.log('Guess result:', data.feedback, data.result);
-                setFeedback(data.feedback);
-                if(data.finished == "true"){
-                    setResult("Done")
-                }
-                // Reset guess for next turn
+            const data = await response.json();
+            console.log('Guess result:', data.feedback, data.result);
+            setFeedback(data.feedback);
+            if(data.finished == "true"){
+                setResult("Done")
+            }
+            // Reset guess for next turn
         } catch (error) {
             console.error(error);
             alert(values.toString());

@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login").permitAll()
-                        .requestMatchers("/games/new").hasRole("USER")
+                        .requestMatchers("/games/new", "games/guess","/me","/username").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .failureHandler((request, response, exception) -> {
                             response.setContentType("application/json");
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write("{\"message\":\"Login failed\"}");
+                            response.getWriter().write("{\"message\":\"User does not exist.\"}");
                         })
                 )
                 .logout(logout -> logout

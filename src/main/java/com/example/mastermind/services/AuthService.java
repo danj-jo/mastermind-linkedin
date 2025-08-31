@@ -5,31 +5,13 @@ import com.example.mastermind.customExceptions.PasswordTooShortException;
 import com.example.mastermind.customExceptions.UsernameExistsException;
 import com.example.mastermind.customExceptions.UsernameTooShortException;
 import com.example.mastermind.dataAccessObjects.PlayerRepository;
-import com.example.mastermind.dataTransferObjects.PlayerDTOs.Request.UserLoginRequest;
 import com.example.mastermind.dataTransferObjects.PlayerDTOs.Request.UserRegistrationRequest;
 import com.example.mastermind.models.Player;
-import jakarta.annotation.security.PermitAll;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Component
 @Service

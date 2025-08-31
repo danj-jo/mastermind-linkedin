@@ -55,6 +55,11 @@ public class GameService {
         return feedback;
     }
 
+    public String isGameFinished(UUID gameId){
+        return gameRepository.existsByGameIdAndIsFinishedTrue(gameId)
+ ? "true" : "false";
+    }
+
     private Difficulty selectUserDifficulty(String choice){
 
         return choice.equalsIgnoreCase("easy") ? Difficulty.EASY : choice.equalsIgnoreCase("medium") ? Difficulty.MEDIUM : choice.equalsIgnoreCase("hard") ? Difficulty.HARD : Difficulty.EASY;

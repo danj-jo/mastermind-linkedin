@@ -64,11 +64,11 @@ import java.util.UUID;
                 setResult(Result.WIN);
                 return "You Win!";
             }
-            return generateHint(guess);
+            return guesses.size() < 10 ? generateHint(guess) : String.format("Game Over! The correct number was: %s", winningNumber);
         }
 
         private  String generateHint(String guess) {
-            return String.format("You have %d amount of numbers correct, in %d locations. %d guesses remaining. \n %s", totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size(), guesses);
+            return String.format("You have %d amount of numbers correct, in %d locations. %d guesses remaining. %s", totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size(), guesses);
         }
         private int numberOfCorrectLocations(String guess){
             int locationCounter = 0;

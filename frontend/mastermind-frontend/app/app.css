@@ -314,6 +314,11 @@ code {
     border: 1px solid var(--border-color);
 }
 
+.stat-card:hover{
+    background-color: gray;
+    cursor: pointer;
+}
+
 .stat-number {
     font-size: 32px;
     font-weight: bold;

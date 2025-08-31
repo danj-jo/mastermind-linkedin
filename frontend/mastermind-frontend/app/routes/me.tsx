@@ -1,26 +1,40 @@
+"use client";
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 const Profile: React.FC = () => {
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    const [finishedGames, setFinishedGames] = useState([])
+    const [totalGamesPlayed, setTotalGamesPlayed] = useState(0);
+    const [username,setUserName] = useState("")
+    const [email,setEmail] = useState("");
+    const [gamesWon, setGamesWon] = useState(0);
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch("http://localhost:8080/profile", {
-                    credentials: "include"
+                const response = await fetch("http://localhost:8080/me", {
+                    method: "GET",
+                    credentials: "include",
                 });
 
-                if (!response.ok) {
-                    setError('Failed to load profile data');
-                    setLoading(false);
-                    return;
-                }
+                const nameRequest = await fetch("http://localhost:8080/about", {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                const name = await nameRequest.json();
+                setUserName(name.username);
+                setEmail(name.email)
+
 
                 const data = await response.json();
-                setUserData(data);
+                setUserData(data)
+                setFinishedGames(data.finished)
+                setTotalGamesPlayed(data.finished.length + data.unfinished.length)
+
             } catch (error) {
                 console.error('Error fetching profile:', error);
                 setError('Failed to load profile data');
@@ -87,43 +101,32 @@ const Profile: React.FC = () => {
                         fontWeight: 'bold',
                         color: 'white'
                     }}>
-                        {userData.username?.charAt(0).toUpperCase() || 'U'}
+                        {username?.charAt(0).toUpperCase() || 'U'}
                     </div>
                     <h3 style={{ color: 'var(--text-light)', marginBottom: '8px' }}>
-                        {userData.username || 'Unknown User'}
+                        {username}
                     </h3>
                     <p style={{ color: 'var(--border-color)' }}>
-                        {userData.email || 'No email available'}
+                        {email}
                     </p>
                 </div>
 
-                <div className="stats-grid">
+                <div className="stats-grid" onClick={() => {navigate("/mygames")}}>
                     <div className="stat-card">
-                        <div className="stat-number">{userData.stats?.gamesPlayed || 0}</div>
+                        <div className="stat-number">{totalGamesPlayed}</div>
                         <div className="stat-label">Games Played</div>
                     </div>
 
                     <div className="stat-card">
-                        <div className="stat-number">{userData.stats?.gamesWon || 0}</div>
+                        <div className="stat-number">{}</div>
                         <div className="stat-label">Games Won</div>
                     </div>
 
                     <div className="stat-card">
                         <div className="stat-number">{winRate}%</div>
-                        <div className="stat-label">Win Rate</div>
+                        <div className="stat-label"></div>
                     </div>
 
-                    <div className="stat-card">
-                        <div className="stat-number">
-                            {userData.stats?.averageAttempts > 0 ? userData.stats.averageAttempts.toFixed(1) : '0'}
-                        </div>
-                        <div className="stat-label">Avg Attempts</div>
-                    </div>
-
-                    <div className="stat-card">
-                        <div className="stat-number">{userData.stats?.bestScore || 0}</div>
-                        <div className="stat-label">Best Score</div>
-                    </div>
                 </div>
 
                 <div style={{ textAlign: 'center', marginTop: '32px' }}>

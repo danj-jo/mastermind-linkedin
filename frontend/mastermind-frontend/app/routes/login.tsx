@@ -5,9 +5,12 @@ import {Link, useNavigate} from "react-router-dom";
 const BasicForm: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("")
+    const [loading,setLoading] = useState(false);
     const navigate = useNavigate();
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await fetch("http://localhost:8080/login", {
                 method: "POST",
@@ -18,21 +21,19 @@ const BasicForm: React.FC = () => {
                 }),
                 credentials: "include"
             });
-
+            const data = await response.json();
             if (response.ok) {
                 navigate('/newgame');
             }
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Login failed:", errorData.message);
-                return;
-            }
+            const errorData = await response.json();
+            setError(errorData.message);
 
-            const data = await response.json();
-            console.log("Login successful:", data);
         } catch (err) {
             console.error(err);
+            setError("Login failed. Try again.");
+        } finally {
+            setLoading(false);  // stop loading
         }
     };
 
@@ -71,8 +72,9 @@ const BasicForm: React.FC = () => {
                                 required
                             />
                         </div>
+                        <p> {error && error}</p>
 
-                        <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                        <button type="submit" disabled = {loading} className="btn btn-primary" style={{ width: '100%' }}>
                             Login
                         </button>
                     </form>

@@ -99,8 +99,8 @@ const GameBoard: React.FC = () => {
                                     textAlign: "center",
                                     marginRight: "5px",
                                     fontSize: "18px",
-                                    border: "2px solid white", // <--- visible white border
-                                    borderRadius: "4px",       // optional, makes corners slightly rounded
+                                    border: "2px solid white",
+                                    borderRadius: "4px",
                                     outline: "none"
                                 }}
                             />

@@ -19,7 +19,7 @@ import java.util.Map;
 public class AuthController {
     private final AuthService authService;
 
-// called by the frontend to authenticate. Good for showing navbar.
+
     @GetMapping("/auth")
     public ResponseEntity<?> getCurrentUser(Authentication auth) {
         if (auth == null) {

@@ -13,7 +13,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    // Only runs on browser
+
     useEffect(() => {
         fetch("http://localhost:8080/auth", { credentials: "include" })
             .then(res => res.ok ? res.json() : Promise.reject())

@@ -1,5 +1,6 @@
 package com.example.mastermind.controllers;
 
+import com.example.mastermind.dataTransferObjects.GameDTOs.Request.GameSearchRequest;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Request.UpdatedGameRequest;
 import com.example.mastermind.models.Game;
 import com.example.mastermind.models.Player;
@@ -14,10 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -111,4 +109,24 @@ public class GameController {
         }
 
     }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findGameDetails(@PathVariable UUID id){
+try{
+
+    Game game = gameService.findById(id);
+    Authentication auth = SecurityContextHolder.getContext()
+                                               .getAuthentication();
+    String username = auth.getName();
+    Player player = playerService.findByUsername(username);
+    UUID playerId = player.getPlayerId();
+    if(game.getPlayer().getPlayerId() != playerId){
+        throw new RuntimeException("Hmmm...");
+    }
+        return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", game.getWinningNumber().length())),HttpStatus.OK);
+} catch(Exception e){
+    return new ResponseEntity<>(new HashMap<>(Map.of("error", e.getMessage())),HttpStatus.BAD_REQUEST);
+}
+}
 }

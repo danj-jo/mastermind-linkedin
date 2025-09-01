@@ -16,27 +16,29 @@ const MyGames = () => {
         title: "id",
         dataIndex: "gameId",
         key: "gameId",
-        render: id => allGames.filter( i => i.result == "PENDING") ? <Link to={`/game/${id}`}> Id </Link> : <p> id</p>
+        render: id => {
+            return allGames.filter(i => i.result == "PENDING") ? <Link to={`/games/${id}`}> Id </Link> : <p> id</p>
+        }
     },
         {
             title: "Difficulty",
             dataIndex: "difficulty",
-            key: "difficulty",
+            key: "gameId",
         },
         {
             title: "Result",
             dataIndex: "result",
-            key: "result",
+            key: "gameId",
         },
         {
             title: "Winning Number",
             dataIndex: "winningNumber",
-            key: "winningNumber",
+            key: "gameId",
         },
         {
             title: "Previous Guesses",
             dataIndex: "previousGuesses",
-            key: "previousGuesses",
+            key: "gameId",
         },
 
     ]
@@ -61,7 +63,6 @@ const MyGames = () => {
                 setLoading(false);
             }
         };
-
         fetchUserData();
     }, []);
 

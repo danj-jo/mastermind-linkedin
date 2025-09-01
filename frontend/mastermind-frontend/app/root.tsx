@@ -10,6 +10,8 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import Navbar from "~/components/Navbar";
+import {useEffect, useState} from "react";
+import {AuthProvider, useAuth} from "~/AuthContext";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -34,13 +36,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-      <Navbar/>
+      <AuthProvider>
+      <NavbarWithAuth/>
+
         {children}
+      </AuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
   );
+}
+function NavbarWithAuth() {
+    const [user, setUser] = useState<string | null>(null);
+    const { setIsLoggedIn } = useAuth();
+
+    useEffect(() => {
+        fetch("http://localhost:8080/auth", { credentials: "include" })
+            .then(res => res.ok ? res.json() : Promise.reject())
+            .then(data => {
+                setUser(data.username);
+                setIsLoggedIn(true);
+            })
+            .catch(() => {
+                setUser(null);
+                setIsLoggedIn(false);
+            });
+    }, []);
+
+    return <Navbar user={user} />;
 }
 
 export default function App() {

@@ -9,6 +9,7 @@ const GameBoard: React.FC = () => {
     const inputRefs = useRef([]);
     const [feedback, setFeedback] = useState("")
     const [result, setResult] = useState("")
+
     useEffect(() => {
         let fields = localStorage.getItem("fields");
         let numOfFields = Number(fields);
@@ -43,6 +44,7 @@ const GameBoard: React.FC = () => {
         try {
             const newGuess = values.toString().replace(/,/g, "");
             setGuess(newGuess)
+
             const response = await fetch("http://localhost:8080/games/guess", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -53,7 +55,7 @@ const GameBoard: React.FC = () => {
                 console.log('Guess result:', data.feedback, data.result);
                 setFeedback(data.feedback);
                 if(data.finished == "true"){
-                    setResult("Done")
+                    setResult("done")
                 }
                 // Reset guess for next turn
         } catch (error) {
@@ -72,18 +74,13 @@ const GameBoard: React.FC = () => {
         <div className="container">
             <div className="card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-                    <h2 style={{ color: 'var(--primary-red)' }}>
-                        Mastermind Game
-                    </h2>
-                    <button onClick={handleNewGame} className="btn btn-outline">
-                        New Game
-                    </button>
+                    <h3 style={{ color: 'var(--primary-yellow)', marginBottom: '16px' }}>
+                        Choose {values.length} numbers!
+                    </h3>
                 </div>
 
                 <div style={{ marginBottom: '24px' }}>
-                    <h3 style={{ color: 'var(--primary-yellow)', marginBottom: '16px' }}>
-                        Make Your Guess
-                    </h3>
+
 
                     <div>
                         {values.map((val, idx) => (
@@ -97,22 +94,25 @@ const GameBoard: React.FC = () => {
                                 style={{
                                     width: "40px",
                                     textAlign: "center",
-                                    marginRight: "5px",
+                                    marginRight: "10px",
                                     fontSize: "18px",
                                     border: "2px solid white",
                                     borderRadius: "4px",
-                                    outline: "none"
+                                    outline: "none",
+                                    marginBottom: "20px",
                                 }}
                             />
                         ))}
-                        <button onClick={handleSubmitGuess} className={result == "done" ? "hide-button" : "btn btn-primary"}>
-                            Submit Guess
-                        </button>
                     </div>
                 </div>
+
                 <div>
-                    {feedback.length > 1 && <p> {feedback} </p>}
+                    {feedback.length > 1 && <p> {feedback}</p>}
                 </div>
+                <button style={{width: "25"}} onClick={handleSubmitGuess} className={result == "done" ? "hide-button" : "btn btn-primary"}>
+                    Submit Guess
+                </button>
+
 
             </div>
         </div>

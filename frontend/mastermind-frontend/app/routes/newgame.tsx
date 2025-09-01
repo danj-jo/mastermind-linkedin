@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const NewGame: React.FC = () => {
-    const [difficulty, setDifficulty] = useState('EASY');
+    const [difficulty, setDifficulty] = useState('easy');
     const navigate = useNavigate();
     let fields;
     switch(difficulty){
@@ -20,7 +20,10 @@ const NewGame: React.FC = () => {
             fields = 4;
 
     }
-    localStorage.setItem("fields",fields.toString())
+    useEffect(() => {
+        localStorage.setItem("fields",fields.toString())
+    })
+
     const handleStartGame = async () => {
         try {
             const response = await fetch("http://localhost:8080/games/new", {
@@ -44,13 +47,15 @@ const NewGame: React.FC = () => {
     return (
         <div className="container">
             <div className="card" style={{ maxWidth: '600px', margin: '50px auto' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '32px', color: 'var(--primary-red)' }}>
-                    Start New Game
-                </h2>
+                <div style={{marginBottom: "20px"}}>
+                    <h3 style={{fontKerning:"normal"}}> Welcome to mastermind! The goal of the game is to guess the correct number in 10
+                    tries. Following your guess, you will be prompted with hints regarding how many attempts you have, and how many locations, but never the exact location of the number. Be mindful: there are duplicate numbers, but no duplicate guesses! </h3>
+                </div>
 
-                <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+
+                <div style={{ textAlign: 'center', marginTop: "10px",marginBottom: '10px' }}>
                     <p style={{ color: 'var(--text-light)', fontSize: '18px', marginBottom: '16px' }}>
-                        Choose your difficulty level and start playing Mastermind.
+                        Choose your difficulty:
                     </p>
                 </div>
 
@@ -81,13 +86,11 @@ const NewGame: React.FC = () => {
                     borderRadius: '8px',
                     marginBottom: '32px'
                 }}>
-                    <h3 style={{ color: 'var(--primary-yellow)', marginBottom: '16px' }}>
-                        {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} Mode
-                    </h3>
+
                     <p style={{ color: 'var(--text-light)' }}>
                         {difficulty === 'easy' && '4 numbers, 10 attempts'}
-                        {difficulty === 'medium' && '6 numbers 10 attempts'}
-                        {difficulty === 'hard' && '9 colors 10 attempts'}
+                        {difficulty === 'medium' && '6 numbers,10 attempts'}
+                        {difficulty === 'hard' && '9 numbers, 10 attempts'}
                     </p>
                 </div>
 

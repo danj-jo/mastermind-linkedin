@@ -1,13 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import {Link, useNavigate} from "react-router-dom";
-
-const BasicForm: React.FC = () => {
+import { useAuth } from "~/AuthContext";
+const LoginForm: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("")
     const [loading,setLoading] = useState(false);
     const navigate = useNavigate();
+    const { setIsLoggedIn } = useAuth();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -23,12 +25,9 @@ const BasicForm: React.FC = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                navigate('/newgame');
+                setIsLoggedIn(true)
+                navigate('/homescreen');
             }
-
-            const errorData = await response.json();
-            setError(errorData.message);
-
         } catch (err) {
             console.error(err);
             setError("Login failed. Try again.");
@@ -36,7 +35,6 @@ const BasicForm: React.FC = () => {
             setLoading(false);  // stop loading
         }
     };
-
     return (
         <>
             <div className="container">
@@ -94,4 +92,4 @@ const BasicForm: React.FC = () => {
     );
 };
 
-export default BasicForm;
+export default LoginForm;

@@ -53,4 +53,5 @@ public class PlayerController {
         UserProfileDao currentUser = new UserProfileDao(auth.getName(),email);
         return ResponseEntity.ok(currentUser.toMap());
     }
+
 }

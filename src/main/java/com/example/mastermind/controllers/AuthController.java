@@ -7,6 +7,7 @@ import com.example.mastermind.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,6 +18,16 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
+// called by the frontend to authenticate. Good for showing navbar.
+    @GetMapping("/auth")
+    public ResponseEntity<?> getCurrentUser(Authentication auth) {
+        if (auth == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body(Map.of("message", "Not logged in"));
+        }
+        return ResponseEntity.ok(Map.of("username", auth.getName()));
+    }
 
 
     @PostMapping("/register")

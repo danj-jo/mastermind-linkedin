@@ -61,6 +61,8 @@ code {
 .btn-primary {
     background-color: var(--primary-red);
     color: var(--text-light);
+    bottom:0;
+    margin-top: 10px;
 }
 
 .btn-primary:hover {
@@ -114,11 +116,22 @@ code {
 }
 
 .card {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
     background-color: var(--background-light);
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--border-color);
+}
+.card .card-content {
+    flex: 1;
+}
+.card .card-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .navbar {
@@ -143,13 +156,14 @@ code {
 .navbar-nav {
     display: flex;
     list-style: none;
-    gap: 24px;
 }
 
 .nav-link {
     color: var(--text-light);
     text-decoration: none;
     font-weight: 500;
+    margin-left: 15px;
+    margin-right: 15px;
     transition: color 0.3s ease;
 }
 
@@ -173,71 +187,8 @@ code {
     border: 1px solid var(--border-color);
 }
 
-.guess-pegs {
-    display: flex;
-    gap: 8px;
-}
 
-.peg {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid var(--border-color);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
 
-.peg:hover {
-    transform: scale(1.1);
-}
-
-.peg.red { background-color: var(--primary-red); }
-.peg.yellow { background-color: var(--primary-yellow); }
-.peg.black { background-color: var(--primary-black); }
-.peg.white { background-color: #ffffff; }
-.peg.blue { background-color: #4444ff; }
-.peg.green { background-color: #44ff44; }
-
-.feedback-pegs {
-    display: flex;
-    gap: 4px;
-    margin-left: 16px;
-}
-
-.feedback-peg {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    border: 1px solid var(--border-color);
-}
-
-.feedback-peg.correct {
-    background-color: var(--primary-red);
-}
-
-.feedback-peg.partial {
-    background-color: var(--primary-yellow);
-}
-
-.feedback-peg.incorrect {
-    background-color: var(--border-color);
-}
-
-.color-palette {
-    display: flex;
-    gap: 8px;
-    margin: 16px 0;
-    justify-content: center;
-}
-
-.color-option {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
 
 .color-option:hover {
     transform: scale(1.1);
@@ -265,35 +216,17 @@ code {
     transition: all 0.3s ease;
 }
 
+.difficulty-btn.hover{
+    background-color: white;
+}
+
 .difficulty-btn.active {
     background-color: var(--primary-red);
     border-color: var(--primary-red);
 }
 
-.game-status {
-    text-align: center;
-    margin: 24px 0;
-    padding: 16px;
-    border-radius: 8px;
-    font-weight: bold;
-}
 
-.game-status.won {
-    background-color: var(--primary-yellow);
-    color: var(--text-dark);
-}
 
-.game-status.lost {
-    background-color: var(--primary-red);
-    color: var(--text-light);
-}
-
-.attempts-counter {
-    text-align: center;
-    margin: 16px 0;
-    font-size: 18px;
-    color: var(--primary-yellow);
-}
 
 .profile-section {
     margin: 24px 0;

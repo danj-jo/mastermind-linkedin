@@ -130,13 +130,13 @@ try {
 
             if (responseEntity.getStatusCode()
                               .value() != 200) {
-                //if there is an issue, write fallback numbers and log this event.
+
                 logger.error("Response from API was not OK. It was {}", responseEntity.getStatusCode()
                                                                                        .value());
                 return generateLocalWinningNumber(difficulty);
             }
             String responseBody = responseEntity.getBody();
-            // If body is null or blank, log this error and return a local list of numbers.
+
              if (responseBody == null || responseBody.isBlank()) {
                 logger.error("Empty Response body from {}. Local list of random numbers were supplied.", randomNumberURI);
                 return generateLocalWinningNumber(difficulty);

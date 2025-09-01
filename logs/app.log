@@ -20161,3 +20161,467 @@ java.net.SocketException: Connection reset
 2025-08-31T23:14:39.284-07:00 DEBUG 14913 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
 2025-08-31T23:14:39.284-07:00 DEBUG 14913 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{numbersToGuess=4}]
 2025-08-31T23:14:39.284-07:00 DEBUG 14913 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:37:30.495-07:00  INFO 17200 --- [mastermind-roughdraft] [main] c.e.mastermind.MastermindApplication     : Starting MastermindApplication using Java 24.0.2 with PID 17200 (/Users/nolimit/mastermind-linkedin/target/classes started by nolimit in /Users/nolimit/mastermind-linkedin)
+2025-08-31T23:37:30.497-07:00  INFO 17200 --- [mastermind-roughdraft] [main] c.e.mastermind.MastermindApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-08-31T23:37:31.124-07:00  INFO 17200 --- [mastermind-roughdraft] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-31T23:37:31.203-07:00  INFO 17200 --- [mastermind-roughdraft] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 74 ms. Found 2 JPA repository interfaces.
+2025-08-31T23:37:31.517-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-31T23:37:31.526-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-31T23:37:31.526-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-08-31T23:37:31.548-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-31T23:37:31.548-07:00  INFO 17200 --- [mastermind-roughdraft] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1021 ms
+2025-08-31T23:37:31.637-07:00 DEBUG 17200 --- [mastermind-roughdraft] [main] o.s.w.f.ServerHttpObservationFilter      : Filter 'webMvcObservationFilter' configured for use
+2025-08-31T23:37:31.730-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-31T23:37:31.785-07:00  INFO 17200 --- [mastermind-roughdraft] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2025-08-31T23:37:31.807-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-31T23:37:31.950-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-31T23:37:31.969-07:00  INFO 17200 --- [mastermind-roughdraft] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-31T23:37:32.039-07:00  INFO 17200 --- [mastermind-roughdraft] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@69d021c1
+2025-08-31T23:37:32.040-07:00  INFO 17200 --- [mastermind-roughdraft] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-31T23:37:32.058-07:00  WARN 17200 --- [mastermind-roughdraft] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-31T23:37:32.066-07:00  INFO 17200 --- [mastermind-roughdraft] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.6
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-31T23:37:32.540-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-31T23:37:32.655-07:00  INFO 17200 --- [mastermind-roughdraft] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-31T23:37:32.880-07:00  INFO 17200 --- [mastermind-roughdraft] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name myUserDetailsService
+2025-08-31T23:37:32.897-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-08-31T23:37:33.208-07:00  WARN 17200 --- [mastermind-roughdraft] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-31T23:37:33.270-07:00 DEBUG 17200 --- [mastermind-roughdraft] [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 10 mappings in 'requestMappingHandlerMapping'
+2025-08-31T23:37:33.346-07:00 DEBUG 17200 --- [mastermind-roughdraft] [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-08-31T23:37:33.458-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-08-31T23:37:33.612-07:00 DEBUG 17200 --- [mastermind-roughdraft] [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-08-31T23:37:33.646-07:00 DEBUG 17200 --- [mastermind-roughdraft] [main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-08-31T23:37:33.852-07:00  INFO 17200 --- [mastermind-roughdraft] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-31T23:37:33.862-07:00  INFO 17200 --- [mastermind-roughdraft] [main] c.e.mastermind.MastermindApplication     : Started MastermindApplication in 3.631 seconds (process running for 4.019)
+2025-08-31T23:37:34.202-07:00  INFO 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-31T23:37:34.203-07:00  INFO 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-31T23:37:34.203-07:00 DEBUG 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2025-08-31T23:37:34.203-07:00 DEBUG 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2025-08-31T23:37:34.203-07:00 DEBUG 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2025-08-31T23:37:34.204-07:00 DEBUG 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@7960e87a
+2025-08-31T23:37:34.204-07:00 DEBUG 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@326c526a
+2025-08-31T23:37:34.204-07:00 DEBUG 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-08-31T23:37:34.205-07:00  INFO 17200 --- [mastermind-roughdraft] [RMI TCP Connection(3)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-08-31T23:38:24.942-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:38:24.942-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:38:24.943-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:38:24.943-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:38:24.955-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:24.956-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:38:24.962-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:24.965-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:38:24.965-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:38:24.965-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:24.966-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:38:24.966-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:24.972-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:24.972-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:38:24.973-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:53.426-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:38:53.426-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:38:53.427-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:38:53.427-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:38:53.427-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:53.427-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:38:53.428-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:53.430-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:38:53.431-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:38:53.431-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:53.431-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:38:53.431-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:53.431-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:38:53.431-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:53.432-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:54.026-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:38:54.026-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:38:54.026-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:38:54.026-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:38:54.026-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:54.027-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:38:54.027-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:54.029-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:38:54.030-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:38:54.030-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:54.030-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:38:54.031-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:38:54.031-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:38:54.031-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:38:54.031-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:02.244-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/games/new", parameters={}
+2025-08-31T23:39:02.244-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#findGameDetails(UUID)
+2025-08-31T23:39:02.250-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.method.HandlerMethod             : Could not resolve parameter [0] in public org.springframework.http.ResponseEntity<?> com.example.mastermind.controllers.GameController.findGameDetails(java.util.UUID): Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new
+2025-08-31T23:39:02.253-07:00  WARN 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new]
+2025-08-31T23:39:02.253-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 400 BAD_REQUEST
+2025-08-31T23:39:02.257-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-08-31T23:39:02.257-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-08-31T23:39:02.258-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:02.259-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Aug 31 23:39:02 PDT 2025, status=400, error=Bad Request, path=/games/new}]
+2025-08-31T23:39:02.261-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 400
+2025-08-31T23:39:02.264-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/games/new", parameters={}
+2025-08-31T23:39:02.264-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#findGameDetails(UUID)
+2025-08-31T23:39:02.265-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.method.HandlerMethod             : Could not resolve parameter [0] in public org.springframework.http.ResponseEntity<?> com.example.mastermind.controllers.GameController.findGameDetails(java.util.UUID): Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new
+2025-08-31T23:39:02.265-07:00  WARN 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new]
+2025-08-31T23:39:02.266-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 400 BAD_REQUEST
+2025-08-31T23:39:02.267-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-08-31T23:39:02.267-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-08-31T23:39:02.267-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:02.267-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Aug 31 23:39:02 PDT 2025, status=400, error=Bad Request, path=/games/new}]
+2025-08-31T23:39:02.268-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 400
+2025-08-31T23:39:04.084-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:04.086-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:04.117-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:04.118-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:04.120-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:04.121-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:04.122-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:04.127-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:04.127-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:04.128-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:04.730-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:04.730-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:04.736-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:04.736-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:04.737-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:04.739-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:04.739-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:04.739-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:39:04.739-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:39:04.743-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:04.743-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:39:04.743-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:04.744-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:04.744-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:04.745-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:04.747-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:39:04.747-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:39:04.750-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:04.750-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:39:04.750-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:06.676-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:06.676-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:06.682-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:06.682-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:06.682-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:06.684-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:06.684-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:06.692-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:06.693-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:06.693-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:07.313-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/games/new", parameters={}
+2025-08-31T23:39:07.313-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#findGameDetails(UUID)
+2025-08-31T23:39:07.313-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.method.HandlerMethod             : Could not resolve parameter [0] in public org.springframework.http.ResponseEntity<?> com.example.mastermind.controllers.GameController.findGameDetails(java.util.UUID): Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new
+2025-08-31T23:39:07.313-07:00  WARN 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new]
+2025-08-31T23:39:07.314-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 400 BAD_REQUEST
+2025-08-31T23:39:07.314-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-08-31T23:39:07.314-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-08-31T23:39:07.314-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:07.315-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Aug 31 23:39:07 PDT 2025, status=400, error=Bad Request, path=/games/new}]
+2025-08-31T23:39:07.315-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 400
+2025-08-31T23:39:07.316-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/games/new", parameters={}
+2025-08-31T23:39:07.316-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#findGameDetails(UUID)
+2025-08-31T23:39:07.317-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.method.HandlerMethod             : Could not resolve parameter [0] in public org.springframework.http.ResponseEntity<?> com.example.mastermind.controllers.GameController.findGameDetails(java.util.UUID): Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new
+2025-08-31T23:39:07.317-07:00  WARN 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new]
+2025-08-31T23:39:07.317-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 400 BAD_REQUEST
+2025-08-31T23:39:07.318-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-08-31T23:39:07.318-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-08-31T23:39:07.318-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:07.319-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Aug 31 23:39:07 PDT 2025, status=400, error=Bad Request, path=/games/new}]
+2025-08-31T23:39:07.320-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 400
+2025-08-31T23:39:12.092-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:12.092-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:12.099-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:12.099-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:12.099-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:39:12.103-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:39:12.103-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:39:12.117-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:39:12.117-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:39:12.119-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:31.741-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:31.742-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:31.747-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:31.747-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:31.748-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:31.749-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:31.749-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:31.756-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:31.756-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:31.757-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:32.657-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:32.657-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:32.661-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:32.661-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:32.662-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:32.663-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:40:32.663-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:32.664-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:40:32.664-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:32.666-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:32.666-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:40:32.666-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:32.670-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:32.671-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:32.671-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:32.673-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:40:32.673-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:40:32.676-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:32.676-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:40:32.676-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:35.889-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:35.889-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:35.895-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:35.895-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:35.895-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:35.897-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:35.897-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:35.902-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:35.903-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:35.903-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:37.407-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:37.408-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:37.412-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:37.412-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:37.413-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:40:37.414-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:40:37.414-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:40:37.421-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:40:37.421-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:40:37.422-07:00 DEBUG 17200 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:41:24.483-07:00  INFO 17200 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-31T23:41:24.485-07:00  INFO 17200 --- [mastermind-roughdraft] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-31T23:41:24.502-07:00  INFO 17200 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-31T23:41:24.504-07:00  INFO 17200 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-08-31T23:41:24.505-07:00  INFO 17200 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-08-31T23:43:13.678-07:00  INFO 17497 --- [mastermind-roughdraft] [main] c.e.mastermind.MastermindApplication     : Starting MastermindApplication using Java 24.0.2 with PID 17497 (/Users/nolimit/mastermind-linkedin/target/classes started by nolimit in /Users/nolimit/mastermind-linkedin)
+2025-08-31T23:43:13.679-07:00  INFO 17497 --- [mastermind-roughdraft] [main] c.e.mastermind.MastermindApplication     : No active profile set, falling back to 1 default profile: "default"
+2025-08-31T23:43:14.211-07:00  INFO 17497 --- [mastermind-roughdraft] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-31T23:43:14.303-07:00  INFO 17497 --- [mastermind-roughdraft] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 2 JPA repository interfaces.
+2025-08-31T23:43:14.588-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-31T23:43:14.596-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-31T23:43:14.596-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2025-08-31T23:43:14.619-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-31T23:43:14.620-07:00  INFO 17497 --- [mastermind-roughdraft] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 915 ms
+2025-08-31T23:43:14.715-07:00 DEBUG 17497 --- [mastermind-roughdraft] [main] o.s.w.f.ServerHttpObservationFilter      : Filter 'webMvcObservationFilter' configured for use
+2025-08-31T23:43:14.799-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-31T23:43:14.827-07:00  INFO 17497 --- [mastermind-roughdraft] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
+2025-08-31T23:43:14.843-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-31T23:43:14.978-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-31T23:43:14.991-07:00  INFO 17497 --- [mastermind-roughdraft] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-31T23:43:15.061-07:00  INFO 17497 --- [mastermind-roughdraft] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@106802ea
+2025-08-31T23:43:15.062-07:00  INFO 17497 --- [mastermind-roughdraft] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-31T23:43:15.078-07:00  WARN 17497 --- [mastermind-roughdraft] [main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-31T23:43:15.087-07:00  INFO 17497 --- [mastermind-roughdraft] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 17.6
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-31T23:43:15.556-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-08-31T23:43:15.694-07:00  INFO 17497 --- [mastermind-roughdraft] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-08-31T23:43:15.971-07:00  INFO 17497 --- [mastermind-roughdraft] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name myUserDetailsService
+2025-08-31T23:43:15.988-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-08-31T23:43:16.299-07:00  WARN 17497 --- [mastermind-roughdraft] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-31T23:43:16.367-07:00 DEBUG 17497 --- [mastermind-roughdraft] [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 10 mappings in 'requestMappingHandlerMapping'
+2025-08-31T23:43:16.450-07:00 DEBUG 17497 --- [mastermind-roughdraft] [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+2025-08-31T23:43:16.573-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-08-31T23:43:16.733-07:00 DEBUG 17497 --- [mastermind-roughdraft] [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-08-31T23:43:16.772-07:00 DEBUG 17497 --- [mastermind-roughdraft] [main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-08-31T23:43:17.012-07:00  INFO 17497 --- [mastermind-roughdraft] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-31T23:43:17.022-07:00  INFO 17497 --- [mastermind-roughdraft] [main] c.e.mastermind.MastermindApplication     : Started MastermindApplication in 3.609 seconds (process running for 3.965)
+2025-08-31T23:43:17.391-07:00  INFO 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-31T23:43:17.391-07:00  INFO 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-31T23:43:17.391-07:00 DEBUG 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+2025-08-31T23:43:17.392-07:00 DEBUG 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+2025-08-31T23:43:17.392-07:00 DEBUG 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+2025-08-31T23:43:17.395-07:00 DEBUG 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@14a3d15b
+2025-08-31T23:43:17.396-07:00 DEBUG 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@2c63f1fe
+2025-08-31T23:43:17.397-07:00 DEBUG 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2025-08-31T23:43:17.398-07:00  INFO 17497 --- [mastermind-roughdraft] [RMI TCP Connection(4)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2025-08-31T23:43:31.623-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:43:31.624-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:43:31.637-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:31.638-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{message=Not logged in}]
+2025-08-31T23:43:31.646-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 401 UNAUTHORIZED
+2025-08-31T23:43:31.647-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:43:31.647-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:43:31.648-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:31.648-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{message=Not logged in}]
+2025-08-31T23:43:31.649-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 401 UNAUTHORIZED
+2025-08-31T23:43:38.763-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:38.764-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:38.809-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:38.810-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:38.811-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:38.813-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:38.813-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:38.821-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:38.821-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:38.821-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:42.288-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:42.289-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:42.294-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:42.294-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:42.295-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:42.297-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:43:42.297-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:42.297-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:43:42.297-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:42.302-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:42.302-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:43:42.303-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:42.303-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:42.303-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:42.304-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:42.307-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:43:42.307-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:43:42.310-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:42.310-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:43:42.310-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:43.672-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:43.673-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:43.678-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:43.678-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:43.678-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:43.680-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:43.680-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:43.689-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:43.689-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:43.690-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:46.618-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : POST "/games/new", parameters={}
+2025-08-31T23:43:46.618-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#createNewGame(Map, HttpSession)
+2025-08-31T23:43:46.625-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{difficulty=easy}]
+2025-08-31T23:43:46.809-07:00 ERROR 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] i.n.r.d.DnsServerAddressStreamProviders  : Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-08-31T23:43:47.376-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.client.DefaultRestClient         : Reading to [java.lang.String] as "text/plain;charset=UTF-8"
+2025-08-31T23:43:47.395-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json]
+2025-08-31T23:43:47.395-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{numbersToGuess=4}]
+2025-08-31T23:43:47.397-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 201 CREATED
+2025-08-31T23:43:49.691-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:49.692-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:49.697-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:49.697-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:49.698-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:49.699-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:49.700-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:49.709-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:49.709-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:49.710-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:51.088-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:51.089-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:51.094-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:51.094-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:51.095-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:51.096-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:51.096-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:43:51.096-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:51.096-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:43:51.099-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:51.099-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:43:51.100-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:51.105-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:51.106-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:51.106-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:51.108-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:43:51.108-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:43:51.110-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:51.110-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:43:51.111-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:52.477-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/games/new", parameters={}
+2025-08-31T23:43:52.477-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#findGameDetails(UUID)
+2025-08-31T23:43:52.480-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.method.HandlerMethod             : Could not resolve parameter [0] in public org.springframework.http.ResponseEntity<?> com.example.mastermind.controllers.GameController.findGameDetails(java.util.UUID): Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new
+2025-08-31T23:43:52.482-07:00  WARN 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new]
+2025-08-31T23:43:52.482-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 400 BAD_REQUEST
+2025-08-31T23:43:52.487-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-08-31T23:43:52.487-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-08-31T23:43:52.488-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:52.488-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Aug 31 23:43:52 PDT 2025, status=400, error=Bad Request, path=/games/new}]
+2025-08-31T23:43:52.490-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 400
+2025-08-31T23:43:52.491-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/games/new", parameters={}
+2025-08-31T23:43:52.491-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#findGameDetails(UUID)
+2025-08-31T23:43:52.492-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.method.HandlerMethod             : Could not resolve parameter [0] in public org.springframework.http.ResponseEntity<?> com.example.mastermind.controllers.GameController.findGameDetails(java.util.UUID): Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new
+2025-08-31T23:43:52.492-07:00  WARN 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.util.UUID'; Invalid UUID string: new]
+2025-08-31T23:43:52.492-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 400 BAD_REQUEST
+2025-08-31T23:43:52.492-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : "ERROR" dispatch for GET "/error", parameters={}
+2025-08-31T23:43:52.493-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController#error(HttpServletRequest)
+2025-08-31T23:43:52.493-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:52.493-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{timestamp=Sun Aug 31 23:43:52 PDT 2025, status=400, error=Bad Request, path=/games/new}]
+2025-08-31T23:43:52.493-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Exiting from "ERROR" dispatch, status 400
+2025-08-31T23:43:54.387-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:54.387-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:54.393-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:54.393-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:54.393-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:54.395-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:43:54.395-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:43:54.395-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:43:54.395-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:43:54.397-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:54.398-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:43:54.398-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:54.404-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:54.404-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:43:54.405-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:43:54.407-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:43:54.407-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:43:54.409-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:43:54.409-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:43:54.409-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:44:00.585-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : POST "/games/new", parameters={}
+2025-08-31T23:44:00.585-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.GameController#createNewGame(Map, HttpSession)
+2025-08-31T23:44:00.586-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [{difficulty=easy}]
+2025-08-31T23:44:00.867-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.client.DefaultRestClient         : Reading to [java.lang.String] as "text/plain;charset=UTF-8"
+2025-08-31T23:44:00.869-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json]
+2025-08-31T23:44:00.870-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{numbersToGuess=4}]
+2025-08-31T23:44:00.870-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 201 CREATED
+2025-08-31T23:44:02.206-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:44:02.207-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:44:02.212-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:44:02.212-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:44:02.212-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:44:02.214-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:44:02.214-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:44:02.214-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:44:02.214-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:44:02.217-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:44:02.217-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:44:02.218-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:44:02.222-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:44:02.222-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:44:02.222-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:44:02.224-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:44:02.224-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:44:02.226-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:44:02.226-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:44:02.226-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:45:42.335-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:45:42.335-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/me", parameters={}
+2025-08-31T23:45:42.336-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:45:42.336-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnCurrentUserPastGames()
+2025-08-31T23:45:42.336-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:45:42.336-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:45:42.337-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:45:42.339-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/auth", parameters={}
+2025-08-31T23:45:42.339-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.AuthController#getCurrentUser(Authentication)
+2025-08-31T23:45:42.339-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:45:42.339-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{username=MrGuy}]
+2025-08-31T23:45:42.340-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:45:42.343-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:45:42.343-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{finished=[], unfinished=[com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPa (truncated)...]
+2025-08-31T23:45:42.344-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:45:42.345-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/about", parameters={}
+2025-08-31T23:45:42.345-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.mastermind.controllers.PlayerController#returnUsername()
+2025-08-31T23:45:42.348-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-08-31T23:45:42.348-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{email=dannajoness@gmail.com, username=MrGuy}]
+2025-08-31T23:45:42.348-07:00 DEBUG 17497 --- [mastermind-roughdraft] [http-nio-8080-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-08-31T23:51:57.760-07:00  INFO 17497 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-31T23:51:57.763-07:00  INFO 17497 --- [mastermind-roughdraft] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-31T23:51:59.835-07:00  INFO 17497 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-08-31T23:51:59.838-07:00  INFO 17497 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-08-31T23:51:59.840-07:00  INFO 17497 --- [mastermind-roughdraft] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

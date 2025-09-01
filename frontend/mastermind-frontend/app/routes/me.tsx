@@ -129,11 +129,6 @@ const Profile: React.FC = () => {
 
                 </div>
 
-                <div style={{ textAlign: 'center', marginTop: '32px' }}>
-                    <Link to="/games/new" className="btn btn-primary">
-                        Start New Game
-                    </Link>
-                </div>
             </div>
         </div>
     );

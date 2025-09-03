@@ -1,9 +1,9 @@
 package com.example.mastermind.controllers;
 
-import com.example.mastermind.customExceptions.UsernameExistsException;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.UserProfileDao;
-import com.example.mastermind.models.Player;
+import com.example.mastermind.models.entities.Player;
+import com.example.mastermind.services.GameService;
 import com.example.mastermind.services.PlayerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @RestController
 public class PlayerController {
     private final PlayerService playerService;
-
+    private final GameService gameService;
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/me")
     public ResponseEntity<?> returnCurrentUserPastGames(){
@@ -53,5 +54,4 @@ public class PlayerController {
         UserProfileDao currentUser = new UserProfileDao(auth.getName(),email);
         return ResponseEntity.ok(currentUser.toMap());
     }
-
 }

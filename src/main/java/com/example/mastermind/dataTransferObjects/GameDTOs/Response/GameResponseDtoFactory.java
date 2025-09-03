@@ -1,4 +1,4 @@
-package com.example.mastermind.dataTransferObjects.GameDTOs;
+package com.example.mastermind.dataTransferObjects.GameDTOs.Response;
 
 import com.example.mastermind.models.Result;
 import java.util.HashMap;

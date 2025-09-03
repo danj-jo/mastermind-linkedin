@@ -24,18 +24,5 @@ public class CurrentUserPastGames {
     private String winningNumber;
     private String previousGuesses;
     private String isFinished;
-
-
-
-//    private Map<String,String> toMap(){
-//        return new HashMap<>(Map.of("GameId", gameId,
-//                                    "Difficulty",difficulty,
-//                                    "Result", result,
-//                                    "Previous Guesses", previousGuesses,
-//                                    "Winning Number", winningNumber,
-//                                    "Status",isFinished ? "Complete": "Incomplete"
-//        ));
-//    }
-
 }
 

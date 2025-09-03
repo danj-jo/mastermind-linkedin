@@ -9,8 +9,19 @@ import org.springframework.web.client.RestClient;
 import java.net.URI;
 import java.util.Random;
 
-public class GameHelper {
-    private static final Logger logger = LoggerFactory.getLogger(GameHelper.class);
+/**
+ * Utility class for game-related operations and random number generation.
+ * 
+ * This class provides static methods for:
+ * - Converting string difficulty choices to Difficulty enum values
+ * - Generating winning numbers for games based on difficulty level
+ * - Fallback local random number generation when external API fails
+ * 
+ * The class attempts to use random.org for truly random numbers but falls back to local generation if the external service is unavailable or returns invalid data, and logs the error.
+ * This ensures game functionality continues even during external service outages.
+ */
+public class GameUtils {
+    private static final Logger logger = LoggerFactory.getLogger(GameUtils.class);
 
     public static Difficulty selectUserDifficulty(String choice){
 

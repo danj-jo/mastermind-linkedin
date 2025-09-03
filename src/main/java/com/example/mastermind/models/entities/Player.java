@@ -21,7 +21,7 @@ import java.util.UUID;
 @Entity(name="users")
 public class Player implements UserDetails  {
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.UUID)
         private UUID playerId;
         @Column(nullable = false, unique = true)
         private String username;

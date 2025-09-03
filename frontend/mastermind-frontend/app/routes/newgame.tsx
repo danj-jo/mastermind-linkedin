@@ -33,13 +33,15 @@ const NewGame: React.FC = () => {
     const handleStartGame = async () => {
 
         try {
-            const response = await fetch("http://localhost:8080/games/new", {
+            const response = await fetch("http://localhost:8080/singleplayer/games/new", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ "difficulty": difficulty.toUpperCase(), "mode": mode.toUpperCase()}),
                 credentials: "include"
             });
             if (response.ok) {
+                const data = await response.json();
+                sessionStorage.setItem('currentGameId', data.gameId);  // Save game ID
                 navigate('/game');
             } else {
                 alert('Failed to create game');

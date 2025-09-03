@@ -3,7 +3,6 @@ package com.example.mastermind.services;
 import com.example.mastermind.dataAccessObjects.SingleplayerGameRepository;
 import com.example.mastermind.dataAccessObjects.PlayerRepository;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
-import com.example.mastermind.dataTransferObjects.GameDTOs.Response.OtherPlayersPastGames;
 import com.example.mastermind.models.entities.Player;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,11 +15,16 @@ import java.util.*;
 @Component
 @AllArgsConstructor
 public class PlayerService {
-    private final GameService gameService;
+    private final SingleplayerGameService singleplayerGameService;
     private final PlayerRepository playerRepository;
     private final SingleplayerGameRepository singleplayerGameRepository;
 
-    public Player findByUsername(String username){
+    /**
+     * This method is used to return a player that we search for via username parameter.
+     * @param username username that we input to find player
+     * @return corresponding player
+     */
+    public Player findPlayerByUsername(String username){
         if(!playerRepository.existsByUsername(username)){
             throw new UsernameNotFoundException("User does not exist.");
         }
@@ -30,11 +34,7 @@ public class PlayerService {
     }
 
     public Map<String, List<CurrentUserPastGames>> returnCurrentPlayersPastGames(UUID playerId){
-        return gameService.returnCurrentUsersPastGames(playerId);
-    }
-
-    public Map<String, List<OtherPlayersPastGames>> returnOtherPlayersPastGames(UUID playerId){
-        return null;
+        return singleplayerGameService.returnCurrentUsersPastGames(playerId);
     }
 
 

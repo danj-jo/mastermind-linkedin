@@ -17,7 +17,6 @@ import java.util.*;
 @Setter
 public class MultiplayerGame  {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID gameId = UUID.randomUUID();
     @ManyToMany
     @JoinTable(
@@ -97,21 +96,6 @@ public class MultiplayerGame  {
     private int totalCorrectNumbers(String guess){
         Set<String> correctValues = new HashSet<>();
 
-        /*
-         iterate through guess string and winningNumber string (in tandem) and identify the number of matches.
-           Full thought process:
-
-           1. Create a correctNumber integer variable
-           2. Increase correctNumber variable by one with each number that matched.
-
-           Issue with this logic:
-           if I have duplicate numbers in a guess, this will increase the correctNumber variable by every duplicate.
-
-           The solution:
-           Create a set to hold each number that is in both the winning number and the guess. The set will automatically filter out any duplicates, returning only unique values between both. I then set the return value to the size of the set of unique values.
-
-         */
-        // loop through winning number and guess
         for(int i = 0; i < winningNumber.length(); i++){
             for(int j = 0; j< guess.length(); j++){
                 if(winningNumber.charAt(i) == guess.charAt(j)){
@@ -121,7 +105,7 @@ public class MultiplayerGame  {
 
             }
         }
-        // return the size of the set that contains correct guesses
+    
         return correctValues.size();
     }
     private boolean inappropriateLength(String guess){

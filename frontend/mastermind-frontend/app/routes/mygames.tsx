@@ -58,7 +58,7 @@ const MyGames = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch("http://localhost:8080/me", {
+                const response = await fetch("http://localhost:8080/me/games", {
                     method: "GET",
                     credentials: "include",
                 });

@@ -7,43 +7,49 @@ const Profile: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [finishedGames, setFinishedGames] = useState([])
-    const [totalGamesPlayed, setTotalGamesPlayed] = useState(0);
+    const [unfinishedGames, setUnfinishedGames] = useState([])
+    const [totalGamesPlayed, setTotalGamesPlayed] = useState();
     const [username,setUserName] = useState("")
     const [email,setEmail] = useState("");
     const [gamesWon, setGamesWon] = useState(0);
     const navigate = useNavigate();
+    const[wins,setWins] = useState()
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch("http://localhost:8080/me", {
+                const response = await fetch("http://localhost:8080/me/profile", {
+                    method: "GET",
+                    credentials: "include",
+                });
+                const pastGames = await fetch("http://localhost:8080/me/games", {
                     method: "GET",
                     credentials: "include",
                 });
 
-                const nameRequest = await fetch("http://localhost:8080/about", {
-                    method: "GET",
-                    credentials: "include",
-                });
-
-                const name = await nameRequest.json();
-                setUserName(name.username);
-                setEmail(name.email)
+                const data = await pastGames.json()
+                setFinishedGames(data.finished);
+                setUnfinishedGames(data.unfinished);
 
 
-                const data = await response.json();
-                setUserData(data)
-                setFinishedGames(data.finished)
-                setTotalGamesPlayed(data.finished.length + data.unfinished.length)
+                if (response.ok) {
+                    const user = await response.json(); // ✅ read once
+                    setUserName(user.username);
+                    setEmail(user.email);
+
+                } else {
+                    console.error(`HTTP error! status: ${response.status}`);
+                    setError("Failed to load profile data");
+                }
 
             } catch (error) {
-                console.error('Error fetching profile:', error);
-                setError('Failed to load profile data');
+                console.error("Error fetching profile:", error);
+                setError("Failed to load profile data");
             } finally {
                 setLoading(false);
             }
-        };
 
-        fetchUserData();
+        }
+            fetchUserData();
     }, []);
 
     if (loading) {
@@ -58,27 +64,9 @@ const Profile: React.FC = () => {
         );
     }
 
-    if (error || !userData) {
-        return (
-            <div className="container">
-                <div className="card" style={{ textAlign: 'center', margin: '50px auto', maxWidth: '400px' }}>
-                    <h2 style={{ color: 'var(--primary-red)', marginBottom: '20px' }}>
-                        Profile Error
-                    </h2>
-                    <p style={{ marginBottom: '20px' }}>
-                        {error || 'Unable to load profile data. Please log in again.'}
-                    </p>
-                    <Link to="/login" className="btn btn-primary">
-                        Login
-                    </Link>
-                </div>
-            </div>
-        );
-    }
 
-    const winRate = userData.stats?.gamesPlayed > 0
-        ? Math.round((userData.stats.gamesWon / userData.stats.gamesPlayed) * 100)
-        : 0;
+
+
 
     return (
         <div className="container">
@@ -113,15 +101,15 @@ const Profile: React.FC = () => {
 
                 <div className="stats-grid" onClick={() => {navigate("/mygames")}}>
                     <div className="stat-card">
-                        <div className="stat-number">{totalGamesPlayed}</div>
+                        <div className="stat-number">{finishedGames.length + unfinishedGames.length}</div>
                         <div className="stat-label">Games Played</div>
                     </div>
 
                     <div className="stat-card">
-                        <div className="stat-number">2</div>
+                        <div className="stat-number"><p>{finishedGames.filter(item => item.result === "WIN").length}</p>
+                        </div>
                         <div className="stat-label">Games Won</div>
                     </div>
-
                     <div className="stat-card">
                         <div className="stat-number">0</div>
                         <div className="stat-label"> Team Games</div>

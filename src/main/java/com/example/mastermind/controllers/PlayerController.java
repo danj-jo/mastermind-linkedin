@@ -1,68 +1,81 @@
 package com.example.mastermind.controllers;
 
-import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.UserProfileDao;
 import com.example.mastermind.models.entities.Player;
-import com.example.mastermind.services.GameService;
 import com.example.mastermind.services.PlayerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.example.mastermind.customExceptions.PlayerDataAccessException;
+import com.example.mastermind.customExceptions.UnauthenticatedUserException;
+import com.example.mastermind.customExceptions.PlayerNotFoundException;
+import com.example.mastermind.utils.PlayerUtils;
 import java.util.UUID;
-
+import java.util.Map;
+import java.util.List;
+import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
+import org.springframework.web.bind.annotation.RequestMapping;
+/**
+ * Controller for player-related operations.
+ * 
+ * Note: All exceptions thrown by methods in this controller are automatically handled 
+ * by the GlobalExceptionHandler, which converts them to appropriate HTTP responses 
+ * with status codes and error messages.
+ */
 @AllArgsConstructor
 @RestController
+@RequestMapping("/me")
+
+
 public class PlayerController {
     private final PlayerService playerService;
-    private final GameService gameService;
+   
+
+    /**
+     * This method is used to return all of a user's past games, complete and incomplete.
+     */
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/me")
-    public ResponseEntity<?> returnCurrentUserPastGames(){
+    @GetMapping("/games")
+    public ResponseEntity<Map <String, List<CurrentUserPastGames>> > getCurrentUserPastGames(){
         try {
-            Authentication auth = SecurityContextHolder.getContext()
-                                                       .getAuthentication();
-            String username = auth.getName();
-            Player player = playerService.findByUsername(username);
-            UUID playerId = player.getPlayerId();
+            String username = PlayerUtils.getCurrentUsername();
+            Player currentPlayer = playerService.findPlayerByUsername(username);
+            UUID playerId = currentPlayer.getPlayerId();
             if (playerId == null) {
-                return new ResponseEntity<>(new HashMap<>(Map.of("Error","User id is null.")), HttpStatus.UNAUTHORIZED);
+                throw new UnauthenticatedUserException("User id is null.");
             }
-            Map<String, List<CurrentUserPastGames>> pastGames = playerService.returnCurrentPlayersPastGames(playerId);
-            System.out.println(playerId);
-            return  new ResponseEntity<>(pastGames,HttpStatus.OK);
+            
+            return  new ResponseEntity<>(playerService.returnCurrentPlayersPastGames(playerId),HttpStatus.OK);
         } catch(Exception e){
-            return new ResponseEntity<>(new HashMap<>(Map.of("Error", e.getMessage())),HttpStatus.BAD_REQUEST);
+           
+            if (e instanceof PlayerDataAccessException) {
+                throw e; 
+            }
+            throw new PlayerDataAccessException(e.getMessage());
         }
     }
 
+
+       /**
+     * This method is used to return the profile details of the current user.
+     * 
+     * @return a ResponseEntity containing the UserProfileDao with username and email
+     * @throws PlayerNotFoundException if the current user is not found in the database
+     */
     @PreAuthorize("hasRole('USER')")
-    @GetMapping("/about")
-    public ResponseEntity<?> returnUsername(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Player player = playerService.findByUsername(auth.getName());
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfileDao> getCurrentUserProfile(){
+        String username = PlayerUtils.getCurrentUsername();
+        Player player = playerService.findPlayerByUsername(username);
+        if (player == null) {
+            throw new PlayerNotFoundException("Player not found for username: " + username);
+        }
         String email = player.getEmail();
-        UserProfileDao currentUser = new UserProfileDao(auth.getName(),email);
-        return ResponseEntity.ok(currentUser.toMap());
-    }
-
-    @PostMapping("/home")
-    // return player with most wins
-    // team with most wins
-    //
-    public ResponseEntity<?> returnLeaderboard(){
-
-        return null;
-
+        UserProfileDao currentUser = new UserProfileDao(username,email);
+        return ResponseEntity.ok(currentUser);
     }
 
 }

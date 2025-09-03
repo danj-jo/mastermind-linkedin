@@ -1,8 +1,5 @@
 package com.example.mastermind.customExceptions;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 
 public class UsernameTooShortException extends RuntimeException{
    String message;

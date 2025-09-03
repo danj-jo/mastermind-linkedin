@@ -5,16 +5,22 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-
+/**
+ * Configuration class for WebSocket and STOMP messaging in multiplayer games.
+ * 
+ * Enables real-time communication between players using WebSocket connections
+ * with STOMP protocol. Configures message broker with "/topic" destination
+ * prefix for broadcasting game events to all connected players, and "/app"
+ * prefix for client-to-server message publishing.
+ * 
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // Clients will subscribe to /topic/mp for multiplayer games
         config.enableSimpleBroker("/topic/mp");
-        // Application destination prefix for @MessageMapping handlers, clients will send requests here
         config.setApplicationDestinationPrefixes("/app");
     }
 

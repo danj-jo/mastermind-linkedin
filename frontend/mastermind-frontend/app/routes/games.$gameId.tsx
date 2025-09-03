@@ -17,7 +17,7 @@ const GameBoard: React.FC = () => {
         {
 
                 let numsArray = []
-                const response = await fetch(`http://localhost:8080/games/${id}`, {
+                const response = await fetch(`http://localhost:8080/singleplayer/games/${id}`, {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
@@ -57,7 +57,7 @@ const GameBoard: React.FC = () => {
 
     const handleSubmitGuess = async () => {
         try {
-            const response = await fetch("http://localhost:8080/games/update", {
+            const response = await fetch(`http://localhost:8080/singleplayer/games/${id}/guess`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

@@ -10,6 +10,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repository for SinglePlayerGame entity persistence operations.
+ * 
+ * Provides methods for managing single-player game lifecycle including
+ * game creation, completion status tracking, and player game history.
+ * Extends JpaRepository for basic CRUD operations while adding custom
+ * queries for game state management and player-specific game retrieval.
+ */
 public interface SingleplayerGameRepository extends JpaRepository<SinglePlayerGame, UUID> {
     boolean existsByGameIdAndIsFinishedTrue(UUID gameId);
 

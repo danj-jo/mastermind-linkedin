@@ -52,7 +52,7 @@ function NavbarWithAuth() {
     const { setIsLoggedIn } = useAuth();
 
     useEffect(() => {
-        fetch("http://localhost:8080/auth", { credentials: "include" })
+        fetch("http://localhost:8080/api/auth", { credentials: "include" })
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
                 setUser(data.username);

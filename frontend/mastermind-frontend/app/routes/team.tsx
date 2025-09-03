@@ -10,13 +10,23 @@ import {Stomp} from "@stomp/stompjs"
      const inputRefs = useRef([]);
      const [feedback, setFeedback] = useState("")
      const [isMyTurn, setIsMyTurn] = useState()
+     const [gameId, setGameId] = useState(null);
      const [result, setResult] = useState("")
-     const gameIdRaw = sessionStorage.getItem("gameId");
-     const gameId = gameIdRaw?.replace(/^"|"$/g, "");
      const clientRef = useRef(null);
      const [guesses,setGuesses]  = useState([])
      const[player,setPlayer] = useState()
+     // @ts-ignore
      useEffect(() => {
+         if (typeof window === "undefined") return;
+
+         const gameIdRaw = sessionStorage.getItem("gameId");
+         const gameIdSafe = gameIdRaw?.replace(/^"|"$/g, "");
+         setGameId(gameIdSafe);
+         if (!gameIdSafe) {
+             console.warn("No gameId in sessionStorage");
+             return;
+         }
+
          const client = new Client({
              brokerURL: 'ws://localhost:8080/ws',
              reconnectDelay: 5000
@@ -24,24 +34,21 @@ import {Stomp} from "@stomp/stompjs"
 
          client.onConnect = () => {
              client.subscribe('/topic/mp', (message) => {
-                 setIsMyTurn(true)
-                 console.log(message)
+                 console.log(message);
                  const response = JSON.parse(message.body);
-                 console.log(response.winningNumber)
+                 console.log(response.winningNumber);
                  setFeedback(response.feedback);
-                 setGuesses(response.guesses)
-                 setPlayer(response.player)
+                 setGuesses(response.guesses);
+                 setPlayer(response.player);
              });
          };
 
          client.activate();
-
-         // @ts-ignore
          clientRef.current = client;
-         const createBoard = async () =>
-         {
-             let numsArray = []
-             const response = await fetch(`http://localhost:8080/multiplayer/${gameId}`, {
+
+         const createBoard = async () => {
+             let numsArray = [];
+             const response = await fetch(`http://localhost:8080/multiplayer/${gameIdSafe}`, {
                  method: "GET",
                  headers: { "Content-Type": "application/json" },
                  credentials: "include",
@@ -49,28 +56,30 @@ import {Stomp} from "@stomp/stompjs"
 
              const data = await response.json();
              const fields = data.numbersToGuess;
-             for(let i = 0; i < fields; i++){
-                 numsArray.push("")
+             for (let i = 0; i < fields; i++) {
+                 numsArray.push("");
              }
-             // @ts-ignore
-             setValues(numsArray)
+             setValues(numsArray);
          };
 
          createBoard();
-         return () =>  client.deactivate();
-     },[])
+
+         return () => client.deactivate();
+     }, []);
+
+
 
 
      const handleSubmitGuess = async () => {
          try {
              const newGuess = values.toString().replace(/,/g, "");
              setGuess(newGuess)
-                 clientRef.current.publish({
+                 // @ts-ignore
+             clientRef.current.publish({
                      destination: `/app/multiplayer/${gameId}/guess`,
                      body: JSON.stringify({"guess": newGuess})
                  });
              console.log(newGuess)
-            setIsMyTurn(false)
          }
          catch (error) {
              console.log("Maybe not connected?")
@@ -84,6 +93,7 @@ import {Stomp} from "@stomp/stompjs"
      const handleChange = (e, idx) => {
          const val = e.target.value.slice(0, 1); // allow only 1 character
          const newValues = [...values];
+         // @ts-ignore
          newValues[idx] = val;
          setValues(newValues);
          setGuess(newValues.toString().replace(/,/g, ""))
@@ -95,10 +105,12 @@ import {Stomp} from "@stomp/stompjs"
 
      const handleKeyDown = (e, idx) => {
          if (e.key === "Backspace" && !values[idx] && idx >= 1) {
+             // @ts-ignore
              inputRefs.current[idx - 1].focus();
          }
      };
-    return (
+    // @ts-ignore
+     return (
         <div className="container">
             <div className="card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -137,7 +149,7 @@ import {Stomp} from "@stomp/stompjs"
                 <div>
                     {feedback && <p> {feedback} </p>}
                 </div>
-                <button style={{width: "25"}} onClick={handleSubmitGuess} disabled={isMyTurn} className={result == "done" ? "hide-button" : "btn btn-primary"}>
+                <button style={{width: "25"}} onClick={handleSubmitGuess}  className={result == "done" ? "hide-button" : "btn btn-primary"}>
                     Submit Guess
                 </button>
                 <div style={{border: "2px solid white", marginTop:"10px", padding: "10px"}}>

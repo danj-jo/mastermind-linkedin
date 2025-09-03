@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 
     useEffect(() => {
-        fetch("http://localhost:8080/auth", { credentials: "include" })
+        fetch("http://localhost:8080/api/auth", { credentials: "include" })
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(() => setIsLoggedIn(true))
             .catch(() => setIsLoggedIn(false));

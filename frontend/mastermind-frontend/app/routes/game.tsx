@@ -1,14 +1,24 @@
 "use client"
 import React, {useEffect, useRef, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 const GameBoard: React.FC = () => {
 
-    const navigate = useNavigate();
+
     const [guess, setGuess] = useState("");
-    const [values, setValues] = useState([]);
+    const [guessInputBoxes, setGuessInputBoxes] = useState([]);
     const inputRefs = useRef([]);
     const [feedback, setFeedback] = useState("")
     const [result, setResult] = useState("")
+
+    /**
+     * Initializes the guess input boxes when the component first loads.
+     *
+     * - Reads the number of fields to create from localStorage ("fields").
+     * - Converts that value into a number.
+     * - Creates an array of empty strings with that length.
+     * - Updates state so the UI shows the correct number of input boxes.
+     *
+     * Runs only once on mount because of the empty dependency array [].
+     */
 
     useEffect(() => {
         let fields = localStorage.getItem("fields");
@@ -17,15 +27,20 @@ const GameBoard: React.FC = () => {
         for(let i = 0; i < numOfFields; i++){
             valueArray.push("");
         }
-        setValues(valueArray)
+        setGuessInputBoxes(valueArray)
     },[])
 
+    /**
+     * This method is used to set the
+     * @param e - the value of the input box for guesses
+     * @param idx - the index of the current guess
+     */
     // @ts-ignore
     const handleChange = (e, idx) => {
         const val = e.target.value.slice(0, 1); // allow only 1 character
-        const newValues = [...values];
+        const newValues = [...guessInputBoxes];
         newValues[idx] = val;
-        setValues(newValues);
+        setGuessInputBoxes(newValues);
 
 
         // auto-focus next input if available
@@ -33,46 +48,60 @@ const GameBoard: React.FC = () => {
             inputRefs.current[idx + 1].focus();
         }
     };
-
+/**
+ * Handles key press events inside the guess input boxes.
+ *
+ * - If the user presses Backspace on an empty box,
+ *   the cursor will move back to the previous box.
+ * - Prevents trying to move back from the first box.
+ */
     const handleKeyDown = (e, idx) => {
-        if (e.key === "Backspace" && !values[idx] && idx > 0) {
+        if (e.key === "Backspace" && !guessInputBoxes[idx] && idx > 0) {
             inputRefs.current[idx - 1].focus();
         }
     };
 
     const handleSubmitGuess = async () => {
         try {
-            const newGuess = values.toString().replace(/,/g, "");
-            setGuess(newGuess)
+            const gameId = sessionStorage.getItem('currentGameId');
+            if (!gameId) {
+                alert('No active game found');
+                return;
+            }
 
-            const response = await fetch("http://localhost:8080/games/guess", {
+            const guessString = guessInputBoxes.toString().replace(/,/g, "");
+            setGuess(guessString)
+
+            const response = await fetch(`http://localhost:8080/singleplayer/games/${gameId}/guess`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "guess": newGuess }),
+                body: JSON.stringify({ "guess":guessString }),
                 credentials: "include"
             });
                 const data = await response.json();
-                console.log('Guess result:', data.feedback, data.result);
+                console.log('Guess result:', data.feedback)
+                console.log(guess)
                 setFeedback(data.feedback);
                 if(data.finished == "true"){
                     setResult("done")
                 }
-                // Reset guess for next turn
         } catch (error) {
             console.error(error);
-            alert(values.toString());
+            alert(guessInputBoxes.toString());
         }
     };
 
 
 
     // @ts-ignore
+    // @ts-ignore
+    // @ts-ignore
     return (
         <div className="container">
             <div className="card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                     <h3 style={{ color: 'var(--primary-yellow)', marginBottom: '16px' }}>
-                        Choose {values.length} numbers!
+                        Choose {guessInputBoxes.length} numbers!
                     </h3>
                 </div>
 
@@ -80,7 +109,7 @@ const GameBoard: React.FC = () => {
 
 
                     <div>
-                        {values.map((val, idx) => (
+                        {guessInputBoxes.map((val, idx) => (
                             <input
                                 key={idx}
                                 ref={(el) => (inputRefs.current[idx] = el)}
@@ -104,8 +133,9 @@ const GameBoard: React.FC = () => {
                 </div>
 
                 <div>
-                    {feedback.length > 1 && <p> {feedback}</p>}
+
                 </div>
+                <p style={{color: "red"}}> {feedback && feedback} </p>
                 <button style={{width: "25"}} onClick={handleSubmitGuess} className={result == "done" ? "hide-button" : "btn btn-primary"}>
                     Submit Guess
                 </button>

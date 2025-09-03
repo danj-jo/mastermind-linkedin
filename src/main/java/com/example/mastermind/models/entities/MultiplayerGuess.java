@@ -17,7 +17,7 @@ public class MultiplayerGuess {
 
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID guessId;
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)

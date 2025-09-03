@@ -13,17 +13,15 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
-public class WebsocketController {
+public class MultiplayerWebsocketController {
 
     private final MultiplayerGameService multiplayerGameService;
     private final PlayerService playerService;

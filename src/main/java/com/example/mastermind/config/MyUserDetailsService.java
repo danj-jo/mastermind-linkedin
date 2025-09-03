@@ -1,4 +1,4 @@
-package com.example.mastermind.security;
+package com.example.mastermind.config;
 
 import com.example.mastermind.dataAccessObjects.PlayerRepository;
 import com.example.mastermind.models.entities.Player;

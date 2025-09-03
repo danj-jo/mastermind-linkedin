@@ -1,6 +1,6 @@
 package com.example.mastermind.controllers;
 
-import com.example.mastermind.models.EmitterRegistry;
+import com.example.mastermind.utils.EmitterRegistry;
 import com.example.mastermind.models.entities.Player;
 import com.example.mastermind.services.MultiplayerGameService;
 import com.example.mastermind.services.PlayerService;

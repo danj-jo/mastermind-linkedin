@@ -1,6 +1,6 @@
 package com.example.mastermind.services;
 
-import com.example.mastermind.dataAccessObjects.GameRepository;
+import com.example.mastermind.dataAccessObjects.SingleplayerGameRepository;
 import com.example.mastermind.dataAccessObjects.PlayerRepository;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.OtherPlayersPastGames;
@@ -18,7 +18,7 @@ import java.util.*;
 public class PlayerService {
     private final GameService gameService;
     private final PlayerRepository playerRepository;
-    private final GameRepository gameRepository;
+    private final SingleplayerGameRepository singleplayerGameRepository;
 
     public Player findByUsername(String username){
         if(!playerRepository.existsByUsername(username)){

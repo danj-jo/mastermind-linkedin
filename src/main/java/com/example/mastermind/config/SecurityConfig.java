@@ -1,4 +1,4 @@
-package com.example.mastermind.security;
+package com.example.mastermind.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;

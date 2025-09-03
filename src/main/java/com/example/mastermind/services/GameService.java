@@ -4,8 +4,9 @@ import com.example.mastermind.dataAccessObjects.GameRepository;
 import com.example.mastermind.dataAccessObjects.PlayerRepository;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
 import com.example.mastermind.models.Difficulty;
-import com.example.mastermind.models.Game;
-import com.example.mastermind.models.Player;
+import com.example.mastermind.models.entities.SinglePlayerGame;
+import com.example.mastermind.models.entities.Player;
+import com.example.mastermind.utils.GameUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -27,29 +28,25 @@ public class GameService {
     private static final Logger logger = LoggerFactory.getLogger(GameService.class);
 
 
-    public Game createNewGame(String playerDifficulty, UUID playerId){
+    public SinglePlayerGame createNewGame(String playerDifficulty, UUID playerId){
 
 
         Player player = playerRepository.findById(playerId).orElseThrow(() -> new UsernameNotFoundException("Player Not found."));
-        Game game = new Game();
+        SinglePlayerGame singlePlayerGame = new SinglePlayerGame();
 
-        game.setDifficulty(selectUserDifficulty(playerDifficulty));
-        game.setPlayer(player);
-        game.setWinningNumber(generateWinningNumber(Difficulty.valueOf(playerDifficulty)));
-        game.setGuesses(new ArrayList<>());
+        singlePlayerGame.setDifficulty(GameUtils.selectUserDifficulty(playerDifficulty));
+        singlePlayerGame.setPlayer(player);
+        singlePlayerGame.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(playerDifficulty)));
+        singlePlayerGame.setGuesses(new ArrayList<>());
 
-        gameRepository.saveAndFlush(game);
-        return game;
+        gameRepository.saveAndFlush(singlePlayerGame);
+        return singlePlayerGame;
 
     }
 
     public String makeGuess(UUID gameId, String guess){
-        Game currentGame = gameRepository.findById(gameId)
-                                         .orElseThrow(() -> new RuntimeException("Game not found"));
-        if (currentGame.getGuesses() == null) {
-            currentGame.setGuesses(new ArrayList<>());
-        }
-
+        SinglePlayerGame currentGame = gameRepository.findById(gameId)
+                                                                 .orElseThrow(() -> new RuntimeException("Game not found"));
         String feedback = currentGame.submitGuess(guess);
         gameRepository.saveAndFlush(currentGame);
         return feedback;
@@ -60,25 +57,25 @@ public class GameService {
 try {
     List<CurrentUserPastGames> finishedGames = gameRepository.findFinishedGames(playerId).
                                                              stream().
-                                                             map((game -> {
-                                                                 return new CurrentUserPastGames(game.getGameId().toString(),
-                                                                                                 String.valueOf(game.getDifficulty()),
-                                                                                                 String.valueOf(game.getResult()),
-                                                                                                 game.getWinningNumber(),
-                                                                                                 game.getGuesses().toString(),
-                                                                                                 String.valueOf(game.isFinished()));
+                                                             map((singlePlayerGame -> {
+                                                                 return new CurrentUserPastGames(singlePlayerGame.getGameId().toString(),
+                                                                                                 String.valueOf(singlePlayerGame.getDifficulty()),
+                                                                                                 String.valueOf(singlePlayerGame.getResult()),
+                                                                                                 singlePlayerGame.getWinningNumber(),
+                                                                                                 singlePlayerGame.getGuesses().toString(),
+                                                                                                 String.valueOf(singlePlayerGame.isFinished()));
                                                              }))
                                                              .toList();
 
     List<CurrentUserPastGames> unfinishedGames = gameRepository.findUnfinishedGames(playerId).
                                                                stream().
-                                                               map((game -> {
-                                                                   return new CurrentUserPastGames(game.getGameId().toString(),
-                                                                                                   String.valueOf(game.getDifficulty()),
-                                                                                                   String.valueOf(game.getResult()),
+                                                               map((singlePlayerGame -> {
+                                                                   return new CurrentUserPastGames(singlePlayerGame.getGameId().toString(),
+                                                                                                   String.valueOf(singlePlayerGame.getDifficulty()),
+                                                                                                   String.valueOf(singlePlayerGame.getResult()),
                                                                                                    "Finish to see results!",
-                                                                                                   game.getGuesses().toString(),
-                                                                                                   String.valueOf(game.isFinished()));
+                                                                                                   singlePlayerGame.getGuesses().toString(),
+                                                                                                   String.valueOf(singlePlayerGame.isFinished()));
                                                                }))
                                                                .toList();
 
@@ -93,7 +90,7 @@ try {
 }
     }
 
-    public Game findById(UUID gameId){
+    public SinglePlayerGame findById(UUID gameId){
       return gameRepository.findGameByGameId(gameId).orElseThrow();
     }
 
@@ -101,72 +98,5 @@ try {
         return gameRepository.existsByGameIdAndIsFinishedTrue(gameId)
  ? "true" : "false";
     }
-
-    private Difficulty selectUserDifficulty(String choice){
-
-        return choice.equalsIgnoreCase("easy") ? Difficulty.EASY : choice.equalsIgnoreCase("medium") ? Difficulty.MEDIUM : choice.equalsIgnoreCase("hard") ? Difficulty.HARD : Difficulty.EASY;
-
-
-    }
-
-    private String generateWinningNumber(Difficulty difficulty) {
-        int numberOfGuessedNumbers;
-        switch (difficulty) {
-            case EASY -> numberOfGuessedNumbers = 4;
-            case MEDIUM -> numberOfGuessedNumbers = 6;
-            case HARD -> numberOfGuessedNumbers = 9;
-            default -> numberOfGuessedNumbers = 4;
-        }
-
-        try {
-            URI randomNumberURI = URI.create(String.format("https://www.random.org/integers/?num=%s&min=0&max=7&col=4&base=10&format=plain&rnd=new", numberOfGuessedNumbers));
-            RestClient client = RestClient.create("https://www.random.org");
-
-            ResponseEntity<String> responseEntity = client.get()
-                                                          .uri(randomNumberURI)
-                                                          .retrieve()
-                                                          .toEntity(String.class);
-
-
-            if (responseEntity.getStatusCode()
-                              .value() != 200) {
-
-                logger.error("Response from API was not OK. It was {}", responseEntity.getStatusCode()
-                                                                                       .value());
-                return generateLocalWinningNumber(difficulty);
-            }
-            String responseBody = responseEntity.getBody();
-
-             if (responseBody == null || responseBody.isBlank()) {
-                logger.error("Empty Response body from {}. Local list of random numbers were supplied.", randomNumberURI);
-                return generateLocalWinningNumber(difficulty);
-            }
-             if(responseBody.matches(".*[A-Za-z].*")){
-                 logger.error("Response body contained letters, which indicates some sort of failer. Here it is: {} ", responseBody);
-                 return generateLocalWinningNumber(difficulty);
-             }
-            return responseBody.replaceAll("[^A-Za-z0-9]", "");
-        } catch (Exception e) {
-            logger.error("Catch clause activated. Error: {}", e.getMessage());
-            return generateLocalWinningNumber(difficulty);
-        }
-    }
-
-    private String generateLocalWinningNumber(Difficulty difficulty) {
-        int numberOfGuessedNumbers;
-        switch (difficulty) {
-            case EASY -> numberOfGuessedNumbers = 4;
-            case MEDIUM -> numberOfGuessedNumbers = 6;
-            case HARD -> numberOfGuessedNumbers = 9;
-            default -> numberOfGuessedNumbers = 4;
-        }
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < numberOfGuessedNumbers; i++) {
-            sb.append(random.nextInt(10));
-        }
-        return sb.toString();
-    }
-
 
 }

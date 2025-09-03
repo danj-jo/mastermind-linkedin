@@ -1,9 +1,7 @@
 package com.example.mastermind.security;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.User;
 
 import com.example.mastermind.dataAccessObjects.PlayerRepository;
-import com.example.mastermind.models.Player;
+import com.example.mastermind.models.entities.Player;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

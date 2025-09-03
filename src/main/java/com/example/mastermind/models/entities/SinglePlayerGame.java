@@ -1,5 +1,8 @@
-package com.example.mastermind.models;
+package com.example.mastermind.models.entities;
 
+import com.example.mastermind.models.Difficulty;
+import com.example.mastermind.models.GameMode;
+import com.example.mastermind.models.Result;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +19,7 @@ import java.util.UUID;
     @Getter
     @Setter
     @Entity(name = "games")
-    public class Game {
+    public class SinglePlayerGame {
         @Id
         @GeneratedValue(strategy = GenerationType.UUID)
         @Column
@@ -29,6 +32,8 @@ import java.util.UUID;
         @Column(nullable = false)
         @Enumerated(EnumType.STRING)
         private Difficulty difficulty;
+        @Enumerated(EnumType.STRING)
+        private GameMode mode = GameMode.SINGLE_PLAYER;
         @ElementCollection(fetch = FetchType.EAGER)
         private List<String> guesses;
         @Column
@@ -67,7 +72,7 @@ import java.util.UUID;
             return guesses.size() < 10 ? generateHint(guess) : String.format("Game Over! The correct number was: %s", winningNumber);
         }
 
-        private  String generateHint(String guess) {
+        private String generateHint(String guess) {
             return String.format("You have %d amount of numbers correct, in %d locations. %d guesses remaining. %s", totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size(), guesses);
         }
         private int numberOfCorrectLocations(String guess){

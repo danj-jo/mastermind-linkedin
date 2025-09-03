@@ -1,6 +1,6 @@
 package com.example.mastermind.dataAccessObjects;
 
-import com.example.mastermind.models.Player;
+import com.example.mastermind.models.entities.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

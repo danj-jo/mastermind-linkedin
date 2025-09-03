@@ -6,7 +6,7 @@ import com.example.mastermind.customExceptions.UsernameExistsException;
 import com.example.mastermind.customExceptions.UsernameTooShortException;
 import com.example.mastermind.dataAccessObjects.PlayerRepository;
 import com.example.mastermind.dataTransferObjects.PlayerDTOs.Request.UserRegistrationRequest;
-import com.example.mastermind.models.Player;
+import com.example.mastermind.models.entities.Player;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;

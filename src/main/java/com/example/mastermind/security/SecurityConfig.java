@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login","/auth").permitAll()
-                        .requestMatchers("/games/**", "/me","/username").hasRole("USER")
+                        .requestMatchers("/games/**", "/me","/username", "/join", "/subscribe","/game/**","multiplayer/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)

@@ -1,9 +1,8 @@
 package com.example.mastermind.controllers;
 
-import com.example.mastermind.dataTransferObjects.GameDTOs.Request.GameSearchRequest;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Request.UpdatedGameRequest;
-import com.example.mastermind.models.Game;
-import com.example.mastermind.models.Player;
+import com.example.mastermind.models.entities.SinglePlayerGame;
+import com.example.mastermind.models.entities.Player;
 import com.example.mastermind.services.GameService;
 import com.example.mastermind.services.PlayerService;
 import jakarta.servlet.http.HttpSession;
@@ -22,12 +21,12 @@ import java.util.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/games")
-public class GameController {
+public class SinglePlayerGameController {
 
     private final GameService gameService;
     private final PlayerService playerService;
 
-    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
+    private static final Logger logger = LoggerFactory.getLogger(SinglePlayerGameController.class);
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/new", produces = "application/json")
@@ -47,8 +46,8 @@ public class GameController {
                 case "MEDIUM" -> numbersToGuess = 6;
                 case "HARD" -> numbersToGuess = 9;
             }
-            Game game = gameService.createNewGame(difficulty, playerId);
-            session.setAttribute("gameId", game.getGameId());
+            SinglePlayerGame singlePlayerGame = gameService.createNewGame(difficulty, playerId);
+            session.setAttribute("gameId", singlePlayerGame.getGameId());
             return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", numbersToGuess)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new HashMap<>(Map.of("Error in guess method:", e.getMessage())), HttpStatus.OK);
@@ -84,22 +83,22 @@ public class GameController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/update")
-    public ResponseEntity<?> updateGame(@RequestBody UpdatedGameRequest updatedGame) {
+    public ResponseEntity<?> updateGame(@RequestBody UpdatedGameRequest updatedGameRequest) {
         try {
-            UUID gameId = updatedGame.getGameId();
-            String guess = updatedGame.getGuess();
+            UUID gameId = updatedGameRequest.getGameId();
+            String guess = updatedGameRequest.getGuess();
             Authentication auth = SecurityContextHolder.getContext()
                                                        .getAuthentication();
             String username = auth.getName();
             Player player = playerService.findByUsername(username);
             UUID playerId = player.getPlayerId();
 
-            Game game = gameService.findById(updatedGame.getGameId());
-            if (game.getPlayer()
-                    .getPlayerId() != playerId) {
+            SinglePlayerGame singlePlayerGame = gameService.findById(updatedGameRequest.getGameId());
+            if (singlePlayerGame.getPlayer()
+                                .getPlayerId() != playerId) {
                 return new ResponseEntity<>(new HashMap<>(Map.of("Error", "You are not authorized to do this.")), HttpStatus.UNAUTHORIZED);
             }
-            String feedback = gameService.makeGuess(gameId,guess);
+            String feedback = gameService.makeGuess(gameId, guess);
             String finished = gameService.isGameFinished(gameId);
             return ResponseEntity.ok(Map.of("feedback", feedback,
                                             "finished", finished));
@@ -115,16 +114,16 @@ public class GameController {
     public ResponseEntity<?> findGameDetails(@PathVariable UUID id){
 try{
 
-    Game game = gameService.findById(id);
+    SinglePlayerGame singlePlayerGame = gameService.findById(id);
     Authentication auth = SecurityContextHolder.getContext()
                                                .getAuthentication();
     String username = auth.getName();
     Player player = playerService.findByUsername(username);
     UUID playerId = player.getPlayerId();
-    if(game.getPlayer().getPlayerId() != playerId){
+    if(singlePlayerGame.getPlayer().getPlayerId() != playerId){
         throw new RuntimeException("Hmmm...");
     }
-        return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", game.getWinningNumber().length())),HttpStatus.OK);
+        return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", singlePlayerGame.getWinningNumber().length())), HttpStatus.OK);
 } catch(Exception e){
     return new ResponseEntity<>(new HashMap<>(Map.of("error", e.getMessage())),HttpStatus.BAD_REQUEST);
 }

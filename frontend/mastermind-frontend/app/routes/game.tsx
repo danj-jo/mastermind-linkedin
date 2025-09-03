@@ -64,9 +64,6 @@ const GameBoard: React.FC = () => {
         }
     };
 
-    const handleNewGame = () => {
-        navigate('/games/new');
-    };
 
 
     // @ts-ignore

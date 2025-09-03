@@ -13,14 +13,14 @@ export default function Lobby() {
             { withCredentials: true }
         );
 
-
+        // ✅ Listen for "matched" event
         es.addEventListener("matched", (event) => {
             setIsClicked(true)
              console.log(event.data)
             const gameId = event.data;
             sessionStorage.setItem("gameId", gameId);
             setTimeout(() => {
-
+                // Code to be executed after 4 seconds
                 navigate("/team")
             }, 3000);
 

@@ -25,18 +25,18 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
     return (
         <nav className="navbar">
             <div className="container navbar-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
                 <Link to="/" className="navbar-brand">
                     Mastermind
                 </Link>
-
+                </div>
+                <div>
                 {isLoggedIn ? (
                     <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                        <div style={{ display: "flex" }}>
+                        <div style={{ display: "flex" , alignSelf:"center"}}>
                             <Link className="nav-link" to="/homeScreen">Home</Link>
                             <Link className="nav-link" to="/mygames">Past Games</Link>
                             <Link className="nav-link" to="/me">Profile</Link>
-                            <Link className="nav-link" to="/newgame">New Game</Link>
-
                         </div>
 
                         <button onClick={handleLogout} className="btn btn-outline">
@@ -49,6 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
                         <Link to="/register">Register</Link>
                     </div>
                 )}
+                </div>
             </div>
         </nav>
 

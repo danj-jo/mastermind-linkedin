@@ -118,13 +118,13 @@ const Profile: React.FC = () => {
                     </div>
 
                     <div className="stat-card">
-                        <div className="stat-number">{}</div>
+                        <div className="stat-number">2</div>
                         <div className="stat-label">Games Won</div>
                     </div>
 
                     <div className="stat-card">
-                        <div className="stat-number">{winRate}%</div>
-                        <div className="stat-label"></div>
+                        <div className="stat-number">0</div>
+                        <div className="stat-label"> Team Games</div>
                     </div>
 
                 </div>

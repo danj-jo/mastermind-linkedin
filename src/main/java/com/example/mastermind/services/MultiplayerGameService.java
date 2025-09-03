@@ -63,7 +63,8 @@ public class MultiplayerGameService {
                 List<Player> players = new ArrayList<>(List.of(player1, player2));
                 MultiplayerGame game = new MultiplayerGame();
                 game.setDifficulty(GameUtils.selectUserDifficulty(key));
-                game.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(key.toUpperCase())));
+                game.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(difficulty.toUpperCase())));
+                System.out.println(game.getWinningNumber());
                 game.setPlayers(players);
                 activeGames.put(game.getGameId(),game);
                 emitterDiagnostics.logMatchAttempt(player1, player2);

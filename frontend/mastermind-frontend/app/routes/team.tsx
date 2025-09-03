@@ -9,6 +9,7 @@ import {Stomp} from "@stomp/stompjs"
      const [values, setValues] = useState([]);
      const inputRefs = useRef([]);
      const [feedback, setFeedback] = useState("")
+     const [isMyTurn, setIsMyTurn] = useState()
      const [result, setResult] = useState("")
      const gameIdRaw = sessionStorage.getItem("gameId");
      const gameId = gameIdRaw?.replace(/^"|"$/g, "");
@@ -23,8 +24,10 @@ import {Stomp} from "@stomp/stompjs"
 
          client.onConnect = () => {
              client.subscribe('/topic/mp', (message) => {
+                 setIsMyTurn(true)
                  console.log(message)
                  const response = JSON.parse(message.body);
+                 console.log(response.winningNumber)
                  setFeedback(response.feedback);
                  setGuesses(response.guesses)
                  setPlayer(response.player)
@@ -33,6 +36,7 @@ import {Stomp} from "@stomp/stompjs"
 
          client.activate();
 
+         // @ts-ignore
          clientRef.current = client;
          const createBoard = async () =>
          {
@@ -48,6 +52,7 @@ import {Stomp} from "@stomp/stompjs"
              for(let i = 0; i < fields; i++){
                  numsArray.push("")
              }
+             // @ts-ignore
              setValues(numsArray)
          };
 
@@ -65,7 +70,7 @@ import {Stomp} from "@stomp/stompjs"
                      body: JSON.stringify({"guess": newGuess})
                  });
              console.log(newGuess)
-             setValues([])
+            setIsMyTurn(false)
          }
          catch (error) {
              console.log("Maybe not connected?")
@@ -83,6 +88,7 @@ import {Stomp} from "@stomp/stompjs"
          setValues(newValues);
          setGuess(newValues.toString().replace(/,/g, ""))
          if (val && idx < inputRefs.current.length - 1) {
+             // @ts-ignore
              inputRefs.current[idx + 1].focus();
          }
      };
@@ -131,7 +137,7 @@ import {Stomp} from "@stomp/stompjs"
                 <div>
                     {feedback && <p> {feedback} </p>}
                 </div>
-                <button style={{width: "25"}} onClick={handleSubmitGuess} className={result == "done" ? "hide-button" : "btn btn-primary"}>
+                <button style={{width: "25"}} onClick={handleSubmitGuess} disabled={isMyTurn} className={result == "done" ? "hide-button" : "btn btn-primary"}>
                     Submit Guess
                 </button>
                 <div style={{border: "2px solid white", marginTop:"10px", padding: "10px"}}>

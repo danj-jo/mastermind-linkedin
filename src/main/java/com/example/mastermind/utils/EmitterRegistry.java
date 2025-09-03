@@ -1,4 +1,4 @@
-package com.example.mastermind.models;
+package com.example.mastermind.utils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

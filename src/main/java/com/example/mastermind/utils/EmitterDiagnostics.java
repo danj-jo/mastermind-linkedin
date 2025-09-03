@@ -1,6 +1,5 @@
 package com.example.mastermind.utils;
 
-import com.example.mastermind.models.EmitterRegistry;
 import com.example.mastermind.models.entities.Player;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

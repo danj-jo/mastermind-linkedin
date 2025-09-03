@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface GameRepository extends JpaRepository<SinglePlayerGame, UUID> {
+public interface SingleplayerGameRepository extends JpaRepository<SinglePlayerGame, UUID> {
     boolean existsByGameIdAndIsFinishedTrue(UUID gameId);
 
          boolean existsByGameId(UUID gameId);

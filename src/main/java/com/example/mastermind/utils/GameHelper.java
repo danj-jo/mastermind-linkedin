@@ -9,8 +9,8 @@ import org.springframework.web.client.RestClient;
 import java.net.URI;
 import java.util.Random;
 
-public class GameUtils {
-    private static final Logger logger = LoggerFactory.getLogger(GameUtils.class);
+public class GameHelper {
+    private static final Logger logger = LoggerFactory.getLogger(GameHelper.class);
 
     public static Difficulty selectUserDifficulty(String choice){
 

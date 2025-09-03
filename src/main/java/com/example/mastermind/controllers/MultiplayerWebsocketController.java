@@ -49,11 +49,13 @@ public class MultiplayerWebsocketController {
         String feedback = game.submitGuess(player, guess);
         List<String> guesses = game.getGuesses().stream().map(MultiplayerGuess::getGuess).toList();
         boolean finished = game.isFinished();
-        Map<String, Object> msg = new HashMap<>();
-        msg.put("player", player.getUsername());
-        msg.put("feedback", feedback);
-        msg.put("finished", finished);
-        msg.put("guesses", guesses);
-        return msg;
+        Map<String, Object> turnMetadata = new HashMap<>();
+        turnMetadata.put("player", player.getUsername());
+        turnMetadata.put("feedback", feedback);
+        turnMetadata.put("finished", finished);
+        turnMetadata.put("guesses", guesses);
+        turnMetadata.put("winningNumber", game.getWinningNumber());
+        System.out.println(game.getWinningNumber());
+        return turnMetadata;
     }
 }

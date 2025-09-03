@@ -17,23 +17,33 @@ const MyGames = () => {
         dataIndex: "gameId",
         key: "gameId",
         render: id => {
-            return allGames.filter(i => i.result == "PENDING") ? <Link to={`/games/${id}`}> Id </Link> : <p> id</p>
-        }
+            const game = allGames.find(i => i.id === id);
+
+            return game?.result === "PENDING" ? (
+                <Link  to={`/games/${id}`}>
+                    resume
+                </Link>
+            ) : (
+                <Link style={{color:"white"}} to={`/games/${id}`}>
+                    {id}
+                </Link>
+            );
+        },
     },
         {
             title: "Difficulty",
             dataIndex: "difficulty",
-            key: "gameId",
+            key: "difficulty",
         },
         {
             title: "Result",
             dataIndex: "result",
-            key: "gameId",
+            key: "result",
         },
         {
             title: "Winning Number",
             dataIndex: "winningNumber",
-            key: "gameId",
+            key: "winningNumber",
         },
         {
             title: "Previous Guesses",
@@ -74,7 +84,31 @@ const MyGames = () => {
         <>
 
             {allGames.length > 0 ? (
-                <Table dataSource={allGames} columns={columnsFinished} pagination={false} />
+                <Table
+                    dataSource={allGames}
+                    columns={columnsFinished}
+                    size="middle"
+                    bordered
+                    style={{ marginTop: "50px", border: `1px solid var(--border-color)` }}
+                    rowClassName={(record, index) =>
+                        index % 2 === 0 ? 'table-row-even' : 'table-row-odd'
+                    }
+                    onHeaderRow={() => ({
+                        style: {
+                            backgroundColor: '#1c2b3f', // background-light
+                            color: '#e0f7fa',           // text-light
+                            fontWeight: '600',
+                            borderBottom: '1px solid #2a3b4c', // border-color
+                        },
+                    })}
+                    onRow={() => ({
+                        style: {
+                            color: '#e0f7fa',
+                            borderBottom: '1px solid #2a3b4c',
+                            transition: 'background-color 0.3s ease',
+                        },
+                    })}
+                />
             ) : (
                 <p>Games are empty, go and play!</p>
 

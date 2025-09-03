@@ -1,11 +1,11 @@
 package com.example.mastermind.services;
 
 import com.example.mastermind.models.Difficulty;
-import com.example.mastermind.utils.EmitterRegistry;
+import com.example.mastermind.models.EmitterRegistry;
 import com.example.mastermind.models.entities.MultiplayerGame;
 import com.example.mastermind.models.entities.Player;
 import com.example.mastermind.utils.EmitterDiagnostics;
-import com.example.mastermind.utils.GameHelper;
+import com.example.mastermind.utils.GameUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,8 +62,9 @@ public class MultiplayerGameService {
                 assert player2 != null;
                 List<Player> players = new ArrayList<>(List.of(player1, player2));
                 MultiplayerGame game = new MultiplayerGame();
-                game.setDifficulty(GameHelper.selectUserDifficulty(key));
-                game.setWinningNumber(GameHelper.generateWinningNumber(Difficulty.valueOf(key.toUpperCase())));
+                game.setDifficulty(GameUtils.selectUserDifficulty(key));
+                game.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(difficulty.toUpperCase())));
+                System.out.println(game.getWinningNumber());
                 game.setPlayers(players);
                 activeGames.put(game.getGameId(),game);
                 emitterDiagnostics.logMatchAttempt(player1, player2);

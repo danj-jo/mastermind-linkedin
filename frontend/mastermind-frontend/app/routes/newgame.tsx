@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const NewGame: React.FC = () => {
     const [difficulty, setDifficulty] = useState('easy');
+    const [mode,setMode] = useState("");
     const navigate = useNavigate();
     let fields;
     switch(difficulty){
@@ -24,15 +25,20 @@ const NewGame: React.FC = () => {
         localStorage.setItem("fields",fields.toString())
     })
 
+    const multiplayerNavigate = () => {
+        sessionStorage.setItem("difficulty", difficulty)
+        console.log(difficulty)
+        navigate("/lobby")
+    }
     const handleStartGame = async () => {
+
         try {
             const response = await fetch("http://localhost:8080/games/new", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "difficulty": difficulty }),
+                body: JSON.stringify({ "difficulty": difficulty.toUpperCase(), "mode": mode.toUpperCase()}),
                 credentials: "include"
             });
-
             if (response.ok) {
                 navigate('/game');
             } else {
@@ -51,7 +57,29 @@ const NewGame: React.FC = () => {
                     <h3 style={{fontKerning:"normal"}}> Welcome to mastermind! The goal of the game is to guess the correct number in 10
                     tries. Following your guess, you will be prompted with hints regarding how many attempts you have, and how many locations, but never the exact location of the number. Be mindful: there are duplicate numbers, but no duplicate guesses! </h3>
                 </div>
-
+                <div style={{ textAlign: 'center', marginTop: "10px",marginBottom: '10px' }}>
+                    <p style={{ color: 'var(--text-light)', fontSize: '18px', marginBottom: '16px' }}>
+                        Choose your Mode:
+                    </p>
+                </div>
+        <div style={{display: "flex", alignSelf: "center"}}>
+                <div className="difficulty-selector">
+                    <button
+                        className={`difficulty-btn ${mode === 'singleplayer' ? 'active' : ''}`}
+                        onClick={() => setMode('singleplayer')}
+                    >
+                        Single Player
+                    </button>
+                </div>
+                <div className="difficulty-selector">
+                    <button
+                        className={`difficulty-btn ${mode === 'multiplayer' ? 'active' : ''}`}
+                        onClick={() => setMode('multiplayer')}
+                    >
+                        Multi Player
+                    </button>
+                </div>
+                </div>
 
                 <div style={{ textAlign: 'center', marginTop: "10px",marginBottom: '10px' }}>
                     <p style={{ color: 'var(--text-light)', fontSize: '18px', marginBottom: '16px' }}>
@@ -96,7 +124,13 @@ const NewGame: React.FC = () => {
 
                 <div style={{ textAlign: 'center' }}>
                     <button
-                        onClick={handleStartGame}
+                        onClick={() => {
+                           if(mode == "singleplayer"){
+                               handleStartGame()
+                           }  if(mode == "multiplayer"){
+                               multiplayerNavigate()
+                            }
+                        }}
                         className="btn btn-primary"
                         style={{ fontSize: '18px', padding: '16px 32px' }}
                     >

@@ -54,4 +54,15 @@ public class PlayerController {
         UserProfileDao currentUser = new UserProfileDao(auth.getName(),email);
         return ResponseEntity.ok(currentUser.toMap());
     }
+
+    @PostMapping("/home")
+    // return player with most wins
+    // team with most wins
+    //
+    public ResponseEntity<?> returnLeaderboard(){
+
+        return null;
+
+    }
+
 }

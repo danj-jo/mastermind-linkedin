@@ -4,12 +4,10 @@ import {useParams} from "react-router";
 import { Client } from '@stomp/stompjs';
 import {Stomp} from "@stomp/stompjs"
  const Team = () => {
-     const stomp = Stomp;
      const [guess, setGuess] = useState("");
-     const [values, setValues] = useState([]);
+     const [guessInputBoxes, setGuessInputBoxes] = useState([]);
      const inputRefs = useRef([]);
      const [feedback, setFeedback] = useState("")
-     const [isMyTurn, setIsMyTurn] = useState()
      const [gameId, setGameId] = useState(null);
      const [result, setResult] = useState("")
      const clientRef = useRef(null);
@@ -18,11 +16,10 @@ import {Stomp} from "@stomp/stompjs"
      // @ts-ignore
      useEffect(() => {
          if (typeof window === "undefined") return;
-
          const gameIdRaw = sessionStorage.getItem("gameId");
-         const gameIdSafe = gameIdRaw?.replace(/^"|"$/g, "");
-         setGameId(gameIdSafe);
-         if (!gameIdSafe) {
+         const gameIdWithoutSpaces = gameIdRaw?.replace(/^"|"$/g, "");
+         setGameId(gameIdWithoutSpaces);
+         if (!gameIdWithoutSpaces) {
              console.warn("No gameId in sessionStorage");
              return;
          }
@@ -34,9 +31,7 @@ import {Stomp} from "@stomp/stompjs"
 
          client.onConnect = () => {
              client.subscribe('/topic/mp', (message) => {
-                 console.log(message);
                  const response = JSON.parse(message.body);
-                 console.log(response.winningNumber);
                  setFeedback(response.feedback);
                  setGuesses(response.guesses);
                  setPlayer(response.player);
@@ -48,7 +43,7 @@ import {Stomp} from "@stomp/stompjs"
 
          const createBoard = async () => {
              let numsArray = [];
-             const response = await fetch(`http://localhost:8080/multiplayer/${gameIdSafe}`, {
+             const response = await fetch(`http://localhost:8080/multiplayer/${gameIdWithoutSpaces}`, {
                  method: "GET",
                  headers: { "Content-Type": "application/json" },
                  credentials: "include",
@@ -59,7 +54,7 @@ import {Stomp} from "@stomp/stompjs"
              for (let i = 0; i < fields; i++) {
                  numsArray.push("");
              }
-             setValues(numsArray);
+             setGuessInputBoxes(numsArray)
          };
 
          createBoard();
@@ -72,14 +67,14 @@ import {Stomp} from "@stomp/stompjs"
 
      const handleSubmitGuess = async () => {
          try {
-             const newGuess = values.toString().replace(/,/g, "");
-             setGuess(newGuess)
+             const guessString = guessInputBoxes.toString().replace(/,/g, "");
+             setGuess(guessString)
                  // @ts-ignore
              clientRef.current.publish({
                      destination: `/app/multiplayer/${gameId}/guess`,
-                     body: JSON.stringify({"guess": newGuess})
+                     body: JSON.stringify({"guess": guessString})
                  });
-             console.log(newGuess)
+             console.log(guessString)
          }
          catch (error) {
              console.log("Maybe not connected?")
@@ -92,11 +87,10 @@ import {Stomp} from "@stomp/stompjs"
 
      const handleChange = (e, idx) => {
          const val = e.target.value.slice(0, 1); // allow only 1 character
-         const newValues = [...values];
+         const newValues = [...guessInputBoxes];
          // @ts-ignore
          newValues[idx] = val;
-         setValues(newValues);
-         setGuess(newValues.toString().replace(/,/g, ""))
+         setGuessInputBoxes(newValues);
          if (val && idx < inputRefs.current.length - 1) {
              // @ts-ignore
              inputRefs.current[idx + 1].focus();
@@ -104,7 +98,7 @@ import {Stomp} from "@stomp/stompjs"
      };
 
      const handleKeyDown = (e, idx) => {
-         if (e.key === "Backspace" && !values[idx] && idx >= 1) {
+         if (e.key === "Backspace" && !guessInputBoxes[idx] && idx >= 1) {
              // @ts-ignore
              inputRefs.current[idx - 1].focus();
          }
@@ -115,7 +109,7 @@ import {Stomp} from "@stomp/stompjs"
             <div className="card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                     <h3 style={{ color: 'var(--primary-yellow)', marginBottom: '16px' }}>
-                        Choose {values.length} numbers!
+                        Choose {guessInputBoxes.length} numbers!
                     </h3>
                 </div>
 
@@ -123,7 +117,7 @@ import {Stomp} from "@stomp/stompjs"
 
 
                     <div>
-                        {values.map((val, idx) => (
+                        {guessInputBoxes.map((val, idx) => (
                             <input
                                 key={idx}
                                 ref={(el) => (inputRefs.current[idx] = el)}

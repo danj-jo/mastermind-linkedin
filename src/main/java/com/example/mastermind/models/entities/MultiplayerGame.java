@@ -18,13 +18,12 @@ import java.util.*;
 public class MultiplayerGame  {
     @Id
     private UUID gameId = UUID.randomUUID();
-    @ManyToMany
-    @JoinTable(
-            name = "multiplayer_game_players",
-            joinColumns = @JoinColumn(name = "game_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id")
-    )
-    private List<Player> players = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "player1_id")
+    private Player player1;
+    @ManyToOne
+    @JoinColumn(name = "player2_id")
+    private Player player2;
     @Column(nullable = false)
     private String winningNumber;
     @Enumerated(EnumType.STRING)
@@ -40,7 +39,7 @@ public class MultiplayerGame  {
 
     // takes in the current player (who's turn it is, and their guess)
     public String submitGuess(Player player, String guess){
-
+        boolean isPlayer1sTurn = true;
         if(guessContainsInvalidCharacters(guess)){
             return "Guesses are numbers only";
         }
@@ -65,9 +64,9 @@ public class MultiplayerGame  {
         MultiplayerGuess newGuess = new MultiplayerGuess();
         // set the game to this one (to have mapping to game id)
         newGuess.setGame(this);
-        // set player to the current player (to know current player guessing)
+        // set the current player to the current guess (to know current player guessing)
         newGuess.setPlayer(player);
-        // set the guess to the current player
+        // the guess itself,
         newGuess.setGuess(guess);
         // add the guesses to the guess list.
         guesses.add(newGuess);
@@ -76,17 +75,18 @@ public class MultiplayerGame  {
             setResult(Result.WIN);
             return "You Win!";
         }
+
+
         return guesses.size() < 10 ? generateHint(player,guess) : String.format("Game Over! The correct number was: %s", winningNumber);
     }
     private String generateHint(Player player, String guess) {
-        // todo just a reminder, don't forget that we took the guess array out of this string to create a guess bank type structure for the frontend. When we send the hint to clients, make sure the response includes either a list of guesses from the object, or a local list that we update upon each guess. A map may suffice.
         return String.format("%s has %d  numbers correct, in %d locations. %d guesses remaining.", player.getUsername(), totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size());
     }
     private int numberOfCorrectLocations(String guess){
         int locationCounter = 0;
         // if the item at these indexes are the same, increase location counter.
         for(int j = 0; j < winningNumber.length(); j++){
-            if(guess.charAt(j) == winningNumber.charAt(j)){
+            if(winningNumber.charAt(j) == guess.charAt(j)){
                 locationCounter++;
             }
         }
@@ -94,20 +94,26 @@ public class MultiplayerGame  {
 
     }
     private int totalCorrectNumbers(String guess){
-        Set<String> correctValues = new HashSet<>();
-
-        for(int i = 0; i < winningNumber.length(); i++){
-            for(int j = 0; j< guess.length(); j++){
-                if(winningNumber.charAt(i) == guess.charAt(j)){
-                    // if the winning number contains the character in guess, add the guess at that character to the Set,
-                    correctValues.add(String.valueOf(guess.charAt(i)));
-                }
-
+            // Create sets directly from the strings
+            Set<Character> winningNumberSet = new HashSet<>();
+            for (char c : winningNumber.toCharArray()) {
+                winningNumberSet.add(c);
             }
+
+            Set<Character> guessSet = new HashSet<>();
+            for (char c : guess.toCharArray()) {
+                guessSet.add(c);
+            }
+
+            int correctGuesses = 0;
+            for (char guessCharacter : guessSet) {
+                if (winningNumberSet.contains(guessCharacter)) {
+                    correctGuesses++;
+                }
+            }
+            return correctGuesses;
         }
-    
-        return correctValues.size();
-    }
+
     private boolean inappropriateLength(String guess){
         return guess.length() != winningNumber.length();
     }

@@ -361,10 +361,9 @@ mastermind-linkedin/
 
 This project represents significant growth from my previous REACH submission. Moving from JavaScript/MongoDB to Java/PostgreSQL required learning:
 
-- **Static Typing**: Embracing compile-time safety
 - **Relational Databases**: Understanding entity relationships
 - **WebSocket Communication**: Real-time application development
-- **Spring Security**: Enterprise-grade authentication
+- **Security Fundamentals and Best Practices**: CSRF protection, SQL jnjection, Authentication and Authorization
 - **Thread Safety**: Concurrent programming concepts
 
 The increased complexity forced me to implement robust error handling, comprehensive testing, and proper architectural patterns - skills essential for enterprise development.

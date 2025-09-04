@@ -1,8 +1,8 @@
-# 🎯 Mastermind Game - Full Stack Application
+# 🎯 Mastermind Game - Reach Apprenticeship Project 
 
-A real-time multiplayer Mastermind game built with Java Spring Boot backend and React frontend, featuring WebSocket communication, PostgreSQL persistence, and comprehensive authentication.
+A real-time multiplayer Mastermind game built with Java & Spring Boot on the backend, PostgreSQL for the perstitence layer, and React on the frontend. It features WebSocket communication, server sent events, authentication via Spring Security. The goal of the game is to guess a four digit number between 0-7 (Easy Mode) within 10 tries. 
 
-## 🚀 Quick Start
+## 🚀 How to get started 
 
 ### Prerequisites
 

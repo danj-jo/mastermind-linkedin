@@ -43,10 +43,13 @@ import java.util.UUID;
         private boolean isFinished = false;
 
         public String submitGuess(String guess){
-
+            if(this.difficulty == Difficulty.EASY && guessIsOverLimit(guess)){
+                return "Only numbers 0-7 are allowed. Please try again.";
+            }
             if(guessContainsInvalidCharacters(guess)){
                 return "Guesses are numbers only";
             }
+
             if(inappropriateLength(guess)){
                 return String.format("Guess is not the appropriate length. Please try again. Guess must %d numbers", winningNumber.length());
             }
@@ -71,7 +74,6 @@ import java.util.UUID;
             }
             return guesses.size() < 10 ? generateHint(guess) : String.format("Game Over! The correct number was: %s", winningNumber);
         }
-
         private String generateHint(String guess) {
             return String.format("You have %d amount of numbers correct, in %d locations. %d guesses remaining.", totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size());
         }
@@ -87,34 +89,24 @@ import java.util.UUID;
 
         }
         private int totalCorrectNumbers(String guess){
-            Set<String> correctValues = new HashSet<>();
+            // Create sets from strings, since they can not hold duplicates. I then iterate through each Set and increment a number with each match.
+            Set<Character> winningNumberSet = new HashSet<>();
+            for (char c : winningNumber.toCharArray()) {
+                winningNumberSet.add(c);
+            }
 
-        /*
-         iterate through guess string and winningNumber string (in tandem) and identify the number of matches.
-           Full thought process:
+            Set<Character> guessSet = new HashSet<>();
+            for (char c : guess.toCharArray()) {
+                guessSet.add(c);
+            }
 
-           1. Create a correctNumber integer variable
-           2. Increase correctNumber variable by one with each number that matched.
-
-           Issue with this logic:
-           if I have duplicate numbers in a guess, this will increase the correctNumber variable by every duplicate.
-
-           The solution:
-           Create a set to hold each number that is in both the winning number and the guess. The set will automatically filter out any duplicates, returning only unique values between both. I then set the return value to the size of the set of unique values.
-
-         */
-            // loop through winning number and guess
-            for(int i = 0; i < winningNumber.length(); i++){
-                for(int j = 0; j< guess.length(); j++){
-                    if(winningNumber.charAt(i) == guess.charAt(j)){
-                        // if the winning number contains the character in guess, add the guess at that character to the Set,
-                        correctValues.add(String.valueOf(guess.charAt(i)));
-                    }
-
+            int correctGuesses = 0;
+            for (char guessCharacter : guessSet) {
+                if (winningNumberSet.contains(guessCharacter)) {
+                    correctGuesses++;
                 }
             }
-            // return the size of the set that contains correct guesses
-            return correctValues.size();
+            return correctGuesses;
         }
         private boolean inappropriateLength(String guess){
             return guess.length() != winningNumber.length();
@@ -136,6 +128,9 @@ import java.util.UUID;
         private boolean guessContainsInvalidCharacters(String guess){
             System.out.println(guess);
             return !guess.matches("\\d+");
+        }
+        private boolean guessIsOverLimit(String guess){
+            return !guess.matches("[0-7]+");
         }
     }
 

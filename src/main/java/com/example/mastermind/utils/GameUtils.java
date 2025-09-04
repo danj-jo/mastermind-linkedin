@@ -89,10 +89,16 @@ public class GameUtils {
             case HARD -> numberOfGuessedNumbers = 9;
             default -> numberOfGuessedNumbers = 4;
         }
+        int maxNumber = switch(difficulty) {
+            case EASY -> 7;
+            case MEDIUM -> 8;
+            case HARD -> 9;
+        };
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < numberOfGuessedNumbers; i++) {
-            sb.append(random.nextInt(10));
+            sb.append(random.nextInt(maxNumber + 1));
         }
         return sb.toString();
     }

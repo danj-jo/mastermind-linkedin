@@ -1,4 +1,4 @@
-# 🎯 Mastermind Game - Reach Apprenticeship Project 
+# Mastermind Game - Reach Apprenticeship Project 
 
 A real-time multiplayer Mastermind game built with Java & Spring Boot on the backend, PostgreSQL for the perstitence layer, and React on the frontend. It features WebSocket communication, server sent events, authentication via Spring Security. The goal of the game is to guess a four digit number between 0-7 (Easy Mode) within 10 tries. 
 
@@ -52,18 +52,6 @@ npm install
 npm run dev
 ```
 The frontend will be available at `http://localhost:5173`
-
-#### 5. Production Build
-```bash
-# Backend
-mvn clean package
-java -jar target/mastermind-linkedin-0.0.1-SNAPSHOT.jar
-
-# Frontend
-cd frontend/mastermind-frontend
-npm run build
-npm start
-```
 
 ## 🏗️ Architecture Overview
 

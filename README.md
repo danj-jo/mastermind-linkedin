@@ -15,7 +15,7 @@ A real-time multiplayer Mastermind game built with Java & Spring Boot on the bac
 
 #### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone (https://github.com/danj-jo/mastermind-linkedin.git)
 cd mastermind-linkedin
 ```
 
@@ -36,7 +36,7 @@ spring.datasource.password=your_password
 mvn clean install
 
 # Start the Spring Boot application
-mvn spring-boot:run
+mvn spring-boot:run or if you have intellij, there is a run button that comes with every spring boot project.
 ```
 The backend will be available at `http://localhost:8080`
 
@@ -73,7 +73,7 @@ npm start
 - **Real-time Communication**: WebSockets with STOMP protocol
 - **Frontend**: React 19 with TypeScript & Tailwind CSS
 - **Build Tools**: Maven (Backend), Vite (Frontend)
-- **Testing**: JUnit 5 with 60+ comprehensive tests
+- **Testing**: JUnit 5 & Mockito
 
 ### Why This Tech Stack?
 
@@ -82,8 +82,7 @@ After my previous REACH project using JavaScript + MongoDB, I chose Java & Sprin
 1. **Static Typing**: Java's compile-time type checking prevents runtime errors and enhances code readability
 2. **Robust Framework**: Spring Boot provides excellent support for WebSockets, authentication, authorization, and CORS
 3. **Enterprise-Grade**: Built-in security features like CSRF protection and role-based authentication
-4. **JVM Ecosystem**: Superior WebSocket support and custom server capabilities
-5. **Relational Database**: PostgreSQL's relationship management was crucial for tracking player-game associations
+4. **Relational Database**: PostgreSQL's relationship management was crucial for tracking player-game associations
 
 ## 🎮 Game Features
 

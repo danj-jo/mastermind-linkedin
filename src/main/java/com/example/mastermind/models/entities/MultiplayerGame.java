@@ -39,7 +39,10 @@ public class MultiplayerGame  {
 
     // takes in the current player (who's turn it is, and their guess)
     public String submitGuess(Player player, String guess){
-        boolean isPlayer1sTurn = true;
+
+        if(this.difficulty == Difficulty.EASY && guessIsOverLimit(guess)){
+            return "Only numbers 0-7 are allowed. Please try again.";
+        }
         if(guessContainsInvalidCharacters(guess)){
             return "Guesses are numbers only";
         }
@@ -94,7 +97,7 @@ public class MultiplayerGame  {
 
     }
     private int totalCorrectNumbers(String guess){
-            // Create sets directly from the strings
+            // Create sets from strings, since they can not hold duplicates. I then iterate through each Set and increment a number with each match.
             Set<Character> winningNumberSet = new HashSet<>();
             for (char c : winningNumber.toCharArray()) {
                 winningNumberSet.add(c);
@@ -134,5 +137,8 @@ public class MultiplayerGame  {
     private boolean guessContainsInvalidCharacters(String guess){
         System.out.println(guess);
         return !guess.matches("\\d+");
+    }
+    private boolean guessIsOverLimit(String guess){
+        return !guess.matches("[0-7]+");
     }
 }

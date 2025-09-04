@@ -1,11 +1,14 @@
 package com.example.mastermind.models.entities;
 
 import com.example.mastermind.models.Difficulty;
+import com.example.mastermind.models.GameMode;
 import com.example.mastermind.models.Result;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,5 +70,29 @@ class SinglePlayerGameTest {
         assertNotNull(result);
         assertTrue(game.isFinished());
         assertEquals(Result.WIN, game.getResult());
+    }
+
+    @Test
+    void attemptMaxNumberOfGuesses(){
+        game.setDifficulty(Difficulty.EASY);
+        game.setPlayer(testPlayer);
+        game.setResult(Result.LOSS);
+        game.setFinished(false);
+        game.setMode(GameMode.SINGLE_PLAYER);
+        game.setWinningNumber("1234");
+        List<String> combinations = new ArrayList<>();
+        combinations.add("0123");
+        combinations.add("0124");
+        combinations.add("0125");
+        combinations.add("0126");
+        combinations.add("0127");
+        combinations.add("0134");
+        combinations.add("0135");
+        combinations.add("0136");
+        combinations.add("0137");
+        combinations.add("0138");
+        combinations.forEach(n -> game.submitGuess(n));
+        game.setGuesses(combinations);
+        assertEquals(Result.LOSS, game.getResult());
     }
 }

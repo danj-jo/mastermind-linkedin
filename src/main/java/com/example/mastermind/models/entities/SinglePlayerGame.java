@@ -49,30 +49,28 @@ import java.util.UUID;
             if(guessContainsInvalidCharacters(guess)){
                 return "Guesses are numbers only";
             }
-
             if(inappropriateLength(guess)){
                 return String.format("Guess is not the appropriate length. Please try again. Guess must %d numbers", winningNumber.length());
             }
             if(guessAlreadyExists(guess)){
                 return "We don't allow Duplicate guesses here.";
             }
-
             if(gameIsFinished(guess)){
                 return "Game is finished.";
             }
 
-            if(userLostGame()) {
-                setResult(Result.LOSS);
-                isFinished = true;
-                return String.format("Game Over! The correct number was: %s", winningNumber);
-            }
             guesses.add(guess);
             if(userWonGame(guess)){
                 isFinished = true;
                 setResult(Result.WIN);
                 return "You Win!";
             }
-            return guesses.size() < 10 ? generateHint(guess) : String.format("Game Over! The correct number was: %s", winningNumber);
+            if(userLostGame()) {
+                setResult(Result.LOSS);
+                isFinished = true;
+                return String.format("Game Over! The correct number was: %s", winningNumber);
+            }
+            return generateHint(guess);
         }
         private String generateHint(String guess) {
             return String.format("You have %d amount of numbers correct, in %d locations. %d guesses remaining.", totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size());

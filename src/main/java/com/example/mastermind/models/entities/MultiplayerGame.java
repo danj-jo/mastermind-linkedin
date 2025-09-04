@@ -38,50 +38,51 @@ public class MultiplayerGame  {
     private boolean isFinished = false;
 
     // takes in the current player (who's turn it is, and their guess)
-    public String submitGuess(Player player, String guess){
+    public String submitGuess(Player player, String guess) {
 
-        if(this.difficulty == Difficulty.EASY && guessIsOverLimit(guess)){
+        MultiplayerGuess newGuess = new MultiplayerGuess();
+        // link guess to this game
+        newGuess.setGame(this);
+        // link guess to player
+        newGuess.setPlayer(player);
+        // the guess itself
+        newGuess.setGuess(guess);
+        if (this.difficulty == Difficulty.EASY && guessIsOverLimit(guess)) {
             return "Only numbers 0-7 are allowed. Please try again.";
         }
-        if(guessContainsInvalidCharacters(guess)){
+
+        if (guessContainsInvalidCharacters(guess)) {
             return "Guesses are numbers only";
         }
-        if(inappropriateLength(guess)){
-            return String.format("Guess is not the appropriate length. Please try again. Guess must %d numbers", winningNumber.length());
-        }
-        if(guessAlreadyExists(guess)){
-            return "We don't allow Duplicate guesses here.";
+
+        if (inappropriateLength(guess)) {
+            return String.format(
+                    "Guess is not the appropriate length. Please try again. Guess must be %d numbers",
+                    winningNumber.length()
+            );
         }
 
-        if(gameIsFinished(guess)){
+        if (guessAlreadyExists(guess)) {
+            return "We don't allow duplicate guesses here.";
+        }
+
+        if (isFinished || gameIsFinished(guess)) {  // guard for already finished
             return "Game is finished.";
         }
-
-        if(userLostGame()) {
-            setResult(Result.LOSS);
-            isFinished = true;
-            return String.format("Game Over! The correct number was: %s", winningNumber);
-        }
-
-        // create a new multiplayer guess object
-        MultiplayerGuess newGuess = new MultiplayerGuess();
-        // set the game to this one (to have mapping to game id)
-        newGuess.setGame(this);
-        // set the current player to the current guess (to know current player guessing)
-        newGuess.setPlayer(player);
-        // the guess itself,
-        newGuess.setGuess(guess);
-        // add the guesses to the guess list.
         guesses.add(newGuess);
-        if(userWonGame(guess)){
+        if (userWonGame(guess)) {
             isFinished = true;
             setResult(Result.WIN);
             return "You Win!";
         }
-
-
-        return guesses.size() < 10 ? generateHint(player,guess) : String.format("Game Over! The correct number was: %s", winningNumber);
+        if (userLostGame()) {
+            isFinished = true;
+            setResult(Result.LOSS);
+            return String.format("Game Over! The correct number was: %s", winningNumber);
+        }
+        return generateHint(player, guess);
     }
+
     private String generateHint(Player player, String guess) {
         return String.format("%s has %d  numbers correct, in %d locations. %d guesses remaining.", player.getUsername(), totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size());
     }

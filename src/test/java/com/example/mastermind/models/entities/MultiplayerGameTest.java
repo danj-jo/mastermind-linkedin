@@ -35,19 +35,27 @@ class MultiplayerGameTest {
     void submitGuess() {
         Player player1 = createPlayer("player1", "player1@test.com");
         Player player2 = createPlayer("player2", "player2@test.com");
+        System.out.println(player1.getPlayerId());
         
         MultiplayerGame game = new MultiplayerGame();
-        game.setGameId(UUID.randomUUID());
         game.setPlayer1(player1);
         game.setPlayer2(player2);
         game.setWinningNumber("1234");
         game.setDifficulty(Difficulty.EASY);
-        
-        String result = game.submitGuess(player1, "5678");
-        
-        assertNotNull(result);
-        assertEquals(1, game.getGuesses().size());
-        assertTrue(result.contains("numbers correct"));
+
+        game.submitGuess(player1,"1211");
+        game.submitGuess(player1,"1412");
+        game.submitGuess(player1,"1312");
+        game.submitGuess(player1,"1512");
+        game.submitGuess(player1,"1612");
+        game.submitGuess(player1,"1222");
+        game.submitGuess(player1,"1112");
+        game.submitGuess(player1,"1232");
+        game.submitGuess(player1,"1515");
+        game.submitGuess(player1,"1216");
+
+
+        assertEquals(Result.LOSS,game.getResult());
     }
 
     @Test

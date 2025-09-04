@@ -1,6 +1,7 @@
 package com.example.mastermind.controllers;
 
 import com.example.mastermind.dataTransferObjects.GameDTOs.multiplayer.MultiplayerTurnMetadata;
+import com.example.mastermind.models.Result;
 import com.example.mastermind.models.entities.MultiplayerGame;
 import com.example.mastermind.models.entities.MultiplayerGuess;
 import com.example.mastermind.models.entities.Player;
@@ -51,8 +52,11 @@ public class MultiplayerWebsocketController {
         String feedback = game.submitGuess(player, guess);
         List<String> guesses = game.getGuesses().stream().map(MultiplayerGuess::getGuess).toList();
         boolean finished = game.isFinished();
-        MultiplayerTurnMetadata multiplayerTurnMetadata = new MultiplayerTurnMetadata(player.getUsername(), feedback, finished, guesses);
-     
-        return multiplayerTurnMetadata;
+        if(guesses.size() == 10){
+            game.setResult(Result.LOSS);
+            multiplayerGameService.saveMultiplayerGame(game);
+            System.out.println("SAVE");
+        }
+        return new MultiplayerTurnMetadata(player.getUsername(), feedback, finished, guesses);
     }
 }

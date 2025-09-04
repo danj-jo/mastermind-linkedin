@@ -1,5 +1,6 @@
 package com.example.mastermind.services;
 
+import com.example.mastermind.dataAccessObjects.MultiplayerGameRepository;
 import com.example.mastermind.models.Difficulty;
 import com.example.mastermind.utils.EmitterRegistry;
 import com.example.mastermind.models.entities.MultiplayerGame;
@@ -39,7 +40,7 @@ import com.example.mastermind.customExceptions.GameNotFoundException;
 @Service
 @AllArgsConstructor
 public class MultiplayerGameService {
-
+    private final MultiplayerGameRepository multiplayerGameRepository;
     private static final Logger logger = LoggerFactory.getLogger(MultiplayerGameService.class);
     private final EmitterDiagnostics emitterDiagnostics;
     private final EmitterRegistry emitterRegistry;
@@ -86,11 +87,11 @@ public class MultiplayerGameService {
                 Player player1 = value.poll();
                 Player player2 = value.poll();
                 assert player2 != null;
-                List<Player> players = new ArrayList<>(List.of(player1, player2));
                 MultiplayerGame game = new MultiplayerGame();
                 game.setDifficulty(GameUtils.selectUserDifficulty(key));
                 game.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(difficulty.toUpperCase())));
-                game.setPlayers(players);
+                game.setPlayer1(player1);
+                game.setPlayer2(player2);
                 activeGames.put(game.getGameId(),game);
                 emitterDiagnostics.logMatchAttempt(player1, player2);
                 // get emitter for player 1 and send them a "matched" event
@@ -137,5 +138,9 @@ public class MultiplayerGameService {
         }
         String winningNumber = game.getWinningNumber();
         return new HashMap<>(Map.of("numbersToGuess", winningNumber.length()));
+    }
+
+    public void saveMultiplayerGame(MultiplayerGame game){
+        multiplayerGameRepository.saveAndFlush(game);
     }
 }

@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login", "/api/auth").permitAll() 
+                        .requestMatchers("/register", "/login", "/api/**").permitAll()
                         .requestMatchers("/games/**", "/me/**", "/subscribe", "/game/**", "/singleplayer/**", "/multiplayer/**").hasRole("USER")
                         .anyRequest().authenticated()
                 )

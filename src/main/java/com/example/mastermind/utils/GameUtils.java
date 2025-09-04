@@ -1,22 +1,26 @@
 package com.example.mastermind.utils;
 
 import com.example.mastermind.models.Difficulty;
+import com.example.mastermind.models.entities.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Utility class for game-related operations and random number generation.
- * 
+ * <p>
  * This class provides static methods for:
  * - Converting string difficulty choices to Difficulty enum values
  * - Generating winning numbers for games based on difficulty level
  * - Fallback local random number generation when external API fails
- * 
+ * <p>
  * The class attempts to use random.org for truly random numbers but falls back to local generation if the external service is unavailable or returns invalid data, and logs the error.
  * This ensures game functionality continues even during external service outages.
  */
@@ -92,6 +96,5 @@ public class GameUtils {
         }
         return sb.toString();
     }
-
 
 }

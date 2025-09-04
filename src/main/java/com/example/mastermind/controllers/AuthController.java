@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -59,13 +61,13 @@ public class AuthController {
      * @return ResponseEntity with success message on successful registration
      * @throws UsernameExistsException if username already exists
      */
-    @PostMapping("/auth/register")
+    @PostMapping("auth/register")
     public ResponseEntity<?> registerNewPlayer(@RequestBody UserRegistrationRequest newUser) {
         try {
             authService.registerNewUser(newUser);
             return ResponseEntity.ok("Success");
-        }  catch (UsernameExistsException e) {
-            
+        }  catch (Exception e) {
+
             throw e;
         }
     }

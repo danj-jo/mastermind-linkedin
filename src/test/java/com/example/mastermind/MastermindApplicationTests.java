@@ -63,18 +63,5 @@ class MastermindApplicationTests {
         System.out.println(singleplayerGameService.returnCurrentUsersPastGames(id).getClass());
     }
 
-    @Test
-    void testMultiplayerGame(){
-        List<Player> players = createPlayers();
-        MultiplayerGame newgame = new MultiplayerGame();
-        newgame.setGameId(UUID.randomUUID());
-        newgame.setPlayers(players);
-        newgame.setWinningNumber("1234");
-        newgame.setDifficulty(Difficulty.EASY);
-
-        System.out.println(newgame.submitGuess(players.get(0),"3456"));
-        System.out.println(newgame.getGuesses().toString());
-
-    }
 }
 

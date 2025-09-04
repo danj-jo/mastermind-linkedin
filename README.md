@@ -1,9 +1,83 @@
-# Mastermind Game - Reach Apprenticeship Project 
+# Mastermind Game - Reach Apprenticeship Project
 
-A real-time multiplayer Mastermind game built with Java & Spring Boot on the backend, PostgreSQL for the perstitence layer, and React on the frontend. It features WebSocket communication, server sent events, authentication via Spring Security. The goal of the game is to guess a four digit number between 0-7 (Easy Mode) within 10 tries. 
+A real-time multiplayer **Mastermind game** built with **Java & Spring Boot** on the backend, **PostgreSQL** for persistence, and **React** on the frontend. The game features **WebSocket communication**, **server-sent events**, and **authentication via Spring Security**.
 
-## 🚀 How to get started 
+The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game supports both **singleplayer (against the computer)** and **multiplayer (against another player)**.
 
+---
+
+## 🎮 Game Rules
+
+- At the start of a game, the computer randomly selects a secret pattern of numbers.
+- The length of the pattern depends on the chosen difficulty:
+  - **Easy** → 4 digits (0–7)
+  - **Medium** → 6 digits (0–7)
+  - **Hard** → 8 digits (0–7)
+- A player (or team in multiplayer) has **10 attempts** to guess the correct pattern.
+- After each guess, feedback is provided:
+  - **Correct number** guessed but wrong position
+  - **Correct number in the correct position**
+  - **Incorrect guess** (no matches)
+- Invalid guesses (duplicates, non-numeric input, or wrong length) are rejected and **don’t** count as attempts.
+- The game ends with either a **win (correct pattern guessed)** or **loss (attempts used up)**.
+
+### Example Run
+
+Secret: `0 1 3 5`  
+- Guess `2 2 4 6` → *All incorrect*  
+- Guess `0 2 4 6` → *1 correct number, 1 correct location*  
+- Guess `2 2 1 1` → *1 correct number, 0 correct location*  
+- Guess `0 1 5 6` → *3 correct numbers, 2 correct location*
+
+> Feedback never reveals **which digits** are correct — only how many are correct.
+
+---
+
+## 🌀 Game Flow
+
+1. **Authentication**
+   - On launch, players can **register** or **sign in**.
+   - New users are redirected to login after registering.
+
+2. **Game Setup**
+   - After logging in, players select:
+     - **Difficulty** (Easy, Medium, Hard)
+     - **Mode** (Singleplayer or Multiplayer)
+
+3. **Singleplayer Mode**
+   - Redirected to the **play screen**.
+   - Up to **10 guesses** allowed, with feedback after each.
+   - Game ends with a win/loss screen.
+   - Invalid guesses are rejected without consuming attempts.
+
+4. **Multiplayer Mode**
+   - Redirected to the **lobby page**.
+   - Players join a **matchmaking queue** (per difficulty).
+   - Once matched, both are redirected to the play screen.
+   - The 10 guesses are **shared between teammates**.
+
+5. **Additional Features**
+   - **Game History** → Players can review prior games.
+   - **Resume Functionality** → Incomplete games can be resumed later.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Java 17+**
+- **Node.js 18+**
+- **PostgreSQL 12+**
+- **Maven 3.6+**
+
+### Installation & Setup
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/danj-jo/mastermind-linkedin.git
+cd mastermind-linkedin
 ### Prerequisites
 
 - **Java 17+**

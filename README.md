@@ -90,7 +90,7 @@ After my previous REACH project using JavaScript + MongoDB, I chose Java & Sprin
 ### Single Player Mode
 - **Difficulty Levels**: Easy (4 digits), Medium (6 digits), Hard (8 digits)
 - **Game Persistence**: Save and resume games
-- **Smart Hints**: Real-time feedback on guess accuracy
+- **Smart Hints**: Automatic feedback on guess accuracy
 - **Game History**: Track past games and performance
 
 ### Multiplayer Mode
@@ -199,12 +199,13 @@ public enum GameMode { SINGLE_PLAYER, MULTIPLAYER }
 - **MultiplayerWebsocketController**: Real-time WebSocket communication
 
 ### Exception Handling
-14 custom exceptions with a global exception handler:
+custom exceptions with a global exception handler
+examples:
 - `GameNotFoundException`
 - `PlayerNotFoundException`
 - `UnauthorizedGameAccessException`
 - `GameCreationException`
-- And 10 more specialized exceptions
+  
 
 ## 🌐 Real-time Communication
 
@@ -225,12 +226,10 @@ private Map<String, SseEmitter> activeEmitters;
 **Key Features:**
 - **Concurrent Data Structures**: `ConcurrentHashMap` and `ConcurrentLinkedQueue` for thread safety
 - **Early Emitter Registration**: Prevents connection timing issues
-- **Automatic Cleanup**: Removes stale emitters after game completion
 - **Difficulty-based Queues**: Separate matchmaking for each difficulty level
 
 ## 🧪 Testing Strategy
 
-### Comprehensive Test Coverage 
 - **Controller Tests**: API endpoint validation
 - **Service Tests**: Business logic verification
 - **Entity Tests**: Model behavior testing
@@ -276,20 +275,15 @@ mastermind-linkedin/
 
 ## 🚀 Key Achievements
 
-1. **Real-time Multiplayer**: Implemented WebSocket-based matchmaking system
+1. **Real-time Multiplayer**: Implemented WebSocket-based matchmaking system & Server Sent Events to ping users upon match
 2. **Robust Architecture**: Clean separation of concerns with layered design
-3. **Comprehensive Testing**: 60+ tests ensuring code quality
-4. **Security Implementation**: Full authentication and authorization system
-5. **Performance Optimization**: Efficient database queries and memory management
-6. **User Experience**: Responsive design with real-time updates
+3. **Security Implementation**: Full authentication and authorization system
+4. **Performance Optimization**: Efficient database queries and memory management
 
 ## 🔮 Future Enhancements
 
 - **Friends System**: Add social features for multiplayer
 - **Leaderboards**: Global and personal statistics
-- **Game Replay**: Watch completed games
-- **Mobile App**: React Native implementation
-- **AI Opponent**: Single-player AI difficulty levels
 
 ## 📝 Development Journey
 

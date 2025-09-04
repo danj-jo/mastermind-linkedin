@@ -60,6 +60,41 @@ Secret: `0 1 3 5`
    - **Game History** → Players can review prior games.
    - **Resume Functionality** → Incomplete games can be resumed later.
 
+graph TD
+    A[Launch App] --> B{Sign In or Register?}
+    B -->|Register| C[Registration Form]
+    C --> D[Redirect to Login Screen]
+    B -->|Sign In| D[Login Screen]
+    D --> E[Choose Difficulty & Mode]
+    E -->|Singleplayer| F[Singleplayer Play Screen]
+    E -->|Multiplayer| G[Multiplayer Lobby]
+
+    F --> H[Make a Guess]
+    H --> I{Valid Guess?}
+    I -->|Yes| J[Receive Feedback]
+    I -->|No| H[Prompt Invalid Guess]
+
+    J --> K{Game Over?}
+    K -->|Yes| L[Win/Loss Screen]
+    K -->|No| H[Make Another Guess]
+
+    G --> M[Join Queue]
+    M --> N[Matched with Player?]
+    N -->|Yes| O[Multiplayer Play Screen]
+    N -->|No| M[Wait in Queue]
+
+    O --> P[Make a Guess]
+    P --> Q{Valid Guess?}
+    Q -->|Yes| R[Receive Feedback]
+    Q -->|No| P[Prompt Invalid Guess]
+
+    R --> S{All Guesses Used?}
+    S -->|Yes| T[Win/Loss Screen]
+    S -->|No| P[Next Turn]
+
+    style L fill:#cfe3ff,stroke:#333,stroke-width:2px
+    style T fill:#cfe3ff,stroke:#333,stroke-width:2px
+
 ---
 
 ## 🚀 Getting Started

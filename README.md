@@ -137,14 +137,24 @@ The frontend will be available at `http://localhost:5173`
 - **Build Tools**: Maven (Backend), Vite (Frontend)
 - **Testing**: JUnit 5 & Mockito
 
-### Why This Tech Stack?
+### Why Java & Spring Boot?
 
 After my previous REACH project using JavaScript + MongoDB, I chose Java & Spring Boot for several key reasons:
 
 1. **Static Typing**: Java's compile-time type checking prevents runtime errors and enhances code readability
 2. **Robust Framework**: Spring Boot provides excellent support for WebSockets, authentication, authorization, and CORS
 3. **Enterprise-Grade**: Built-in security features like CSRF protection and role-based authentication
-4. **Relational Database**: PostgreSQL's relationship management was crucial for tracking player-game associations
+4. **JPA**: JPA allowed me to make queries faster, to put more energy into core game logic. When complex custom queries were needed, I could rely on JPQL. 
+
+### 💾 Why PostgreSQL?
+
+The choice of **PostgreSQL** was driven by the need to manage **complex relationships** between players, games, and guesses:
+
+- **Player ↔ Game Relationships**: Each player can participate in multiple games, and each game can include one or more players (especially in multiplayer mode).  
+- **Game ↔ Guesses**: Each game maintains a list of guesses made by players, which allows structured queries and game resumption.  
+- **Data Integrity**: Foreign keys and transactions ensure relationships remain consistent.  
+- **Efficient Queries**: Indexing and relational tables allow fast retrieval of game history, leaderboard stats, and player performance.  
+- **Future Flexibility**: Makes implementing features like leaderboards, friends, or analytics straightforward.
 
 ## 🎮 Game Features
 

@@ -2,7 +2,7 @@
 
 Welcome to Mastermind! My rendtition of the classic mastermind game features real-time multiplayer **Mastermind game** built with **Java & Spring Boot** on the backend, **PostgreSQL** for persistence, and **React** on the frontend. The game features **WebSocket communication**, **server-sent events**, and **authentication via Spring Security**.
 
-The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game supports both **singleplayer (against the computer)** and **multiplayer (against another player)**.
+The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game supports both **singleplayer (against the computer)** and **multiplayer (a team game against the computer)**.
 
 ---
 

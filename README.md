@@ -1,4 +1,4 @@
-# Mastermind Game - Reach Apprenticeship Project
+# Mastermind - Reach Apprenticeship Project
 
 A real-time multiplayer **Mastermind game** built with **Java & Spring Boot** on the backend, **PostgreSQL** for persistence, and **React** on the frontend. The game features **WebSocket communication**, **server-sent events**, and **authentication via Spring Security**.
 

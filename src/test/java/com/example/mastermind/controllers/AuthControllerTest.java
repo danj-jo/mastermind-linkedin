@@ -1,6 +1,6 @@
 package com.example.mastermind.controllers;
 
-import com.example.mastermind.dataTransferObjects.PlayerDTOs.Request.UserRegistrationRequest;
+import com.example.mastermind.dataTransferObjects.PlayerDTOs.UserRegistrationRequest;
 import com.example.mastermind.services.AuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

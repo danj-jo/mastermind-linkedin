@@ -1,23 +1,27 @@
 package com.example.mastermind.controllers;
 
+import com.example.mastermind.models.PastGame;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.UserProfileDao;
 import com.example.mastermind.models.entities.Player;
+import com.example.mastermind.services.AuthService;
 import com.example.mastermind.services.PlayerService;
+import com.example.mastermind.services.SingleplayerGameService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.mastermind.customExceptions.PlayerDataAccessException;
-import com.example.mastermind.customExceptions.UnauthenticatedUserException;
 import com.example.mastermind.customExceptions.PlayerNotFoundException;
-import com.example.mastermind.utils.PlayerUtils;
+
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.Map;
 import java.util.List;
-import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
+
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import static com.example.mastermind.services.AuthService.getCurrentAuthenticatedPlayerUsername;
+
 /**
  * Controller for player-related operations.
  * 
@@ -32,30 +36,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class PlayerController {
     private final PlayerService playerService;
-   
+    private final SingleplayerGameService singleplayerGameService;
+    private final AuthService authService;
+
 
     /**
-     * This method is used to return all of a user's past games, complete and incomplete.
+     * This method is used to return all of a user's past games, complete and incomplete. It does not contain try catch blocks or thrown errors because if the list is empty, it will just return an empty list.
      */
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/games")
-    public ResponseEntity<Map <String, List<CurrentUserPastGames>> > getCurrentUserPastGames(){
-        try {
-            String username = PlayerUtils.getCurrentUsername();
-            Player currentPlayer = playerService.findPlayerByUsername(username);
-            UUID playerId = currentPlayer.getPlayerId();
-            if (playerId == null) {
-                throw new UnauthenticatedUserException("User id is null.");
-            }
-            
-            return  new ResponseEntity<>(playerService.returnCurrentPlayersPastGames(playerId),HttpStatus.OK);
-        } catch(Exception e){
-           
-            if (e instanceof PlayerDataAccessException) {
-                throw e; 
-            }
-            throw new PlayerDataAccessException(e.getMessage());
-        }
+    public ResponseEntity<Map <String, List<PastGame>>> getCurrentUserPastGames(){
+        UUID id = authService.getCurrentAuthenticatedPlayerId();
+        List<PastGame> finishedGames = singleplayerGameService.getFinishedGamesByPlayerId(id);
+        List<PastGame> unfinishedGames = singleplayerGameService.getUnfinishedGamesByPlayerId(id);
+        return ResponseEntity.ok(new HashMap<>(Map.of("finished",finishedGames,"unfinished",unfinishedGames)));
     }
 
 
@@ -68,7 +62,7 @@ public class PlayerController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/profile")
     public ResponseEntity<UserProfileDao> getCurrentUserProfile(){
-        String username = PlayerUtils.getCurrentUsername();
+        String username = getCurrentAuthenticatedPlayerUsername();
         Player player = playerService.findPlayerByUsername(username);
         if (player == null) {
             throw new PlayerNotFoundException("Player not found for username: " + username);

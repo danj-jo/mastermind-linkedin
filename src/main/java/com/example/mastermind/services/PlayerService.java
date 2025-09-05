@@ -1,8 +1,8 @@
 package com.example.mastermind.services;
 
-import com.example.mastermind.dataAccessObjects.SingleplayerGameRepository;
-import com.example.mastermind.dataAccessObjects.PlayerRepository;
-import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
+import com.example.mastermind.models.PastGame;
+import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
 import com.example.mastermind.models.entities.Player;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,9 +15,7 @@ import java.util.*;
 @Component
 @AllArgsConstructor
 public class PlayerService {
-    private final SingleplayerGameService singleplayerGameService;
     private final PlayerRepository playerRepository;
-    private final SingleplayerGameRepository singleplayerGameRepository;
 
     /**
      * This method is used to return a player that we search for via username parameter.
@@ -31,10 +29,6 @@ public class PlayerService {
 
             return playerRepository.findByUsername(username).orElseThrow();
 
-    }
-
-    public Map<String, List<CurrentUserPastGames>> returnCurrentPlayersPastGames(UUID playerId){
-        return singleplayerGameService.returnCurrentUsersPastGames(playerId);
     }
 
 

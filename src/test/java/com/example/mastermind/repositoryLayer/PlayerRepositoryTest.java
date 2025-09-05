@@ -1,4 +1,4 @@
-package com.example.mastermind.dataAccessObjects;
+package com.example.mastermind.repositoryLayer;
 
 import com.example.mastermind.models.entities.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 

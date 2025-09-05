@@ -2,14 +2,13 @@ package com.example.mastermind.controllers;
 
 import com.example.mastermind.customExceptions.UsernameExistsException;
 import com.example.mastermind.customExceptions.UnauthenticatedUserException;
-import com.example.mastermind.dataTransferObjects.PlayerDTOs.Request.UserRegistrationRequest;
+import com.example.mastermind.dataTransferObjects.PlayerDTOs.UserRegistrationRequest;
 import com.example.mastermind.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -67,7 +66,6 @@ public class AuthController {
             authService.registerNewUser(newUser);
             return ResponseEntity.ok("Success");
         }  catch (Exception e) {
-
             throw e;
         }
     }

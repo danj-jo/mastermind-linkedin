@@ -1,30 +1,27 @@
 package com.example.mastermind.controllers;
 
-import com.example.mastermind.dataTransferObjects.GameDTOs.Request.GuessRequest;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Request.NewGameRequest;
 import com.example.mastermind.dataTransferObjects.GameDTOs.Response.GuessResponse;
 import com.example.mastermind.models.entities.SinglePlayerGame;
 import com.example.mastermind.models.entities.Player;
+import com.example.mastermind.services.AuthService;
 import com.example.mastermind.services.SingleplayerGameService;
 import com.example.mastermind.services.PlayerService;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.example.mastermind.customExceptions.NoActiveGameSessionException;
 import com.example.mastermind.customExceptions.UnauthenticatedUserException;
 import com.example.mastermind.customExceptions.GameCreationException;
 import com.example.mastermind.customExceptions.GuessProcessingException;
 import com.example.mastermind.customExceptions.UnauthorizedGameAccessException;
 import com.example.mastermind.customExceptions.GameUpdateException;
 import com.example.mastermind.customExceptions.GameNotFoundException;
-import com.example.mastermind.utils.PlayerUtils;
 
 import java.util.*;
+
+import static com.example.mastermind.services.AuthService.getCurrentAuthenticatedPlayerUsername;
 
 /**
  * Controller for managing single-player game operations.
@@ -39,7 +36,7 @@ public class SinglePlayerGameController {
 
     private final SingleplayerGameService singleplayerGameService;
     private final PlayerService playerService;
-
+    private final AuthService authService;
 
 
     /**
@@ -61,7 +58,7 @@ public class SinglePlayerGameController {
     public ResponseEntity<Map<String,Object>> createNewSingleplayerGame(@RequestBody NewGameRequest newGameRequest) {
         try {
 
-            String username = PlayerUtils.getCurrentUsername();
+            String username =getCurrentAuthenticatedPlayerUsername();
             Player player = playerService.findPlayerByUsername(username);
             UUID playerId = player.getPlayerId();
 
@@ -97,7 +94,7 @@ public class SinglePlayerGameController {
     @PostMapping(value = "{gameId}/guess", produces = "application/json")
     public ResponseEntity<GuessResponse> handleGuessSubmission(@PathVariable UUID gameId, @RequestBody Map<String,String> guess) {
         try {
-            String username = PlayerUtils.getCurrentUsername();
+            String username = getCurrentAuthenticatedPlayerUsername();
             Player currentPlayer = playerService.findPlayerByUsername(username);
             UUID currentPlayerId = currentPlayer.getPlayerId();
             if (currentPlayerId == null) {
@@ -136,7 +133,7 @@ public class SinglePlayerGameController {
     @PostMapping("/singleplayer/games/{gameId}/resume")
     public ResponseEntity<?> resumeGame(@PathVariable UUID gameId, String guess) {
         try {
-            String username = PlayerUtils.getCurrentUsername();
+            String username = getCurrentAuthenticatedPlayerUsername();
             Player player = playerService.findPlayerByUsername(username);
             UUID playerId = player.getPlayerId();
             
@@ -174,9 +171,8 @@ public class SinglePlayerGameController {
     public ResponseEntity<?> findGameDetails(@PathVariable UUID gameId){
     try{
 
-    Authentication auth = SecurityContextHolder.getContext()
-                                               .getAuthentication();
-    String username = auth.getName();
+
+    String username = getCurrentAuthenticatedPlayerUsername();
     Player currentPlayer = playerService.findPlayerByUsername(username);
     SinglePlayerGame singlePlayerGame = singleplayerGameService.findGameById(gameId);
     UUID currentPlayerId = currentPlayer.getPlayerId();

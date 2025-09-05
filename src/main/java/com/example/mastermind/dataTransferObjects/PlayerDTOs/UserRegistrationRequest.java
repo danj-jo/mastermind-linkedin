@@ -1,4 +1,4 @@
-package com.example.mastermind.dataTransferObjects.PlayerDTOs.Request;
+package com.example.mastermind.dataTransferObjects.PlayerDTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

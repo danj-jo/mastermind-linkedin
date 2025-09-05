@@ -1,6 +1,6 @@
 package com.example.mastermind.config;
 
-import com.example.mastermind.dataAccessObjects.PlayerRepository;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
 import com.example.mastermind.models.entities.Player;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

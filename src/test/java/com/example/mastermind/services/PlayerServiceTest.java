@@ -1,10 +1,9 @@
 package com.example.mastermind.services;
 
-import com.example.mastermind.dataAccessObjects.PlayerRepository;
-import com.example.mastermind.dataAccessObjects.SingleplayerGameRepository;
-import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
+import com.example.mastermind.models.PastGame;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
+import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
 import com.example.mastermind.models.entities.Player;
-import com.example.mastermind.services.SingleplayerGameService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,21 +77,21 @@ class PlayerServiceTest {
     }
 
     @Test
-    void testReturnCurrentPlayersPastGames() {
+    void testReturnPlayerPastGames() {
         // Given
         UUID playerId = testPlayer.getPlayerId();
-        Map<String, List<CurrentUserPastGames>> expectedGames = Map.of(
+        Map<String, List<PastGame>> expectedGames = Map.of(
             "finished", List.of(),
             "unfinished", List.of()
         );
-        when(singleplayerGameService.returnCurrentUsersPastGames(playerId)).thenReturn(expectedGames);
+        when(singleplayerGameService.getPastGamesByPlayerID(playerId)).thenReturn(expectedGames);
 
         // When
-        Map<String, List<CurrentUserPastGames>> result = playerService.returnCurrentPlayersPastGames(playerId);
+        Map<String, List<PastGame>> result = playerService.returnPlayerPastGames(playerId);
 
         // Then
         assertNotNull(result);
         assertEquals(expectedGames, result);
-        verify(singleplayerGameService).returnCurrentUsersPastGames(playerId);
+        verify(singleplayerGameService).getPastGamesByPlayerID(playerId);
     }
 }

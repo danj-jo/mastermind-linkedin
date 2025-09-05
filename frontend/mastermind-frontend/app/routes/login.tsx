@@ -27,10 +27,11 @@ const LoginForm: React.FC = () => {
             if (response.ok) {
                 setIsLoggedIn(true)
                 navigate('/homescreen');
+            } else {
+                setError(data.message);
             }
         } catch (err) {
             console.error(err);
-            setError("Login failed. Try again.");
         } finally {
             setLoading(false);  // stop loading
         }
@@ -76,7 +77,6 @@ const LoginForm: React.FC = () => {
                             Login
                         </button>
                     </form>
-
                     <div style={{ textAlign: 'center', marginTop: '20px' }}>
                         <p style={{ color: 'var(--text-light)' }}>
                             Don't have an account?{' '}

@@ -26,15 +26,15 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
         <nav className="navbar">
             <div className="container navbar-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                <p className="navbar-brand">
+                <Link to={"/home"} className="navbar-brand">
                     Mastermind
-                </p>
+                </Link>
                 </div>
                 <div>
                 {isLoggedIn ? (
                     <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                         <div style={{ display: "flex" , alignSelf:"center"}}>
-                            <Link className="nav-link" to="/homeScreen">Home</Link>
+                            <Link className="nav-link" to="/home">Home</Link>
                             <Link className="nav-link" to="/mygames">Past Games</Link>
                             <Link className="nav-link" to="/me">Profile</Link>
                         </div>

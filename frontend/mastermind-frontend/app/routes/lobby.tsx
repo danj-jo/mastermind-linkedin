@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import {useAuth} from "~/AuthContext";
 export default function Lobby() {
+    const navigate = useNavigate()
+    const {isLoggedIn} = useAuth()
+    if(!isLoggedIn){
+        navigate("/login")
+    }
     const [events, setEvents] = useState([]);
     const [isJoined, setIsJoined] = useState(false);
     const [eventSource, setEventSource] = useState(null);
-    const navigate = useNavigate();
     const[clicked,setIsClicked] = useState(false)
     const handleJoin = () => {
         const difficulty = sessionStorage.getItem("difficulty");
@@ -12,7 +17,7 @@ export default function Lobby() {
             `http://localhost:8080/multiplayer/join?difficulty=${difficulty}`,
             { withCredentials: true }
         );
-
+        setIsClicked(true);
         // ✅ Listen for "matched" event
         es.addEventListener("matched", (event) => {
             setIsClicked(true)

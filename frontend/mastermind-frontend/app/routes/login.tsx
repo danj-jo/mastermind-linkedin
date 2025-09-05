@@ -26,7 +26,7 @@ const LoginForm: React.FC = () => {
             const data = await response.json();
             if (response.ok) {
                 setIsLoggedIn(true)
-                navigate('/homescreen');
+                navigate('/home');
             } else {
                 setError(data.message);
             }

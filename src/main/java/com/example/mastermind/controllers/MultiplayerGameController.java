@@ -1,5 +1,6 @@
 package com.example.mastermind.controllers;
 
+import com.example.mastermind.services.AuthService;
 import com.example.mastermind.utils.EmitterRegistry;
 import com.example.mastermind.models.entities.Player;
 import com.example.mastermind.services.MultiplayerGameService;
@@ -23,6 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RequestMapping("/multiplayer")
 public class MultiplayerGameController {
+    private final AuthService authService;
     private final MultiplayerGameService multiplayerGameService;
     private final PlayerService playerService;
     private final EmitterRegistry emitterRegistry;
@@ -32,21 +34,12 @@ public class MultiplayerGameController {
     /**
      *  This method is used to add the current user to a queue, which will send them into a game when a match is found. Upon matching, the user will be sent a "match" event, and a game will be created for them. I have to produce TEXT_EVENT_STREAM_VALUE in order for the browser to accept the event messages.
      * @param difficulty - the desired difficulty to play.
-     * @param auth - the current user
      * @return an emitter used to send events to the client
      */
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "join", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter joinMultiplayerGame(@RequestParam String difficulty,Authentication auth) {
-        if (auth == null || !auth.isAuthenticated()) {
-            throw new UnauthenticatedUserException("Unauthenticated access");
-        }
-        String username = auth.getName();
-        Player currentPlayer = playerService.findPlayerByUsername(username);
-        if (currentPlayer == null) {
-            throw new PlayerNotFoundException("Player not found for username: " + username);
-        }
-
+    public SseEmitter joinMultiplayerGame(@RequestParam String difficulty) {
+        Player currentPlayer = authService.getCurrentAuthenticatedPlayer();
         /*
          Register the emitter immediately after creating it to ensure any events that occur right after the client connects are not missed.
         Early registration allows the system to send events to this emitter as soon as they happen and also makes cleanup (on completion, timeout, or error) easier.

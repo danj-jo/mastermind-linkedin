@@ -23,10 +23,6 @@ public class PlayerService {
      * @return corresponding player
      */
     public Player findPlayerByUsername(String username){
-        if(!playerRepository.existsByUsername(username)){
-            throw new UsernameNotFoundException("User does not exist.");
-        }
-
             return playerRepository.findByUsername(username).orElseThrow();
 
     }

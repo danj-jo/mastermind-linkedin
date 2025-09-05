@@ -4,9 +4,6 @@ import {useAuth} from "~/AuthContext";
 export default function Lobby() {
     const navigate = useNavigate()
     const {isLoggedIn} = useAuth()
-    if(!isLoggedIn){
-        navigate("/login")
-    }
     const [events, setEvents] = useState([]);
     const [isJoined, setIsJoined] = useState(false);
     const [eventSource, setEventSource] = useState(null);
@@ -23,7 +20,7 @@ export default function Lobby() {
             setIsClicked(true)
              console.log(event.data)
             const gameId = event.data;
-            sessionStorage.setItem("gameId", gameId);
+            sessionStorage.setItem("gameId", gameId.replace(/^"|"$/g, ""));
             setTimeout(() => {
                 // Code to be executed after 4 seconds
                 navigate("/team")

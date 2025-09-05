@@ -32,6 +32,7 @@ import java.util.UUID;
 public class AuthService {
     private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PlayerService playerService;
 
     /**
      * This method is used to register new users.
@@ -77,11 +78,16 @@ public class AuthService {
      * @return the username of the currently authenticated user
      * @throws UnauthenticatedUserException if no user is authenticated or the authentication is invalid
      */
-    public static String getCurrentAuthenticatedPlayerUsername() {
+
+    public static Authentication getAuthenticationContext(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated()) {
             throw new UnauthenticatedUserException("User is not authenticated.");
         }
+        return auth;
+    }
+    public static String getCurrentAuthenticatedPlayerUsername() {
+        Authentication auth = getAuthenticationContext();
         return auth.getName();
     }
 
@@ -89,6 +95,11 @@ public class AuthService {
         String playerUsername = getCurrentAuthenticatedPlayerUsername();
         Player player = playerRepository.findByUsername(playerUsername).orElseThrow();
         return player.getPlayerId();
+    }
+
+    public Player getCurrentAuthenticatedPlayer(){
+        String username = getCurrentAuthenticatedPlayerUsername();
+        return playerService.findPlayerByUsername(username);
     }
 
 }

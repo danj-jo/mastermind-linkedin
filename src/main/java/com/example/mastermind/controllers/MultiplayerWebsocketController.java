@@ -49,14 +49,11 @@ public class MultiplayerWebsocketController {
             throw new GameNotFoundException("Game not found for id: " + gameId);
         }
         String guess = userGuess.get("guess");
+
         String feedback = game.submitGuess(player, guess);
         List<String> guesses = game.getGuesses().stream().map(MultiplayerGuess::getGuess).toList();
         boolean finished = game.isFinished();
-        if(guesses.size() == 10){
-            game.setResult(Result.LOSS);
-            multiplayerGameService.saveMultiplayerGame(game);
-            System.out.println("SAVE");
-        }
+
         return new MultiplayerTurnMetadata(player.getUsername(), feedback, finished, guesses);
     }
 }

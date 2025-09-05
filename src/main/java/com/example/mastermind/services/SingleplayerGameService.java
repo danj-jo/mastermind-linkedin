@@ -21,11 +21,11 @@ import java.util.*;
 import org.slf4j.Logger;
 /**
  * Service class for managing single-player Mastermind games.
- * 
+ * <p>
  * This service handles the creation, management, and gameplay logic for single-player games,
  * including game creation, guess submission, and game state persistence. It provides
  * methods for retrieving game history and managing game lifecycle.
- * 
+ * <p>
  * Note: All exceptions thrown by methods in this service are automatically handled 
  * by the GlobalExceptionHandler, which converts them to appropriate HTTP responses 
  * with status codes and error messages when called from controllers.

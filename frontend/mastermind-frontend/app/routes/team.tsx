@@ -3,6 +3,8 @@ import {useEffect, useRef, useState} from "react";
 import {useParams} from "react-router";
 import { Client } from '@stomp/stompjs';
 import {Stomp} from "@stomp/stompjs"
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "~/AuthContext";
  const Team = () => {
      const [guess, setGuess] = useState("");
      const [guessInputBoxes, setGuessInputBoxes] = useState([]);
@@ -13,6 +15,11 @@ import {Stomp} from "@stomp/stompjs"
      const clientRef = useRef(null);
      const [guesses,setGuesses]  = useState([])
      const[player,setPlayer] = useState()
+     const navigate = useNavigate()
+     const {isLoggedIn} = useAuth()
+     if(!isLoggedIn){
+         navigate("/login")
+     }
      // @ts-ignore
      useEffect(() => {
          if (typeof window === "undefined") return;

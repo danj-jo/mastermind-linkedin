@@ -1,14 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Table, Space, Tag } from "antd";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAuth} from "~/AuthContext";
 
 const MyGames = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true); // start as loading
     const [finishedGames, setFinishedGames] = useState([])
     const [unfinishedGames, setUnfinishedGames] = useState([])
-
+    const navigate = useNavigate()
+    const {isLoggedIn} = useAuth()
+    if(!isLoggedIn){
+        navigate("/login")
+    }
     const allGames = [];
     finishedGames.forEach(game => allGames.push(game));
     unfinishedGames.forEach(game => allGames.push(game));
@@ -19,12 +24,12 @@ const MyGames = () => {
         render: id => {
             const game = allGames.find(i => i.id === id);
 
-            return game?.result === "PENDING" ? (
+            return game?.result == "PENDING" ? (
                 <Link  to={`/games/${id}`}>
                     resume
                 </Link>
             ) : (
-                <Link style={{color:"white"}} to={`/games/${id}`}>
+                <Link style={{color:"white"}} to={`/game/${id}`}>
                     {id}
                 </Link>
             );
@@ -67,7 +72,6 @@ const MyGames = () => {
                 setFinishedGames(data.finished);
                 setUnfinishedGames(data.unfinished);
             } catch (err) {
-                console.error("Error fetching profile:", err);
                 setError("Failed to load profile data");
             } finally {
                 setLoading(false);
@@ -90,9 +94,6 @@ const MyGames = () => {
                     size="middle"
                     bordered
                     style={{ marginTop: "50px", border: `1px solid var(--border-color)` }}
-                    rowClassName={(record, index) =>
-                        index % 2 === 0 ? 'table-row-even' : 'table-row-odd'
-                    }
                     onHeaderRow={() => ({
                         style: {
                             backgroundColor: '#1c2b3f', // background-light

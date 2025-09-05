@@ -1,19 +1,20 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import {useAuth} from "~/AuthContext";
 
 const Profile: React.FC = () => {
-    const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [finishedGames, setFinishedGames] = useState([])
     const [unfinishedGames, setUnfinishedGames] = useState([])
-    const [totalGamesPlayed, setTotalGamesPlayed] = useState();
     const [username,setUserName] = useState("")
     const [email,setEmail] = useState("");
-    const [gamesWon, setGamesWon] = useState(0);
     const navigate = useNavigate();
-    const[wins,setWins] = useState()
+    const {isLoggedIn} = useAuth()
+    if(!isLoggedIn){
+        navigate("/login")
+    }
     useEffect(() => {
         const fetchUserData = async () => {
             try {

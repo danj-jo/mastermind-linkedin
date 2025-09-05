@@ -1,11 +1,16 @@
 "use client";
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import {useAuth} from "~/AuthContext";
 
 const NewGame: React.FC = () => {
     const [difficulty, setDifficulty] = useState('easy');
     const [mode,setMode] = useState("");
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const {isLoggedIn} = useAuth()
+    if(!isLoggedIn){
+        navigate("/login")
+    }
     let fields;
     switch(difficulty){
         case "easy":
@@ -41,8 +46,9 @@ const NewGame: React.FC = () => {
             });
             if (response.ok) {
                 const data = await response.json();
-                sessionStorage.setItem('currentGameId', data.gameId);  // Save game ID
-                navigate('/game');
+                const gameId = data.gameId
+                sessionStorage.setItem('currentGameId', gameId);  // Save game ID
+                navigate(`/game/${gameId}`);
             } else {
                 alert('Failed to create game');
             }

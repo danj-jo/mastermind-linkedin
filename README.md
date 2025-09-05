@@ -293,6 +293,8 @@ private Map<String, ConcurrentLinkedQueue<Player>> difficultyQueues;
 
 // Emitter management for real-time updates
 private Map<String, SseEmitter> activeEmitters;
+
+// WebsocketEventListeners & Channel Interceptors to remove orphaned games; 
 ```
 
 **Key Features:**
@@ -323,49 +325,30 @@ private Map<String, SseEmitter> activeEmitters;
 - **Password Encryption**: Secure credential storage
 - **CORS Configuration**: Cross-origin request handling
 
-## 📁 Project Structure
-
-```
-mastermind-linkedin/
-├── src/main/java/com/example/mastermind/
-│   ├── config/                 # Security and WebSocket configuration
-│   ├── controllers/            # REST API and WebSocket controllers
-│   ├── customExceptions/       # Custom exception definitions
-│   ├── dataAccessObjects/      # JPA repositories
-│   ├── dataTransferObjects/    # Request/Response DTOs
-│   ├── models/                 # Entities and enums
-│   ├── services/               # Business logic layer
-│   └── utils/                  # Utility classes
-├── frontend/mastermind-frontend/
-│   ├── app/                    # React application
-│   │   ├── components/         # Reusable UI components
-│   │   ├── routes/             # Page components
-│   │   └── AuthContext.tsx     # Authentication context
-│   └── public/                 # Static assets
-└── src/test/                   # Comprehensive test suite
-```
-
 ## 🚀 Key Achievements
 
 1. **Real-time Multiplayer**: Implemented WebSocket-based matchmaking system & Server Sent Events to ping users upon match
 2. **Robust Architecture**: Clean separation of concerns with layered design
 3. **Security Implementation**: Full authentication and authorization system
 4. **Performance Optimization**: Efficient database queries and memory management
+5. **Session Lifecycle Tracking**: Mapped STOMP sessions to game IDs on connect, and removed stale games on disconnect using interceptors and event listeners.
 
 ## 🔮 Future Enhancements
 
 - **Friends System**: Add social features for multiplayer
 - **Leaderboards**: Global and personal statistics
 
-## 📝 Development Journey
+## 🌱 Personal Growth Milestones
 
-This project represents significant growth from my previous REACH submission. Moving from JavaScript/MongoDB to Java/PostgreSQL required learning:
+This project represents significant growth from my previous REACH submission. I explored and applied several new concepts, including:
 
-- **Relational Databases**: Understanding entity relationships
-- **WebSocket Communication**: Real-time application development
-- **Security Fundamentals and Best Practices**: CSRF protection, SQL jnjection, Authentication and Authorization
-- **Thread Safety**: Concurrent programming concepts
+**Relational Databases** – Modeling and querying entity relationships to support multiplayer game logic
+**WebSocket Communication** – Building real-time matchmaking and event dispatch using STOMP and SSE
+**Security Fundamentals** – Implementing CSRF protection, SQL injection prevention, and full authentication/authorization flows
+**Thread Safety** – Managing concurrent access with thread-safe structures like ConcurrentHashMap
+**STOMP Protocol** – Intercepting and handling lifecycle events (CONNECT, SEND, DISCONNECT) for session tracking
+**Server-Sent Events** – Using SSE to notify clients and coordinate multiplayer state transitions
 
-The increased complexity forced me to implement robust error handling, comprehensive testing, and proper architectural patterns - skills essential for enterprise development.
+TThe increased complexity pushed me to adopt proper architectural patterns, improve lifecycle visibility, and design for maintainability—skills. I was also able to see the vision come to life, with the creation of the front end. 
 
 ---

@@ -451,13 +451,13 @@ private Map<String, SseEmitter> activeEmitters;
 
 This project represents significant growth from my previous REACH submission. I explored and applied several new concepts, including:
 
-**Relational Databases** – Modeling and querying entity relationships to support multiplayer game logic
-**WebSocket Communication** – Building real-time matchmaking and event dispatch using STOMP and SSE
-**Security Fundamentals** – Implementing CSRF protection, SQL injection prevention, and full authentication/authorization flows
-**Thread Safety** – Managing concurrent access with thread-safe structures like ConcurrentHashMap
-**STOMP Protocol** – Intercepting and handling lifecycle events (CONNECT, SEND, DISCONNECT) for session tracking
-**Server-Sent Events** – Using SSE to notify clients and coordinate multiplayer state transitions
+- **Relational Databases** – Modeling and querying entity relationships to support multiplayer game logic
+- **WebSocket Communication** – Building real-time matchmaking and event dispatch using STOMP and SSE
+- **Security Fundamentals** – Implementing CSRF protection, SQL injection prevention, and full authentication/authorization flows
+- **Thread Safety** – Managing concurrent access with thread-safe structures like ConcurrentHashMap
+- **STOMP Protocol** – Intercepting and handling lifecycle events (CONNECT, SEND, DISCONNECT) for session tracking
+- **Server-Sent Events** – Using SSE to notify clients and coordinate multiplayer state transitions
 
-TThe increased complexity pushed me to adopt proper architectural patterns, improve lifecycle visibility, and design for maintainability—skills. I was also able to see the vision come to life, with the creation of the front end. 
+The increased complexity pushed me to adopt proper architectural patterns, improve lifecycle visibility, and design for maintainability—skills. I was also able to see the vision come to life, with the creation of the front end. 
 
 ---

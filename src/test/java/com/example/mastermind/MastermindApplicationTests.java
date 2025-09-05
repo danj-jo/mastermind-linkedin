@@ -1,9 +1,7 @@
 package com.example.mastermind;
 
-import com.example.mastermind.dataAccessObjects.SingleplayerGameRepository;
-import com.example.mastermind.dataAccessObjects.PlayerRepository;
-import com.example.mastermind.models.Difficulty;
-import com.example.mastermind.models.entities.MultiplayerGame;
+import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
 import com.example.mastermind.models.entities.Player;
 import com.example.mastermind.services.SingleplayerGameService;
 import com.example.mastermind.services.PlayerService;
@@ -54,14 +52,7 @@ class MastermindApplicationTests {
 	void contextLoads() {
 	}
 
-    @Test
-    void returnListOfGames(){
 
-    UUID id = UUID.fromString("8bdc7872-65e4-46b3-8c72-5b53dcef72e9");
-
-        gameRepository.findFinishedGames(id);
-        System.out.println(singleplayerGameService.returnCurrentUsersPastGames(id).getClass());
-    }
 
 }
 

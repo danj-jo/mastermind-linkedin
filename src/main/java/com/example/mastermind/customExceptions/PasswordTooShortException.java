@@ -5,6 +5,6 @@ public class PasswordTooShortException extends RuntimeException {
         super(message);
     }
     public PasswordTooShortException(){
-        super("Username is too short.");
+        super("Password is too short.");
     }
 }

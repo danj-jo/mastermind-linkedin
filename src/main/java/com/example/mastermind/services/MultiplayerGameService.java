@@ -1,6 +1,6 @@
 package com.example.mastermind.services;
 
-import com.example.mastermind.dataAccessObjects.MultiplayerGameRepository;
+import com.example.mastermind.repositoryLayer.MultiplayerGameRepository;
 import com.example.mastermind.models.Difficulty;
 import com.example.mastermind.utils.EmitterRegistry;
 import com.example.mastermind.models.entities.MultiplayerGame;

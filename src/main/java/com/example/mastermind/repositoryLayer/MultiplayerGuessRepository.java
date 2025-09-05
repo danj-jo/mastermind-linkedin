@@ -1,4 +1,4 @@
-package com.example.mastermind.dataAccessObjects;
+package com.example.mastermind.repositoryLayer;
 
 import com.example.mastermind.models.entities.MultiplayerGuess;
 import org.springframework.data.jpa.repository.JpaRepository;

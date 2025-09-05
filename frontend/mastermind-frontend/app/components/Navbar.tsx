@@ -26,9 +26,9 @@ const Navbar: React.FC<NavbarProps> = ({ user }) => {
         <nav className="navbar">
             <div className="container navbar-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                <Link to="/" className="navbar-brand">
+                <p className="navbar-brand">
                     Mastermind
-                </Link>
+                </p>
                 </div>
                 <div>
                 {isLoggedIn ? (

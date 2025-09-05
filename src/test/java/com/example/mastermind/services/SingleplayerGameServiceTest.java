@@ -1,11 +1,10 @@
 package com.example.mastermind.services;
 
 import com.example.mastermind.customExceptions.GameNotFoundException;
-import com.example.mastermind.customExceptions.PlayerDataAccessException;
 import com.example.mastermind.customExceptions.PlayerNotFoundException;
-import com.example.mastermind.dataAccessObjects.SingleplayerGameRepository;
-import com.example.mastermind.dataAccessObjects.PlayerRepository;
-import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
+import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
+import com.example.mastermind.models.PastGame;
 import com.example.mastermind.models.Difficulty;
 import com.example.mastermind.models.entities.Player;
 import com.example.mastermind.models.entities.SinglePlayerGame;
@@ -136,7 +135,7 @@ class SingleplayerGameServiceTest {
     }
 
     @Test
-    void testReturnCurrentUsersPastGames() {
+    void testGetPastGamesByPlayerID() {
         // Given
         List<SinglePlayerGame> finishedGames = List.of(testGame);
         List<SinglePlayerGame> unfinishedGames = List.of(testGame);
@@ -145,7 +144,7 @@ class SingleplayerGameServiceTest {
         when(gameRepository.findUnfinishedGames(any())).thenReturn(unfinishedGames);
 
         // When
-        Map<String, List<CurrentUserPastGames>> result = gameService.returnCurrentUsersPastGames(testPlayer.getPlayerId());
+        Map<String, List<PastGame>> result = gameService.getPastGamesByPlayerID(testPlayer.getPlayerId());
 
         // Then
         assertNotNull(result);
@@ -156,13 +155,13 @@ class SingleplayerGameServiceTest {
     }
 
     @Test
-    void testReturnCurrentUsersPastGames_PlayerNotFound() {
+    void testGetPastGames_ByPlayerID_PlayerNotFound() {
         // Given
         when(playerRepository.existsById(any())).thenReturn(false);
 
         // When & Then
         assertThrows(PlayerNotFoundException.class, () -> 
-            gameService.returnCurrentUsersPastGames(UUID.randomUUID()));
+            gameService.getPastGamesByPlayerID(UUID.randomUUID()));
     }
 
     @Test

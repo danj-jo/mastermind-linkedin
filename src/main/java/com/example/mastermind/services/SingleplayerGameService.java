@@ -1,8 +1,8 @@
 package com.example.mastermind.services;
 
-import com.example.mastermind.dataAccessObjects.SingleplayerGameRepository;
-import com.example.mastermind.dataAccessObjects.PlayerRepository;
-import com.example.mastermind.dataTransferObjects.GameDTOs.Response.CurrentUserPastGames;
+import com.example.mastermind.models.PastGame;
+import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
 import com.example.mastermind.models.Difficulty;
 import com.example.mastermind.models.entities.SinglePlayerGame;
 import com.example.mastermind.models.entities.Player;
@@ -39,10 +39,12 @@ public class SingleplayerGameService {
     private final SingleplayerGameRepository singleplayerGameRepository;
     private final PlayerRepository playerRepository;
     private static final Logger logger = LoggerFactory.getLogger(SingleplayerGameService.class);
+    private final PlayerService playerService;
+
 
     /**
      * Creates a new single-player game for the specified player.
-     * 
+     * <p>
      * This method initializes a new game by first validating that the player exists,
      * then creating a new SinglePlayerGame instance with the specified difficulty level.
      * The game is configured with the requesting player, a randomly generated winning number
@@ -84,13 +86,14 @@ public class SingleplayerGameService {
         SinglePlayerGame currentGame = singleplayerGameRepository.findById(gameId)
                                                                  .orElseThrow(() -> new GameNotFoundException("Game not found"));
         String feedback = currentGame.submitGuess(guess);
+
         singleplayerGameRepository.saveAndFlush(currentGame);
         return feedback;
     }
 
     /**
      * Retrieves all past games (both finished and unfinished) for a specific player.
-     * 
+     * <p>
      * This method queries the database to find all games associated with the given player ID,
      * separating them into two categories: finished games and unfinished games. The results
      * are organized into a map structure where finished games contain complete game data
@@ -101,45 +104,38 @@ public class SingleplayerGameService {
      * @return a Map containing two lists: "finished" games with games that are finished and "unfinished" 
      *         games for games that are not finished, both stored as CurrentUserPastGames objects
      * @throws PlayerDataAccessException if there's an error accessing the player's game data
-     */
-    public Map<String, List<CurrentUserPastGames>> returnCurrentUsersPastGames(UUID playerId){
+*/
+
+    public List<PastGame> getFinishedGamesByPlayerId(UUID playerId){
         if (!playerRepository.existsById(playerId)) {
             throw new PlayerNotFoundException("Player not found with ID: " + playerId);
         }
-
-try {
-    // Find finished games and map to DTOs
-    List<CurrentUserPastGames> currentUserFinishedGames = singleplayerGameRepository.findFinishedGames(playerId).
-                                                                         stream().
-                                                                         map((singlePlayerGame -> {
-                                                                 return new CurrentUserPastGames(singlePlayerGame.getGameId().toString(),
-                                                                                                 String.valueOf(singlePlayerGame.getDifficulty()),
-                                                                                                 String.valueOf(singlePlayerGame.getResult()),
-                                                                                                 singlePlayerGame.getWinningNumber(),
-                                                                                                 singlePlayerGame.getGuesses().toString(),
-                                                                                                 String.valueOf(singlePlayerGame.isFinished()));
-                                                             }))
-                                                                         .toList();
-     // Find incomplete games and map to DTOs (hiding winning number until completion)            
-    List<CurrentUserPastGames> currentUsersUnfinishedGames = singleplayerGameRepository.findUnfinishedGames(playerId).
-                                                                           stream().
-                                                                           map((singlePlayerGame -> {
-                                                                   return new CurrentUserPastGames(singlePlayerGame.getGameId().toString(),
-                                                                                                   String.valueOf(singlePlayerGame.getDifficulty()),
-                                                                                                   String.valueOf(singlePlayerGame.getResult()),
-                                                                                                   "Finish to see results!",
-                                                                                                   singlePlayerGame.getGuesses().toString(),
-                                                                                                   String.valueOf(singlePlayerGame.isFinished()));
-                                                               }))
-                                                                           .toList();
-
-    Map<String, List<CurrentUserPastGames>> result = new HashMap<>();
-    result.put("finished", currentUserFinishedGames);
-    result.put("unfinished", currentUsersUnfinishedGames);
-    return result;
-} catch(Exception e){
-    throw new PlayerDataAccessException(e.getMessage());
-}
+            // Find finished games and map to DTOs
+            return singleplayerGameRepository.findFinishedGames(playerId).stream().map((singlePlayerGame -> {
+                                                                                       return new PastGame(singlePlayerGame.getGameId()
+                                                                                                                           .toString(),
+                                                                                                           String.valueOf(singlePlayerGame.getDifficulty()),
+                                                                                                           String.valueOf(singlePlayerGame.getResult()),
+                                                                                                           singlePlayerGame.getWinningNumber(),
+                                                                                                           singlePlayerGame.getGuesses()
+                                                                                                                            .toString()
+                                                                                                          );
+                                                                                                            })).toList();
+    }
+    public List<PastGame> getUnfinishedGamesByPlayerId(UUID playerId){
+        if (!playerRepository.existsById(playerId)) {
+            throw new PlayerNotFoundException("Player not found with ID: " + playerId);
+        }
+        // Find finished games and map to DTOs
+        return singleplayerGameRepository.findUnfinishedGames(playerId).stream().map((singlePlayerGame -> {
+            return new PastGame(singlePlayerGame.getGameId()
+                                                .toString(),
+                                String.valueOf(singlePlayerGame.getDifficulty()),
+                                String.valueOf(singlePlayerGame.getResult()),
+                                "You must finish game to see results!",
+                                singlePlayerGame.getGuesses()
+                                                 .toString());
+        })).toList();
     }
 
     public SinglePlayerGame findGameById(UUID gameId){

@@ -5,6 +5,115 @@ Welcome to Mastermind! My rendtition of the classic mastermind game features rea
 The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game supports both **singleplayer (against the computer)** and **multiplayer (a team game against the computer)**.
 
 ---
+# Mastermind - Reach Apprenticeship Project
+
+Welcome to Mastermind! My rendtition of the classic mastermind game features real-time multiplayer **Mastermind game** built with **Java & Spring Boot** on the backend, **PostgreSQL** for persistence, and **React** on the frontend. The game features **WebSocket communication**, **server-sent events**, and **authentication via Spring Security**.
+
+The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game supports both **singleplayer (against the computer)** and **multiplayer (a team game against the computer)**.
+
+---
+
+# 📘 Table of Contents
+- [🎮 Game Rules](#-game-rules)
+  - [Example Run](#example-run)
+- [🌀 Game Flow](#-game-flow)
+- [🚀 Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation & Setup](#installation--setup)
+- [🏗️ Architecture Overview](#-architecture-overview)
+  - [Tech Stack](#tech-stack)
+  - [Why Java & Spring Boot](#why-java--spring-boot)
+  - [💾 Why PostgreSQL](#-why-postgresql)
+- [🎮 Game Features](#-game-features)
+  - [Single Player Mode](#single-player-mode)
+  - [Multiplayer Mode](#multiplayer-mode)
+- [🏛️ Architecture Patterns](#-architecture-patterns)
+- [📊 Data Models](#-data-models)
+  - [Player](#player)
+  - [SinglePlayerGame](#singleplayergame)
+  - [MultiplayerGame](#multiplayergame)
+  - [Enums](#enums)
+- [🔧 Services & Controllers](#-services--controllers)
+- [🌐 Real-time Communication](#-real-time-communication)
+- [🧪 Testing Strategy](#-testing-strategy)
+- [🔒 Security Features](#-security-features)
+- [🚀 Key Achievements](#-key-achievements)
+- [🔮 Future Enhancements](#-future-enhancements)
+- [🌱 Personal Growth Milestones](#-personal-growth-milestones)
+
+---
+
+## 🎮 Game Rules
+
+- At the start of a game, the computer randomly selects a secret pattern of numbers.
+- The length of the pattern depends on the chosen difficulty:
+  - **Easy** → 4 digits (0–7)
+  - **Medium** → 6 digits (0–7)
+  - **Hard** → 8 digits (0–7)
+- A player (or team in multiplayer) has **10 attempts** to guess the correct pattern.
+- After each guess, feedback is provided:
+  - **Correct number** guessed but wrong position
+  - **Correct number in the correct position**
+  - **Incorrect guess** (no matches)
+- Invalid guesses (duplicates, non-numeric input, or wrong length) are rejected and **don’t** count as attempts.
+- The game ends with either a **win (correct pattern guessed)** or **loss (attempts used up)**.
+
+### Example Run
+
+Secret: `0 1 3 5`  
+- Guess `2 2 4 6` → *All incorrect*  
+- Guess `0 2 4 6` → *1 correct number, 1 correct location*  
+- Guess `2 2 1 1` → *1 correct number, 0 correct location*  
+- Guess `0 1 5 6` → *3 correct numbers, 2 correct location*
+
+> Feedback never reveals **which digits** are correct — only how many are correct.
+
+---
+
+## 🌀 Game Flow
+
+1. **Authentication**
+   - On launch, players can **register** or **sign in**.
+   - New users are redirected to login after registering.
+
+2. **Game Setup**
+   - After logging in, players select:
+     - **Difficulty** (Easy, Medium, Hard)
+     - **Mode** (Singleplayer or Multiplayer)
+
+3. **Singleplayer Mode**
+   - Redirected to the **play screen**.
+   - Up to **10 guesses** allowed, with feedback after each.
+   - Game ends with a win/loss screen.
+   - Invalid guesses are rejected without consuming attempts.
+
+4. **Multiplayer Mode**
+   - Redirected to the **lobby page**.
+   - Players join a **matchmaking queue** (per difficulty).
+   - Once matched, both are redirected to the play screen.
+   - The 10 guesses are **shared between teammates**.
+
+5. **Additional Features**
+   - **Game History** → Players can review prior games.
+   - **Resume Functionality** → Incomplete games can be resumed later.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Java 17+**
+- **Node.js 18+**
+- **PostgreSQL 12+**
+- **Maven 3.6+**
+
+### Installation & Setup
+
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/danj-jo/mastermind-linkedin.git
+cd mastermind-linkedin
 
 ## 🎮 Game Rules
 

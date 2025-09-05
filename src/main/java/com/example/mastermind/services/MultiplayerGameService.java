@@ -10,6 +10,7 @@ import com.example.mastermind.utils.GameUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
@@ -38,6 +39,7 @@ import com.example.mastermind.customExceptions.GameNotFoundException;
  * the database upon completion.
  */
 @Service
+@Component
 @AllArgsConstructor
 public class MultiplayerGameService {
     private final MultiplayerGameRepository multiplayerGameRepository;
@@ -53,6 +55,8 @@ public class MultiplayerGameService {
             "MEDIUM", playersWaitingForMediumGame,
             "HARD",playersWaitingForHardGame
     ));
+
+
     public final Map<UUID, MultiplayerGame> activeGames = new ConcurrentHashMap<>();
 
     /**
@@ -67,6 +71,7 @@ public class MultiplayerGameService {
      * @param difficulty the difficulty level for the game (EASY, MEDIUM, HARD)
      */
     public void joinMultiplayerGame(Player player, String difficulty){
+        // Instead of taking a pla
 // add the player to the guess queue that corresponds with their difficulty.
         for(String difficultyLevel: waitingPlayerQueue.keySet()){
             Queue<Player> playerQueue = waitingPlayerQueue.get(difficultyLevel);
@@ -115,7 +120,6 @@ public class MultiplayerGameService {
                 }
                 try {
                     emitterRegistry.getEmitter(player2.getPlayerId()).send(SseEmitter.event().name("matched").data(game.getGameId()));
-                    System.out.println(player1.getPlayerId());
                 } catch (IOException e) {
                      // remove emitter from player 2 to prevent the storage of stale emitters.
                     emitterRegistry.removeEmitter(player2.getPlayerId());

@@ -17,15 +17,12 @@ import {useAuth} from "~/AuthContext";
      const[player,setPlayer] = useState()
      const navigate = useNavigate()
      const {isLoggedIn} = useAuth()
-     if(!isLoggedIn){
-         navigate("/login")
-     }
+
      // @ts-ignore
      useEffect(() => {
          if (typeof window === "undefined") return;
          const gameIdRaw = sessionStorage.getItem("gameId");
          const gameIdWithoutSpaces = gameIdRaw?.replace(/^"|"$/g, "");
-         setGameId(gameIdWithoutSpaces);
          if (!gameIdWithoutSpaces) {
              console.warn("No gameId in sessionStorage");
              return;
@@ -33,7 +30,10 @@ import {useAuth} from "~/AuthContext";
 
          const client = new Client({
              brokerURL: 'ws://localhost:8080/ws',
-             reconnectDelay: 5000
+             reconnectDelay: 5000,
+             connectHeaders: {
+                 'gameId': gameIdWithoutSpaces
+             }
          });
 
          client.onConnect = () => {
@@ -78,7 +78,7 @@ import {useAuth} from "~/AuthContext";
              setGuess(guessString)
                  // @ts-ignore
              clientRef.current.publish({
-                     destination: `/app/multiplayer/${gameId}/guess`,
+                     destination: `/app/multiplayer/${sessionStorage.getItem("gameId")}/guess`,
                      body: JSON.stringify({"guess": guessString})
                  });
              console.log(guessString)

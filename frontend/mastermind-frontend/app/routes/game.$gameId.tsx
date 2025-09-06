@@ -9,10 +9,32 @@ const GameBoard: React.FC = () => {
     const inputRefs = useRef([]);
     const [feedback, setFeedback] = useState("")
     const [result, setResult] = useState("")
-    const [guesses,setGuesses] = useState()
+    const [guesses,setGuesses] = useState("")
     const gameId = useParams();
     const id = gameId.gameId
-
+    const handleSubmitGuess = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/singleplayer/games/${id}/guess`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    "gameId": id,
+                    "guess": guess
+                }),
+                credentials: "include"
+            });
+            const data = await response.json();
+            console.log(guess)
+            setFeedback(data.feedback);
+            if(data.finished == true){
+                setResult("done")
+            }
+            // Reset guess for next turn
+        } catch (error) {
+            console.error(error);
+            alert(values.toString());
+        }
+    };
     useEffect(() => {
        const response = async () =>
         {
@@ -26,16 +48,29 @@ const GameBoard: React.FC = () => {
 
                 const data = await response.json();
                 const fields = data.numbersToGuess;
-                setGuesses(data.guesses)
                 for(let i = 0; i < fields; i++){
                     numsArray.push("")
                 }
-                console.log(numsArray)
                 setValues(numsArray)
         };
 
         response();
     },[])
+
+    useEffect(() => {
+        const retrieveGuesses = async () =>
+        {
+            const response = await fetch(`http://localhost:8080/singleplayer/games/${id}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+            });
+
+            const res = await response.json();
+            setGuesses(res.guesses)
+            console.log(guesses)
+        };
+    },[handleSubmitGuess()])
 
     // @ts-ignore
     const handleChange = (e, idx) => {
@@ -57,29 +92,7 @@ const GameBoard: React.FC = () => {
         }
     };
 
-    const handleSubmitGuess = async () => {
-        try {
-            const response = await fetch(`http://localhost:8080/singleplayer/games/${id}/guess`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    "gameId": id,
-                    "guess": guess
-                }),
-                credentials: "include"
-            });
-            const data = await response.json();
-            console.log(guess)
-            setFeedback(data.feedback);
-            if(data.finished == "true"){
-                setResult("done")
-            }
-            // Reset guess for next turn
-        } catch (error) {
-            console.error(error);
-            alert(values.toString());
-        }
-    };
+
 
 
 
@@ -121,9 +134,9 @@ const GameBoard: React.FC = () => {
                 </div>
             </div>
         <div style={{alignItems: "center"}}>
-            <p style={{alignSelf: "center"}}> Previous Guesses: </p>
-        </div>
+            <p style={{alignSelf: "center"}}> Guesses: </p>
             {guesses}
+        </div>
         <div>
             {feedback.length > 1 && <p> {feedback}</p>}
         </div>

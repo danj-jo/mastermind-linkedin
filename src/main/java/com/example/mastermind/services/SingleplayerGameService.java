@@ -1,6 +1,7 @@
 package com.example.mastermind.services;
 
 import com.example.mastermind.models.PastGame;
+import com.example.mastermind.models.Result;
 import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
 import com.example.mastermind.repositoryLayer.PlayerRepository;
 import com.example.mastermind.models.Difficulty;
@@ -63,8 +64,7 @@ public class SingleplayerGameService {
         singlePlayerGame.setDifficulty(GameUtils.selectUserDifficulty(playerDifficulty));
         singlePlayerGame.setPlayer(player);
         singlePlayerGame.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(playerDifficulty)));
-        singlePlayerGame.setGuesses(new ArrayList<>());
-
+        singlePlayerGame.setGuesses(new HashSet<>());
         singleplayerGameRepository.saveAndFlush(singlePlayerGame);
         return singlePlayerGame;
 
@@ -81,14 +81,17 @@ public class SingleplayerGameService {
      * @return a string containing feedback about the guess (e.g., "2 correct, 1 in wrong position") as well as the completion status of the game.
      * @throws GameNotFoundException if no game is found with the specified game ID
      */
-    public String submitGuess(UUID gameId, String guess){
+    public String handleGuess(UUID gameId, String guess){
         SinglePlayerGame currentGame = singleplayerGameRepository.findById(gameId)
                                                                  .orElseThrow(() -> new GameNotFoundException("Game not found"));
-        String feedback = currentGame.submitGuess(guess);
+        String feedback = submitGuess(currentGame.getGameId(),guess);
 
         singleplayerGameRepository.saveAndFlush(currentGame);
         return feedback;
     }
+
+
+
 
     public List<PastGame> getFinishedGamesByPlayerId(UUID playerId){
         if (!playerRepository.existsById(playerId)) {
@@ -121,13 +124,46 @@ public class SingleplayerGameService {
                                                  .toString());
         })).toList();
     }
-
     public SinglePlayerGame findGameById(UUID gameId) {
         return singleplayerGameRepository.findGameByGameId(gameId).orElseThrow(() -> new GameNotFoundException("Game not found."));
     }
-
     public boolean isGameFinished(UUID gameId){
-        return singleplayerGameRepository.existsByGameIdAndIsFinishedTrue(gameId);
+        return singleplayerGameRepository.existsByGameIdAndFinishedTrue(gameId);
+    }
+    private String submitGuess(UUID gameId, String guess){
+        SinglePlayerGame game = findGameById(gameId);
+        synchronized (game) {
+            if (game.getDifficulty() == Difficulty.EASY && game.guessIsOverLimit(guess)) {
+                return "Only numbers 0-7 are allowed. Please try again.";
+            }
+            if (game.guessContainsInvalidCharacters(guess)) {
+                return "Guesses are numbers only";
+            }
+            if (game.inappropriateLength(guess)) {
+                return String.format("Guess is not the appropriate length. Please try again. Guess must %d numbers", game.getWinningNumber()
+                                                                                                                         .length());
+            }
+            if (game.guessAlreadyExists(guess)) {
+                return "We don't allow Duplicate guesses here.";
+            }
+            if (game.isFinished()) {
+                return "Game is finished.";
+            }
+            if (game.userLostGame()) {
+                game.setResult(Result.LOSS);
+                game.setFinished(true);
+                return String.format("Game Over! The correct number was: %s", game.getWinningNumber());
+            }
+            game.getGuesses()
+                .add(guess);
+            if (game.userWonGame(guess)) {
+                game.setFinished(true);
+                game.setResult(Result.WIN);
+                return "You Win!";
+            }
+            return String.format("You have %d numbers correct, in %d locations. %d guesses remaining.", game.totalCorrectNumbers(guess), game.numberOfCorrectLocations(guess), 10 - game.getGuesses()
+                                                                                                                                                                                        .size());
+        }
     }
 
 }

@@ -11,9 +11,7 @@ const MyGames = () => {
     const [unfinishedGames, setUnfinishedGames] = useState([])
     const navigate = useNavigate()
     const {isLoggedIn} = useAuth()
-    if(!isLoggedIn){
-        navigate("/login")
-    }
+
     const allGames = [];
     finishedGames.forEach(game => allGames.push(game));
     unfinishedGames.forEach(game => allGames.push(game));
@@ -29,7 +27,7 @@ const MyGames = () => {
                     resume
                 </Link>
             ) : (
-                <Link style={{color:"white"}} to={`/game/${id}`}>
+                <Link style={{color:"black"}} to={`/game/${id}`}>
                     {id}
                 </Link>
             );
@@ -94,21 +92,6 @@ const MyGames = () => {
                     size="middle"
                     bordered
                     style={{ marginTop: "50px", border: `1px solid var(--border-color)` }}
-                    onHeaderRow={() => ({
-                        style: {
-                            backgroundColor: '#1c2b3f', // background-light
-                            color: '#e0f7fa',           // text-light
-                            fontWeight: '600',
-                            borderBottom: '1px solid #2a3b4c', // border-color
-                        },
-                    })}
-                    onRow={() => ({
-                        style: {
-                            color: '#e0f7fa',
-                            borderBottom: '1px solid #2a3b4c',
-                            transition: 'background-color 0.3s ease',
-                        },
-                    })}
                 />
             ) : (
                 <p>Games are empty, go and play!</p>

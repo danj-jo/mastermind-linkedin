@@ -39,6 +39,25 @@ public class PlayerController {
     private final SingleplayerGameService singleplayerGameService;
     private final AuthService authService;
 
+    /**
+     * This method is used to return the profile details of the current user.
+     *
+     * @return a ResponseEntity containing the UserProfileDao with username and email
+     * @throws PlayerNotFoundException if the current user is not found in the database
+     */
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/")
+    public ResponseEntity<UserProfileDao> getCurrentUserProfile(){
+        String username = getCurrentAuthenticatedPlayerUsername();
+        Player player = playerService.findPlayerByUsername(username);
+        if (player == null) {
+            throw new PlayerNotFoundException("Player not found for username: " + username);
+        }
+        String email = player.getEmail();
+        UserProfileDao currentUser = new UserProfileDao(username,email);
+        return ResponseEntity.ok(currentUser);
+    }
+
 
     /**
      * This method is used to return all of a user's past games, complete and incomplete. It does not contain try catch blocks or thrown errors because if the list is empty, it will just return an empty list.
@@ -53,23 +72,7 @@ public class PlayerController {
     }
 
 
-       /**
-     * This method is used to return the profile details of the current user.
-     * 
-     * @return a ResponseEntity containing the UserProfileDao with username and email
-     * @throws PlayerNotFoundException if the current user is not found in the database
-     */
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/profile")
-    public ResponseEntity<UserProfileDao> getCurrentUserProfile(){
-        String username = getCurrentAuthenticatedPlayerUsername();
-        Player player = playerService.findPlayerByUsername(username);
-        if (player == null) {
-            throw new PlayerNotFoundException("Player not found for username: " + username);
-        }
-        String email = player.getEmail();
-        UserProfileDao currentUser = new UserProfileDao(username,email);
-        return ResponseEntity.ok(currentUser);
-    }
+
+
 
 }

@@ -9,6 +9,7 @@ const GameBoard: React.FC = () => {
     const inputRefs = useRef([]);
     const [feedback, setFeedback] = useState("")
     const [result, setResult] = useState("")
+    const [guesses,setGuesses] = useState()
     const gameId = useParams();
     const id = gameId.gameId
 
@@ -25,6 +26,7 @@ const GameBoard: React.FC = () => {
 
                 const data = await response.json();
                 const fields = data.numbersToGuess;
+                setGuesses(data.guesses)
                 for(let i = 0; i < fields; i++){
                     numsArray.push("")
                 }
@@ -118,7 +120,10 @@ const GameBoard: React.FC = () => {
                     ))}
                 </div>
             </div>
-
+        <div style={{alignItems: "center"}}>
+            <p style={{alignSelf: "center"}}> Previous Guesses: </p>
+        </div>
+            {guesses}
         <div>
             {feedback.length > 1 && <p> {feedback}</p>}
         </div>

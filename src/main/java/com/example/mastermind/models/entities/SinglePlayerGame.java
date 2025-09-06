@@ -73,7 +73,7 @@ import java.util.UUID;
             return generateHint(guess);
         }
         private String generateHint(String guess) {
-            return String.format("You have %d amount of numbers correct, in %d locations. %d guesses remaining.", totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size());
+            return String.format("You have %d numbers correct, in %d locations. %d guesses remaining.", totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size());
         }
         private int numberOfCorrectLocations(String guess){
             int locationCounter = 0;

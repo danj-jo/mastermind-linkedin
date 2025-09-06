@@ -1,8 +1,8 @@
 # Mastermind - Reach Apprenticeship Project
 
-Welcome to Mastermind! My rendtition of the classic mastermind game features real-time multiplayer **Mastermind game** built with **Java & Spring Boot** on the backend, **PostgreSQL** for persistence, and **React** on the frontend. The game features **WebSocket communication**, **server-sent events**, and **authentication via Spring Security**.
+Welcome to Mastermind! This is my version of the classic Mastermind game that features both Single and Multiplayer modes. The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game features log in, registration, game history, the ability to resume past games, and a queue based match-making system, where users play as a team to solve the secret combination. The game exists as a Rest API for most use cases, but switches over to Websockets for multiplayer games, using the STOMP protocol to broadcast messages to clients and publishing messages from clients. 
 
-The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game supports both **singleplayer (against the computer)** and **multiplayer (a team game against the computer)**.
+
 
 ---
 
@@ -233,12 +233,13 @@ The frontend will be available at `http://localhost:5173`
 ## 🏗️ Architecture Overview
 
 ### Tech Stack
-- **Backend**: Java 17 & Spring Boot 3.5.5
-- **Database**: PostgreSQL with JDBC & JPA
-- **Real-time Communication**: WebSockets with STOMP protocol
-- **Frontend**: React 19 with TypeScript & Tailwind CSS
-- **Build Tools**: Maven (Backend), Vite (Frontend)
-- **Testing**: JUnit 5 & Mockito
+-**Backend**: Java 17 with Spring Boot 3.5.5
+-**Database**: PostgreSQL using JDBC and JPA for persistence
+-**API Layer**: RESTful endpoints for core game logic, user management, and singleplayer mode
+-**Real-Time Communication**: WebSockets with STOMP protocol for multiplayer messaging and event broadcasting
+-**Frontend**: React 19 with TypeScript and Tailwind CSS for a responsive, modern UI
+-**Build Tools**: Maven (backend) and Vite (frontend) for fast, modular builds
+-**Testing**: JUnit 5 and Mockito for unit and integration testing
 
 ### Why Java & Spring Boot?
 

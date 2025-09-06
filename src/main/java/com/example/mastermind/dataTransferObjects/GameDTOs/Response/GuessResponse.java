@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +14,6 @@ import java.util.List;
 @Setter
 public class GuessResponse {
     private String feedback;
-    private List<String> guesses;
+    private Set<String> guesses;
     private boolean finished;
 }

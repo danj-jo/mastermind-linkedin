@@ -57,8 +57,7 @@ public class SinglePlayerGameController {
     public ResponseEntity<Map<String,Object>> createNewSingleplayerGame(@RequestBody NewGameRequest newGameRequest) {
         try {
 
-            String username = getCurrentAuthenticatedPlayerUsername();
-            Player player = playerService.findPlayerByUsername(username);
+            Player player = authService.getCurrentAuthenticatedPlayer();
             UUID playerId = player.getPlayerId();
 
              // Difficulty is converted to uppercase to match the enum value of the corresponding difficulty.
@@ -101,9 +100,9 @@ public class SinglePlayerGameController {
                 throw new UnauthorizedGameAccessException("Error: User is not authorized to submit guesses to this game.");
             }
            
-            String guessFeedback = singleplayerGameService.submitGuess(gameId,guess.get("guess"));
+            String guessFeedback = singleplayerGameService.handleGuess(gameId, guess.get("guess"));
             boolean finished = singleplayerGameService.isGameFinished(gameId);
-            List<String> guesses = game.getGuesses();
+            Set<String> guesses = game.getGuesses();
             return ResponseEntity.ok(new GuessResponse(guessFeedback, guesses, finished));
         } catch (Exception e) {
             throw new GuessProcessingException(e.getMessage());
@@ -138,8 +137,8 @@ public class SinglePlayerGameController {
             if (singlePlayerGame.getPlayer().getPlayerId() != playerId) {
                 throw new UnauthorizedGameAccessException();
             }
-            String feedback = singlePlayerGame.submitGuess(guess);
-            List<String> guesses = singlePlayerGame.getGuesses();
+            String feedback = singleplayerGameService.handleGuess(singlePlayerGame.getGameId(),guess);
+            Set<String> guesses = singlePlayerGame.getGuesses();
             boolean finished = singlePlayerGame.isFinished();
             // Ensure the current player owns this game
             
@@ -177,7 +176,7 @@ public class SinglePlayerGameController {
     if(idAssociatedWithGame != currentPlayerId){
         throw new UnauthorizedGameAccessException();
     }
-        return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", singlePlayerGame.getWinningNumber().length(), "guesses", singlePlayerGame.getGuesses().toString().split(","))), HttpStatus.OK);
+        return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", singlePlayerGame.getWinningNumber().length(), "guesses", singlePlayerGame.getGuesses())), HttpStatus.OK);
 } catch(Exception e){
     throw new GameNotFoundException(e.getMessage());
 }

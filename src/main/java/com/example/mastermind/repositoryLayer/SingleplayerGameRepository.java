@@ -19,15 +19,15 @@ import java.util.UUID;
  * queries for game state management and player-specific game retrieval.
  */
 public interface SingleplayerGameRepository extends JpaRepository<SinglePlayerGame, UUID> {
-    boolean existsByGameIdAndIsFinishedTrue(UUID gameId);
+    boolean existsByGameIdAndFinishedTrue(UUID gameId);
 
          boolean existsByGameId(UUID gameId);
          Optional<SinglePlayerGame> findGameByGameId(UUID gameId);
 
-        @Query("SELECT g FROM games g WHERE g.player.playerId = :playerId AND g.isFinished = true")
+        @Query("SELECT g FROM games g WHERE g.player.playerId = :playerId AND g.finished = true")
         List<SinglePlayerGame> findFinishedGames(@Param("playerId") UUID playerId);
 
-        @Query("SELECT g FROM games g WHERE g.player.playerId = :playerId AND g.isFinished = false")
+        @Query("SELECT g FROM games g WHERE g.player.playerId = :playerId AND g.finished = false")
         List<SinglePlayerGame> findUnfinishedGames(@Param("playerId") UUID playerId);
 
 

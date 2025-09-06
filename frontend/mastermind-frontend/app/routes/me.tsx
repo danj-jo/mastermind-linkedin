@@ -11,14 +11,10 @@ const Profile: React.FC = () => {
     const [username,setUserName] = useState("")
     const [email,setEmail] = useState("");
     const navigate = useNavigate();
-    const {isLoggedIn} = useAuth()
-    if(!isLoggedIn){
-        navigate("/login")
-    }
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch("http://localhost:8080/me/profile", {
+                const response = await fetch("http://localhost:8080/me", {
                     method: "GET",
                     credentials: "include",
                 });

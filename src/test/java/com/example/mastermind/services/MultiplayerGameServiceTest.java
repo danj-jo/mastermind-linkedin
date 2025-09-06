@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,6 +70,7 @@ class MultiplayerGameServiceTest {
         // Verify player was added to queue by checking active games size
         assertEquals(0, multiplayerGameService.activeGames.size());
     }
+
 
     @Test
     void testJoinMultiplayerGame_CreatesGameWhenTwoPlayers() {

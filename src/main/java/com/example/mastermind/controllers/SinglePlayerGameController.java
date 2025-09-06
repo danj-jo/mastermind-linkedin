@@ -177,7 +177,7 @@ public class SinglePlayerGameController {
     if(idAssociatedWithGame != currentPlayerId){
         throw new UnauthorizedGameAccessException();
     }
-        return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", singlePlayerGame.getWinningNumber().length())), HttpStatus.OK);
+        return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", singlePlayerGame.getWinningNumber().length(), "guesses", singlePlayerGame.getGuesses().toString().split(","))), HttpStatus.OK);
 } catch(Exception e){
     throw new GameNotFoundException(e.getMessage());
 }

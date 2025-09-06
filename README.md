@@ -138,31 +138,225 @@ Secret: `0 1 3 5`
 ---
 
 ## 🌀 Game Flow
+## 1. User Registration Flow
 
-1. **Authentication**
-   - On launch, players can **register** or **sign in**.
-   - New users are redirected to login after registering.
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant AuthController
+    participant AuthService
+    participant PlayerRepository
+    participant GlobalExceptionHandler
 
-2. **Game Setup**
-   - After logging in, players select:
-     - **Difficulty** (Easy, Medium, Hard)
-     - **Mode** (Singleplayer or Multiplayer)
+    Frontend->>AuthController: POST /api/auth/register
+    AuthController->>AuthService: registerNewUser(newUser)
+    AuthService->>AuthService: validateUsername(username)
+    AuthService->>AuthService: validatePassword(password)
+    AuthService->>PlayerRepository: existsByUsername(username)
+    PlayerRepository-->>AuthService: false
+    AuthService->>PlayerRepository: existsByEmail(email)
+    PlayerRepository-->>AuthService: false
+    AuthService->>AuthService: encodePassword(password)
+    AuthService->>PlayerRepository: saveAndFlush(newPlayer)
+    PlayerRepository-->>AuthService: saved
+    AuthService-->>AuthController: success
+    AuthController-->>Frontend: 200 OK "Success"
+```
 
-3. **Singleplayer Mode**
-   - Redirected to the **play screen**.
-   - Up to **10 guesses** allowed, with feedback after each.
-   - Game ends with a win/loss screen.
-   - Invalid guesses are rejected without consuming attempts.
+## 2. User Authentication Flow
 
-4. **Multiplayer Mode**
-   - Redirected to the **lobby page**.
-   - Players join a **matchmaking queue** (per difficulty).
-   - Once matched, both are redirected to the play screen.
-   - The 10 guesses are **shared between teammates**.
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant AuthContext
+    participant AuthController
+    participant SpringSecurity
+    participant MyUserDetailsService
+    participant PlayerRepository
 
-5. **Additional Features**
-   - **Game History** → Players can review prior games.
-   - **Resume Functionality** → Incomplete games can be resumed later.
+    Frontend->>AuthContext: useEffect check auth
+    AuthContext->>AuthController: GET /api/auth
+    AuthController->>SpringSecurity: getAuthentication()
+    SpringSecurity->>MyUserDetailsService: loadUserByUsername(username)
+    MyUserDetailsService->>PlayerRepository: findByUsername(username)
+    PlayerRepository-->>MyUserDetailsService: Player
+    MyUserDetailsService-->>SpringSecurity: UserDetails
+    SpringSecurity-->>AuthController: Authentication
+    AuthController-->>AuthContext: 200 OK {username}
+    AuthContext-->>Frontend: setIsLoggedIn(true)
+```
+
+## 3. Single Player Game Creation
+
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant SinglePlayerGameController
+    participant AuthService
+    participant SingleplayerGameService
+    participant PlayerRepository
+    participant SingleplayerGameRepository
+    participant GameUtils
+
+    Frontend->>SinglePlayerGameController: POST /singleplayer/games/new
+    SinglePlayerGameController->>AuthService: getCurrentAuthenticatedPlayerUsername()
+    AuthService-->>SinglePlayerGameController: username
+    SinglePlayerGameController->>SingleplayerGameService: createNewGame(difficulty, playerId)
+    SingleplayerGameService->>PlayerRepository: findById(playerId)
+    PlayerRepository-->>SingleplayerGameService: Player
+    SingleplayerGameService->>GameUtils: selectUserDifficulty(difficulty)
+    GameUtils-->>SingleplayerGameService: Difficulty enum
+    SingleplayerGameService->>GameUtils: generateWinningNumber(difficulty)
+    GameUtils-->>SingleplayerGameService: winningNumber
+    SingleplayerGameService->>SingleplayerGameRepository: saveAndFlush(game)
+    SingleplayerGameRepository-->>SingleplayerGameService: saved
+    SingleplayerGameService-->>SinglePlayerGameController: SinglePlayerGame
+    SinglePlayerGameController-->>Frontend: 200 OK {numbersToGuess}
+```
+
+## 4. Single Player Guess Submission
+
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant SinglePlayerGameController
+    participant SingleplayerGameService
+    participant SingleplayerGameRepository
+    participant SinglePlayerGame
+
+    Frontend->>SinglePlayerGameController: POST /singleplayer/games/{gameId}/guess
+    SinglePlayerGameController->>SingleplayerGameService: submitGuess(gameId, guess)
+    SingleplayerGameService->>SingleplayerGameRepository: findById(gameId)
+    SingleplayerGameRepository-->>SingleplayerGameService: SinglePlayerGame
+    SingleplayerGameService->>SinglePlayerGame: submitGuess(guess)
+    SinglePlayerGame->>SinglePlayerGame: validateGuess()
+    SinglePlayerGame->>SinglePlayerGame: calculateFeedback()
+    SinglePlayerGame->>SinglePlayerGame: addGuessToList()
+    SinglePlayerGame-->>SingleplayerGameService: feedback
+    SingleplayerGameService->>SingleplayerGameRepository: saveAndFlush(game)
+    SingleplayerGameRepository-->>SingleplayerGameService: saved
+    SingleplayerGameService-->>SinglePlayerGameController: feedback
+    SinglePlayerGameController-->>Frontend: 200 OK {feedback}
+```
+
+## 5. Multiplayer Game Matchmaking
+
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant MultiplayerGameController
+    participant AuthService
+    participant MultiplayerGameService
+    participant EmitterRegistry
+    participant SseEmitter
+
+    Frontend->>MultiplayerGameController: GET /multiplayer/join?difficulty=EASY
+    MultiplayerGameController->>AuthService: getCurrentAuthenticatedPlayer()
+    AuthService-->>MultiplayerGameController: Player
+    MultiplayerGameController->>EmitterRegistry: addEmitter(playerId, emitter)
+    MultiplayerGameController->>SseEmitter: send("ping", "ready")
+    SseEmitter-->>Frontend: SSE: ping event
+    MultiplayerGameController->>MultiplayerGameService: joinMultiplayerGame(player, difficulty)
+    MultiplayerGameService->>MultiplayerGameService: addToQueue(player, difficulty)
+    
+    Note over MultiplayerGameService: When 2 players in queue
+    MultiplayerGameService->>MultiplayerGameService: createMultiplayerGame(player1, player2)
+    MultiplayerGameService->>EmitterRegistry: getEmitter(player1Id)
+    MultiplayerGameService->>SseEmitter: send("matched", gameId)
+    SseEmitter-->>Frontend: SSE: matched event
+    MultiplayerGameService->>EmitterRegistry: getEmitter(player2Id)
+    MultiplayerGameService->>SseEmitter: send("matched", gameId)
+    SseEmitter-->>Frontend: SSE: matched event
+```
+
+## 6. Multiplayer Game Guess via WebSocket
+
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant MultiplayerWebsocketController
+    participant PlayerService
+    participant MultiplayerGameService
+    participant MultiplayerGame
+    participant WebSocketConfig
+
+    Frontend->>WebSocketConfig: WebSocket connection to /ws
+    WebSocketConfig-->>Frontend: WebSocket established
+    
+    Frontend->>MultiplayerWebsocketController: STOMP /app/multiplayer/{gameId}/guess
+    MultiplayerWebsocketController->>PlayerService: findPlayerByUsername(username)
+    PlayerService-->>MultiplayerWebsocketController: Player
+    MultiplayerWebsocketController->>MultiplayerGameService: activeGames.get(gameId)
+    MultiplayerGameService-->>MultiplayerWebsocketController: MultiplayerGame
+    MultiplayerWebsocketController->>MultiplayerGame: submitGuess(player, guess)
+    MultiplayerGame->>MultiplayerGame: validateGuess()
+    MultiplayerGame->>MultiplayerGame: calculateFeedback()
+    MultiplayerGame->>MultiplayerGame: addGuessToList()
+    MultiplayerGame-->>MultiplayerWebsocketController: feedback
+    MultiplayerWebsocketController->>WebSocketConfig: @SendTo("/topic/mp")
+    WebSocketConfig-->>Frontend: STOMP /topic/mp: MultiplayerTurnMetadata
+```
+
+## 7. Error Handling Flow
+
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant Controller
+    participant Service
+    participant GlobalExceptionHandler
+    participant Frontend
+
+    Frontend->>Controller: HTTP Request
+    Controller->>Service: business logic
+    Service-->>Controller: throws CustomException
+    Controller-->>GlobalExceptionHandler: exception bubbles up
+    GlobalExceptionHandler->>GlobalExceptionHandler: @ExceptionHandler(CustomException.class)
+    GlobalExceptionHandler->>GlobalExceptionHandler: determine HTTP status
+    GlobalExceptionHandler->>GlobalExceptionHandler: create ErrorResponseDTO
+    GlobalExceptionHandler-->>Frontend: ResponseEntity with error details
+```
+
+## 8. Player Profile Retrieval
+
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant PlayerController
+    participant AuthService
+    participant PlayerService
+    participant PlayerRepository
+
+    Frontend->>PlayerController: GET /me/
+    PlayerController->>AuthService: getCurrentAuthenticatedPlayerUsername()
+    AuthService-->>PlayerController: username
+    PlayerController->>PlayerService: findPlayerByUsername(username)
+    PlayerService->>PlayerRepository: findByUsername(username)
+    PlayerRepository-->>PlayerService: Player
+    PlayerService-->>PlayerController: Player
+    PlayerController->>PlayerController: create UserProfileDao
+    PlayerController-->>Frontend: 200 OK UserProfileDao
+```
+
+## Architecture Overview
+
+The application follows a layered architecture:
+
+1. **Frontend Layer**: React with TypeScript, handles UI and user interactions
+2. **Controller Layer**: Spring Boot REST controllers and WebSocket controllers
+3. **Service Layer**: Business logic and orchestration
+4. **Repository Layer**: Data access and persistence
+5. **Model Layer**: Entities and DTOs
+6. **Configuration Layer**: Security, WebSocket, and other configurations
+7. **Exception Handling**: Global exception handler for consistent error responses
+
+### Key Technologies:
+- **Backend**: Spring Boot, Spring Security, WebSocket/STOMP, JPA/Hibernate
+- **Frontend**: React, TypeScript, React Router
+- **Communication**: REST APIs, Server-Sent Events (SSE), WebSocket/STOMP
+- **Database**: JPA with repository pattern
+- **Security**: Form-based authentication with Spring Security
+
   
 
 ---

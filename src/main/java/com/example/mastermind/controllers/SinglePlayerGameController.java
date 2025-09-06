@@ -48,7 +48,6 @@ public class SinglePlayerGameController {
      * - Returns the number of numbers to guess, so the frontend can set up the game board.
      *
      * @param newGameRequest DTO containing information needed to start a new game, the difficulty
-     * @param session the HTTP session used to store the game ID for later requests
      * @return a ResponseEntity containing the number of numbers to guess on success,
      *         or an error message if game creation fails
      */
@@ -58,7 +57,7 @@ public class SinglePlayerGameController {
     public ResponseEntity<Map<String,Object>> createNewSingleplayerGame(@RequestBody NewGameRequest newGameRequest) {
         try {
 
-            String username =getCurrentAuthenticatedPlayerUsername();
+            String username = getCurrentAuthenticatedPlayerUsername();
             Player player = playerService.findPlayerByUsername(username);
             UUID playerId = player.getPlayerId();
 
@@ -84,9 +83,6 @@ public class SinglePlayerGameController {
      * - Validates that the player is logged in and has an active game session.
      * - Submits the guess to the game service and gets feedback.
      * - Returns the feedback and indicates whether the game is finished.
-     *
-     * @param guessRequest the player's guess submitted in the request body
-     * @param session the HTTP session storing the current game ID
      * @return a ResponseEntity containing feedback on the guess and game status,
      *         or an error message if the player is not logged in or no game is active
      */

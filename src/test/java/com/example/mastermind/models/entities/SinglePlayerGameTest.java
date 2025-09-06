@@ -48,7 +48,7 @@ class SinglePlayerGameTest {
 
     @Test
     void submitValidGuess() {
-        String result = game.submitGuess("5678");
+        String result = game.submitGuess("0123");
         
         assertNotNull(result);
         assertEquals(1, game.getGuesses().size());
@@ -59,7 +59,7 @@ class SinglePlayerGameTest {
     void submitInvalidGuess() {
         String result = game.submitGuess("invalid");
         
-        assertEquals("Guesses are numbers only", result);
+        assertEquals("Only numbers 0-7 are allowed. Please try again.", result);
         assertEquals(0, game.getGuesses().size());
     }
 

@@ -22,19 +22,19 @@ import com.example.mastermind.customExceptions.GameNotFoundException;
 
 /**
  * Service for managing multiplayer Mastermind games and player matchmaking.
- * 
+ * <p>
  * This service handles the complete lifecycle of multiplayer games including:
  * - Player queue management by difficulty level
  * - Automatic game creation when two players are matched
  * - Real-time game state tracking for active multiplayer sessions
  * - Server-Sent Events (SSE) for player communication
  * - Game completion and cleanup
- * 
+ * <p>
  * The service uses concurrent data structures to ensure thread safety:
  * - ConcurrentLinkedQueue for player waiting lists (thread-safe queues)
  * - ConcurrentHashMap for active games (prevents race conditions)
  * - Synchronized blocks for queue operations (prevents double-polling)
- * 
+ * <p>
  * Games are stored in memory for real-time performance and only persisted to
  * the database upon completion.
  */
@@ -50,18 +50,16 @@ public class MultiplayerGameService {
     private final Queue<Player> playersWaitingForMediumGame = new ConcurrentLinkedQueue<>();
     private final Queue<Player> playersWaitingForHardGame = new ConcurrentLinkedQueue<>();
      //storing each queue in a map makes them easier and cleaner to iterate through. This could be done with if statements, but would make code cluttered.
-    private final Map<String,Queue<Player>> waitingPlayerQueue = new ConcurrentHashMap<>(Map.of(
+    private final Map<String,Queue<Player>> waitingPlayerMap = new ConcurrentHashMap<>(Map.of(
             "EASY",playersWaitingForEasyGame,
             "MEDIUM", playersWaitingForMediumGame,
             "HARD",playersWaitingForHardGame
     ));
-
-
     public final Map<UUID, MultiplayerGame> activeGames = new ConcurrentHashMap<>();
 
     /**
      * Adds a player to the waiting queue for their chosen difficulty level.
-     * 
+     * <p>
      * When a player joins, they are added to the appropriate difficulty queue.
      * If the queue reaches 2 or more players, a new multiplayer game is automatically
      * created and both players are removed from the queue. The game is then added
@@ -71,10 +69,8 @@ public class MultiplayerGameService {
      * @param difficulty the difficulty level for the game (EASY, MEDIUM, HARD)
      */
     public void joinMultiplayerGame(Player player, String difficulty){
-        // Instead of taking a pla
-// add the player to the guess queue that corresponds with their difficulty.
-        for(String difficultyLevel: waitingPlayerQueue.keySet()){
-            Queue<Player> playerQueue = waitingPlayerQueue.get(difficultyLevel);
+        for(String difficultyLevel: waitingPlayerMap.keySet()){
+            Queue<Player> playerQueue = waitingPlayerMap.get(difficultyLevel);
             synchronized (playerQueue){
                 if(difficultyLevel.equalsIgnoreCase(difficulty) && !playerQueue.contains(player)){
                     playerQueue.add(player);
@@ -82,7 +78,7 @@ public class MultiplayerGameService {
             }
         }
 
-        waitingPlayerQueue.forEach((key, value) -> {
+        waitingPlayerMap.forEach((key, value) -> {
             /*
              * Synchronize to prevent race conditions when multiple players join simultaneously.
  Without synchronization, two players could enter at the same time and each poll

@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Component
-@Service
-@AllArgsConstructor
 /**
  * Service for user registration and authentication management.
  * <p>
@@ -29,6 +26,9 @@ import java.util.UUID;
  * - UserDetailsService for user lookup during login
  * - PasswordEncoder for secure password hashing and verification
  */
+@Component
+@Service
+@AllArgsConstructor
 public class AuthService {
     private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
@@ -42,13 +42,11 @@ public class AuthService {
         String username = newUser.getUsername();
         String password = newUser.getPassword();
         String email = newUser.getEmail();
-            if (username == null || username.length() < 5) {
-                throw new UsernameTooShortException();
-            }
             // checks if the username contains punction marks.
-            if (!username.matches("(?=(?:.*[A-Za-z]){2,}).*")) {
-                throw new IllegalArgumentException();
+            if (!username.matches("^(?!.*\\.\\.)[a-zA-Z0-9._]{5,20}$")) {
+                throw new IllegalArgumentException("Invalid username. Username must be between 5 and 20 characters, and can only contain periods, underscores, letters & numbers.");
             }
+            //^[a-zA-Z0-9._]{5,20}$
 
             // checks if the username exists already
             if (playerRepository.existsByUsername(username)) {

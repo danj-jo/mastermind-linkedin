@@ -1,3 +1,4 @@
 # Ignore build artifacts
 /target/
 /target/
+/logs

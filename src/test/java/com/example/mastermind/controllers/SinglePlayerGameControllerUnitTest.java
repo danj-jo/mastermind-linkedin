@@ -87,7 +87,4 @@ class SinglePlayerGameControllerUnitTest {
 //                    .content("{\"guess\":\"5678\"}"))
 //                    .andExpect(status().isOk());
 //        }
-    }
-
-
 }

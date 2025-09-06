@@ -37,7 +37,7 @@ public class MultiplayerGame  {
     @Column
     private boolean isFinished = false;
 
-    // takes in the current player (who's turn it is, and their guess)
+    // takes in the current player (whose turn it is, and their guess)
     public String submitGuess(Player player, String guess) {
 
         MultiplayerGuess newGuess = new MultiplayerGuess();
@@ -73,7 +73,7 @@ public class MultiplayerGame  {
         if (userWonGame(guess)) {
             isFinished = true;
             setResult(Result.WIN);
-            return "You Win!";
+            return String.format("Victory! %s gave the winning guess.", player);
         }
         if (userLostGame()) {
             isFinished = true;
@@ -95,7 +95,6 @@ public class MultiplayerGame  {
             }
         }
         return locationCounter;
-
     }
     private int totalCorrectNumbers(String guess){
             // Create sets from strings, since they can not hold duplicates. I then iterate through each Set and increment a number with each match.

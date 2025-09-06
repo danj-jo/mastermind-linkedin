@@ -6,33 +6,35 @@ Welcome to Mastermind! This is my version of the classic Mastermind game that fe
 
 ---
 
-# 📘 Table of Contents
-- [🎮 Game Rules](#-game-rules)
+- [🎮 Game Rules](#game-rules)
   - [Example Run](#example-run)
-- [🌀 Game Flow](#-game-flow)
-- [🚀 Getting Started](#-getting-started)
+- [🌀 Game Flow](#game-flow)
+- [🚀 Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation & Setup](#installation--setup)
-- [🏗️ Architecture Overview](#-architecture-overview)
+- [🏗️ Architecture Overview](#architecture-overview)
   - [Tech Stack](#tech-stack)
   - [Why Java & Spring Boot](#why-java--spring-boot)
-  - [💾 Why PostgreSQL](#-why-postgresql)
-- [🎮 Game Features](#-game-features)
+  - [💾 Why PostgreSQL](#why-postgresql)
+- [🎮 Game Features](#game-features)
   - [Single Player Mode](#single-player-mode)
   - [Multiplayer Mode](#multiplayer-mode)
-- [🏛️ Architecture Patterns](#-architecture-patterns)
-- [📊 Data Models](#-data-models)
+    
+- [🛠️ Backend Routes & Frontend Pages](#backend-routes--frontend-pages)
+- [🏛️ Architecture Patterns](#architecture-patterns)
+- [📊 Data Models](#data-models)
   - [Player](#player)
   - [SinglePlayerGame](#singleplayergame)
   - [MultiplayerGame](#multiplayergame)
   - [Enums](#enums)
-- [🔧 Services & Controllers](#-services--controllers)
-- [🌐 Real-time Communication](#-real-time-communication)
-- [🧪 Testing Strategy](#-testing-strategy)
-- [🔒 Security Features](#-security-features)
-- [🚀 Key Achievements](#-key-achievements)
-- [🔮 Future Enhancements](#-future-enhancements)
-- [🌱 Personal Growth Milestones](#-personal-growth-milestones)
+- [🔧 Services & Controllers](#services--controllers)
+- [🌐 Real-time Communication](#real-time-communication)
+- [🧪 Testing Strategy](#testing-strategy)
+- [🔒 Security Features](#security-features)
+- [🚀 Key Achievements](#key-achievements)
+- [🔮 Future Enhancements](#future-enhancements)
+- [🌱 Personal Growth Milestones](#personal-growth-milestones)
+
 
 ---
 
@@ -233,13 +235,13 @@ The frontend will be available at `http://localhost:5173`
 ## 🏗️ Architecture Overview
 
 ### Tech Stack
--**Backend**: Java 17 with Spring Boot 3.5.5
--**Database**: PostgreSQL using JDBC and JPA for persistence
--**API Layer**: RESTful endpoints for core game logic, user management, and singleplayer mode
--**Real-Time Communication**: WebSockets with STOMP protocol for multiplayer messaging and event broadcasting
--**Frontend**: React 19 with TypeScript and Tailwind CSS for a responsive, modern UI
--**Build Tools**: Maven (backend) and Vite (frontend) for fast, modular builds
--**Testing**: JUnit 5 and Mockito for unit and integration testing
+- **Backend**: Java 17 with Spring Boot 3.5.5
+- **Database**: PostgreSQL using JDBC and JPA for persistence
+- **API Layer**: RESTful endpoints for core game logic, user management, and singleplayer mode
+- **Real-Time Communication**: WebSockets with STOMP protocol for multiplayer messaging and event broadcasting
+- **Frontend**: React 19 with TypeScript and Tailwind CSS for a responsive, modern UI
+- **Build Tools**: Maven (backend) and Vite (frontend) for fast, modular builds
+- **Testing**: JUnit 5 and Mockito for unit and integration testing
 
 ### Why Java & Spring Boot?
 
@@ -259,6 +261,50 @@ The choice of **PostgreSQL** was driven by the need to manage **complex relation
 - **Data Integrity**: Foreign keys and transactions ensure relationships remain consistent.  
 - **Efficient Queries**: Indexing and relational tables allow fast retrieval of game history, leaderboard stats, and player performance.  
 - **Future Flexibility**: Makes implementing features like leaderboards, friends, or analytics straightforward.
+
+### Backend Routes & Frontend Pages
+
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST   | `/api/auth` | Log in |
+| POST   | `/api/auth/register` | Register |
+
+### Multiplayer
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET    | `/multiplayer/join` | Join a new multiplayer game |
+| GET    | `/multiplayer/{gameID}` | Get multiplayer game details |
+| WS     | `/multiplayer/{gameID}/guess` | Send guess (WebSocket) |
+
+### Singleplayer
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET    | `/singleplayer/games/new` | Start a new singleplayer game |
+| GET    | `/singleplayer/games/{gameID}` | Get singleplayer game details |
+| POST   | `/singleplayer/{gameID}/guess` | Submit guess |
+
+### User Profile
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET    | `/me` | Current user info (username, email, stats) |
+| GET    | `/me/games` | Games belonging to the current user |
+
+---
+
+## 🌐 Frontend Pages
+
+| Route | Description |
+|-------|-------------|
+| `/home` | Home page / new game menu |
+| `/login` | Login page |
+| `/register` | Registration page |
+| `/me` | User profile page |
+| `/lobby` | Multiplayer waiting room |
+| `/team` | Active multiplayer game |
+| `/game/{gameID}` | Singleplayer or multiplayer session page |
+
+
 
 ## 🎮 Game Features
 
@@ -373,6 +419,8 @@ public enum GameMode { SINGLE_PLAYER, MULTIPLAYER }
 - **MultiplayerGameController**: Multiplayer game management
 - **MultiplayerWebsocketController**: Real-time WebSocket communication
 
+
+
 ### Exception Handling
 custom exceptions with a global exception handler
 examples:
@@ -400,20 +448,6 @@ private Map<String, SseEmitter> activeEmitters;
 // WebsocketEventListeners & Channel Interceptors to remove orphaned games; 
 ```
 
-**Key Features:**
-- **Concurrent Data Structures**: `ConcurrentHashMap` and `ConcurrentLinkedQueue` for thread safety
-- **Early Emitter Registration**: Prevents connection timing issues
-- **Difficulty-based Queues**: Separate matchmaking for each difficulty level
-
-## 🧪 Testing Strategy
-
-- **Controller Tests**: API endpoint validation
-- **Service Tests**: Business logic verification
-- **Entity Tests**: Model behavior testing
-- **Repository Tests**: Data persistence validation
-- **Exception Tests**: Error handling verification
-- **Integration Tests**: End-to-end functionality
-
 ### Testing Technologies
 - **JUnit 5**: Modern testing framework
 - **Mockito**: Mocking and stubbing
@@ -435,6 +469,7 @@ private Map<String, SseEmitter> activeEmitters;
 3. **Security Implementation**: Full authentication and authorization system
 4. **Performance Optimization**: Efficient database queries and memory management
 5. **Session Lifecycle Tracking**: Mapped STOMP sessions to game IDs on connect, and removed stale games on disconnect using interceptors and event listeners.
+
 
 ## 🔮 Future Enhancements
 

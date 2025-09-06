@@ -1,6 +1,6 @@
 # Mastermind - Reach Apprenticeship Project
 
-Welcome to Mastermind! This is my version of the classic Mastermind game that features both Single and Multiplayer modes. The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game features log in, registration, game history, the ability to resume past games, and a queue based match-making system, where users play as a team to solve the secret combination. The game exists as a Rest API for most use cases, but switches over to Websockets for multiplayer games, using the STOMP protocol to broadcast messages to clients and publishing messages from clients. 
+Welcome to Mastermind! This is my version of the classic Mastermind game that features both Single and Multiplayer modes. The goal is to guess a secret number combination within 10 attempts, with feedback after every guess. The game features log in, registration, game history, the ability to resume past games, and a queue based match-making system, where users play as a team to solve the secret combination. The backend is built primarily as a Rest API, but switches from HTTP to the Websocket protocol for multiplayer games. 
 
 
 
@@ -41,8 +41,8 @@ Welcome to Mastermind! This is my version of the classic Mastermind game that fe
 - At the start of a game, the computer randomly selects a secret pattern of numbers.
 - The length of the pattern depends on the chosen difficulty:
   - **Easy** → 4 digits (0–7)
-  - **Medium** → 6 digits (0–7)
-  - **Hard** → 8 digits (0–7)
+  - **Medium** → 6 digits (0–8)
+  - **Hard** → 9 digits (0–9)
 - A player (or team in multiplayer) has **10 attempts** to guess the correct pattern.
 - After each guess, feedback is provided:
   - **Correct number** guessed but wrong position

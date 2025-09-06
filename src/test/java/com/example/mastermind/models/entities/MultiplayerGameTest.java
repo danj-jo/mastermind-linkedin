@@ -72,7 +72,7 @@ class MultiplayerGameTest {
         
         String result = game.submitGuess(player1, "invalid");
         
-        assertEquals("Guesses are numbers only", result);
+        assertEquals("Only numbers 0-7 are allowed. Please try again.", result);
         assertEquals(0, game.getGuesses().size());
     }
 

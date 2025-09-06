@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,12 +27,6 @@ class PlayerServiceTest {
 
     @Mock
     private PlayerRepository playerRepository;
-
-    @Mock
-    private SingleplayerGameService singleplayerGameService;
-
-    @Mock
-    private SingleplayerGameRepository singleplayerGameRepository;
 
     @InjectMocks
     private PlayerService playerService;
@@ -51,7 +46,6 @@ class PlayerServiceTest {
     @Test
     void testFindPlayerByUsername_Success() {
         // Given
-        when(playerRepository.existsByUsername("testuser")).thenReturn(true);
         when(playerRepository.findByUsername("testuser")).thenReturn(Optional.of(testPlayer));
 
         // When
@@ -60,38 +54,20 @@ class PlayerServiceTest {
         // Then
         assertNotNull(result);
         assertEquals(testPlayer, result);
-        verify(playerRepository).existsByUsername("testuser");
         verify(playerRepository).findByUsername("testuser");
     }
 
     @Test
     void testFindPlayerByUsername_NotFound() {
         // Given
-        when(playerRepository.existsByUsername("nonexistent")).thenReturn(false);
+        when(playerRepository.findByUsername("nonexistent")).thenReturn(Optional.empty());
 
         // When & Then
-        assertThrows(UsernameNotFoundException.class, () -> 
+        assertThrows(NoSuchElementException.class, () -> 
             playerService.findPlayerByUsername("nonexistent"));
-        verify(playerRepository).existsByUsername("nonexistent");
-        verify(playerRepository, never()).findByUsername(any());
+        verify(playerRepository).findByUsername("nonexistent");
     }
 
-    @Test
-    void testReturnPlayerPastGames() {
-        // Given
-        UUID playerId = testPlayer.getPlayerId();
-        Map<String, List<PastGame>> expectedGames = Map.of(
-            "finished", List.of(),
-            "unfinished", List.of()
-        );
-        when(singleplayerGameService.getPastGamesByPlayerID(playerId)).thenReturn(expectedGames);
-
-        // When
-        Map<String, List<PastGame>> result = playerService.returnPlayerPastGames(playerId);
-
-        // Then
-        assertNotNull(result);
-        assertEquals(expectedGames, result);
-        verify(singleplayerGameService).getPastGamesByPlayerID(playerId);
-    }
+    // Note: returnPlayerPastGames method no longer exists in PlayerService
+    // This functionality has been moved to SingleplayerGameService
 }

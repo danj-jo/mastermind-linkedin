@@ -6,13 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+@AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserRegistrationRequest {
-    String username;
+public class UserLoginRequest {
     @Email(message="Please provide a valid email address.")
     String email;
     String password;

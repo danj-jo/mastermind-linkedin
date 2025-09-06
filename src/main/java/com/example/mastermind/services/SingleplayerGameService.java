@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.example.mastermind.customExceptions.GameNotFoundException;
-import com.example.mastermind.customExceptions.PlayerDataAccessException;
 import com.example.mastermind.customExceptions.PlayerNotFoundException;
 
 import java.util.*;
@@ -91,21 +90,6 @@ public class SingleplayerGameService {
         return feedback;
     }
 
-    /**
-     * Retrieves all past games (both finished and unfinished) for a specific player.
-     * <p>
-     * This method queries the database to find all games associated with the given player ID,
-     * separating them into two categories: finished games and unfinished games. The results
-     * are organized into a map structure where finished games contain complete game data
-     * including results, while unfinished games show partial information with a placeholder
-     * message for the winning number until completion.
-     * 
-     * @param playerId - the unique identifier of the player whose games to retrieve
-     * @return a Map containing two lists: "finished" games with games that are finished and "unfinished" 
-     *         games for games that are not finished, both stored as CurrentUserPastGames objects
-     * @throws PlayerDataAccessException if there's an error accessing the player's game data
-*/
-
     public List<PastGame> getFinishedGamesByPlayerId(UUID playerId){
         if (!playerRepository.existsById(playerId)) {
             throw new PlayerNotFoundException("Player not found with ID: " + playerId);
@@ -138,8 +122,8 @@ public class SingleplayerGameService {
         })).toList();
     }
 
-    public SinglePlayerGame findGameById(UUID gameId){
-      return singleplayerGameRepository.findGameByGameId(gameId).orElseThrow(() -> new GameNotFoundException("Game not found."));
+    public SinglePlayerGame findGameById(UUID gameId) {
+        return singleplayerGameRepository.findGameByGameId(gameId).orElseThrow(() -> new GameNotFoundException("Game not found."));
     }
 
     public boolean isGameFinished(UUID gameId){

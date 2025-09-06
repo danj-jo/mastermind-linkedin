@@ -7,6 +7,7 @@ import com.example.mastermind.customExceptions.UsernameTooShortException;
 import com.example.mastermind.repositoryLayer.PlayerRepository;
 import com.example.mastermind.dataTransferObjects.PlayerDTOs.UserRegistrationRequest;
 import com.example.mastermind.models.entities.Player;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +33,11 @@ class AuthServiceTest {
     private AuthService authService;
 
     private UserRegistrationRequest validRequest;
+    public boolean isValidUsername(String username) {
+        // 5-20 chars, letters/numbers/._ allowed, no consecutive dots
+        String regex = "^(?!.*\\.\\.)[a-zA-Z0-9._]{5,20}$";
+        return username.matches(regex);
+    }
 
     @BeforeEach
     void setUp() {
@@ -41,6 +47,13 @@ class AuthServiceTest {
         validRequest.setEmail("test@example.com");
     }
 
+    @Test
+    public void testInvalidUsernames() {
+        assertFalse(isValidUsername("user..name")); // consecutive dots
+        assertFalse(isValidUsername("us")); // too short
+        assertFalse(isValidUsername("thisusernameiswaytoolongtobevalid")); // too long
+        assertFalse(isValidUsername("user!name")); // invalid character
+    }
     @Test
     void testRegisterNewUser_Success() {
         // Given

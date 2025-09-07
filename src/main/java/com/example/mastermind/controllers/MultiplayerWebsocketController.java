@@ -50,7 +50,7 @@ public class MultiplayerWebsocketController {
         }
         String guess = userGuess.get("guess");
 
-        String feedback = game.submitGuess(player, guess);
+        String feedback = multiplayerGameService.submitMultiplayerGuess(gameID,player,guess);
         List<String> guesses = game.getGuesses().stream().map(MultiplayerGuess::getGuess).toList();
         boolean finished = game.isFinished();
 

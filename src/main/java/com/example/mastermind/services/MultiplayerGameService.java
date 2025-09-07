@@ -1,5 +1,7 @@
 package com.example.mastermind.services;
 
+import com.example.mastermind.models.Result;
+import com.example.mastermind.models.entities.MultiplayerGuess;
 import com.example.mastermind.repositoryLayer.MultiplayerGameRepository;
 import com.example.mastermind.models.Difficulty;
 import com.example.mastermind.utils.EmitterRegistry;
@@ -46,16 +48,17 @@ public class MultiplayerGameService {
     private static final Logger logger = LoggerFactory.getLogger(MultiplayerGameService.class);
     private final EmitterDiagnostics emitterDiagnostics;
     private final EmitterRegistry emitterRegistry;
-    private final Queue<Player> playersWaitingForEasyGame = new ConcurrentLinkedQueue<>();
-    private final Queue<Player> playersWaitingForMediumGame = new ConcurrentLinkedQueue<>();
-    private final Queue<Player> playersWaitingForHardGame = new ConcurrentLinkedQueue<>();
-     //storing each queue in a map makes them easier and cleaner to iterate through. This could be done with if statements, but would make code cluttered.
-    private final Map<String,Queue<Player>> waitingPlayerMap = new ConcurrentHashMap<>(Map.of(
+    private final Queue<UUID> playersWaitingForEasyGame = new ConcurrentLinkedQueue<>();
+    private final Queue<UUID> playersWaitingForMediumGame = new ConcurrentLinkedQueue<>();
+    private final Queue<UUID> playersWaitingForHardGame = new ConcurrentLinkedQueue<>();
+    //storing each queue in a map makes them easier and cleaner to iterate through. This could be done with if statements, but would make code cluttered.
+    private final Map<String,Queue<UUID>> waitingPlayerMap = new ConcurrentHashMap<>(Map.of(
             "EASY",playersWaitingForEasyGame,
             "MEDIUM", playersWaitingForMediumGame,
             "HARD",playersWaitingForHardGame
     ));
     public final Map<UUID, MultiplayerGame> activeGames = new ConcurrentHashMap<>();
+    private final PlayerService playerService;
 
     /**
      * Adds a player to the waiting queue for their chosen difficulty level.
@@ -63,17 +66,17 @@ public class MultiplayerGameService {
      * When a player joins, they are added to the appropriate difficulty queue.
      * If the queue reaches 2 or more players, a new multiplayer game is automatically
      * created and both players are removed from the queue. The game is then added
-     * to the active games map and both players receive "matched" events via SSE.
-     * 
+     * to the active games map, and both players receive "matched" events via SSE.
+     *
      * @param player the player joining the multiplayer queue
      * @param difficulty the difficulty level for the game (EASY, MEDIUM, HARD)
      */
-    public void joinMultiplayerGame(Player player, String difficulty){
+    public void joinMultiplayerGame(UUID playerId, String difficulty){
         for(String difficultyLevel: waitingPlayerMap.keySet()){
-            Queue<Player> playerQueue = waitingPlayerMap.get(difficultyLevel);
+            Queue<UUID> playerQueue = waitingPlayerMap.get(difficultyLevel);
             synchronized (playerQueue){
-                if(difficultyLevel.equalsIgnoreCase(difficulty) && !playerQueue.contains(player)){
-                    playerQueue.add(player);
+                if(difficultyLevel.equalsIgnoreCase(difficulty) && !playerQueue.contains(playerId)){
+                    playerQueue.add(playerId);
                 }
             }
         }
@@ -84,45 +87,47 @@ public class MultiplayerGameService {
  Without synchronization, two players could enter at the same time and each poll
     2 users, leaving errors and empty lists on both ends.
              */
-           synchronized (value){if(value.size() >= 2){
-                Player player1 = value.poll();
-                Player player2 = value.poll();
-                assert player2 != null;
+            synchronized (value){if (value.size() >= 2){
+                UUID playerOne = value.poll();
+                UUID playerTwo = value.poll();
+                Player playerOneObject = playerService.findPlayerById(playerOne);
+                Player playerTwoObject = playerService.findPlayerById(playerTwo);
+                assert playerTwo != null;
                 MultiplayerGame game = new MultiplayerGame();
                 game.setDifficulty(GameUtils.selectUserDifficulty(key));
                 game.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(difficulty.toUpperCase())));
-                game.setPlayer1(player1);
-                game.setPlayer2(player2);
+                game.setPlayer1(playerService.findPlayerById(playerOne));
+                game.setPlayer2(playerService.findPlayerById(playerTwo));
                 activeGames.put(game.getGameId(),game);
-                emitterDiagnostics.logMatchAttempt(player1, player2);
+                emitterDiagnostics.logMatchAttempt(playerOneObject, playerTwoObject);
                 // get emitter for player 1 and send them a "matched" event
                 try {
-                    emitterRegistry.getEmitter(player1.getPlayerId())
+                    emitterRegistry.getEmitter(playerOne)
                                    .send(SseEmitter.event()
-                                                    .name("matched")
+                                                   .name("matched")
                                                    .data(game.getGameId()));
                 }
                 catch(Exception e) {
                     // remove emitter from player 1 to prevent the storage of stale emitters.
-                    emitterRegistry.removeEmitter(player1.getPlayerId());
+                    emitterRegistry.removeEmitter(playerOne);
                     logger.error("Player 1's emitter disconnected. Removed.");
-                        try {
-                            // if player 1 disconnects, emit this event and tell player 2.
-                            emitterRegistry.getEmitter(player2.getPlayerId()).send(SseEmitter.event().name("disconnect").data("Player 1 has disconnected."));
-                        } catch (IOException ey) {
-                            logger.error("Player 1 was also disconnected. No notification sent.");
-                        }
+                    try {
+                        // if player 1 disconnects, emit this event and tell player 2.
+                        emitterRegistry.getEmitter(playerTwo).send(SseEmitter.event().name("disconnect").data("Player 1 has disconnected."));
+                    } catch (IOException ey) {
+                        logger.error("Player 1 was also disconnected. No notification sent.");
+                    }
 
                 }
                 try {
-                    emitterRegistry.getEmitter(player2.getPlayerId()).send(SseEmitter.event().name("matched").data(game.getGameId()));
+                    emitterRegistry.getEmitter(playerTwo).send(SseEmitter.event().name("matched").data(game.getGameId()));
                 } catch (IOException e) {
-                     // remove emitter from player 2 to prevent the storage of stale emitters.
-                    emitterRegistry.removeEmitter(player2.getPlayerId());
+                    // remove emitter from player 2 to prevent the storage of stale emitters.
+                    emitterRegistry.removeEmitter(playerTwo);
                     logger.error("Player 2's emitter disconnected. Removed.");
                     try {
                         // if player 2 is disconnected, send this event and tell player 1.
-                        emitterRegistry.getEmitter(player1.getPlayerId()).send(SseEmitter.event().name("disconnect").data("Player 2 has disconnected."));
+                        emitterRegistry.getEmitter(playerOne).send(SseEmitter.event().name("disconnect").data("Player 2 has disconnected."));
                     } catch (IOException ex) {
                         logger.error("player 1 is also disconnected.");
                     }
@@ -138,6 +143,57 @@ public class MultiplayerGameService {
         }
         String winningNumber = game.getWinningNumber();
         return new HashMap<>(Map.of("numbersToGuess", winningNumber.length()));
+    }
+
+    public String submitMultiplayerGuess(UUID gameId, Player player, String guess) {
+        MultiplayerGame game = activeGames.get(gameId);
+        MultiplayerGuess newGuess = new MultiplayerGuess();
+        // link guess to this game
+        newGuess.setGame(game);
+        // link guess to player
+        newGuess.setPlayer(player);
+        // the guess itself
+        newGuess.setGuess(guess);
+        synchronized (game) {
+            if (game.getDifficulty() == Difficulty.EASY && game.guessIsOverLimit(guess)) {
+                return "Only numbers 0-7 are allowed. Please try again.";
+            }
+
+            if (game.guessContainsInvalidCharacters(guess)) {
+                return "Guesses are numbers only";
+            }
+
+            if (game.inappropriateLength(guess)) {
+                return String.format(
+                        "Guess is not the appropriate length. Please try again. Guess must be %d numbers",
+                        game.getWinningNumber()
+                            .length()
+                );
+            }
+            if (game.guessAlreadyExists(guess)) {
+                return "We don't allow duplicate guesses here.";
+            }
+
+            if (game.isFinished()) {  // guard for already finished
+                return "Game is finished.";
+            }
+            if (game.userLostGame()) {
+                game.setFinished(true);
+                game.setResult(Result.LOSS);
+                multiplayerGameRepository.save(game);
+                return String.format("Game Over! The correct number was: %s", game.getWinningNumber());
+            }
+            game.getGuesses()
+                .add(newGuess);
+            if (game.userWonGame(guess)) {
+                game.setFinished(true);
+                game.setResult(Result.WIN);
+                multiplayerGameRepository.save(game);
+                return String.format("Victory! %s gave the winning guess.", player);
+            }
+            return game.generateHint(player, guess);
+        }
+
     }
 
     public void saveMultiplayerGame(MultiplayerGame game){

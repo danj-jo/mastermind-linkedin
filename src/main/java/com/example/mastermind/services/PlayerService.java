@@ -1,5 +1,6 @@
 package com.example.mastermind.services;
 
+import com.example.mastermind.customExceptions.PlayerNotFoundException;
 import com.example.mastermind.models.PastGame;
 import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
 import com.example.mastermind.repositoryLayer.PlayerRepository;
@@ -27,6 +28,7 @@ public class PlayerService {
 
     }
 
-
-
+    public Player findPlayerById(UUID playerId){
+        return playerRepository.findById(playerId).orElseThrow();
+    }
 }

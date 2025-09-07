@@ -59,7 +59,7 @@ public class MultiplayerGameController {
             emitterDiagnostics.logEmitterState(currentPlayer.getPlayerId());
             logger.warn("Failed to send ping to emitter for {}", currentPlayer.getUsername(), e);
         }
-       multiplayerGameService.joinMultiplayerGame(currentPlayer, difficulty);
+       multiplayerGameService.joinMultiplayerGame(currentPlayer.getPlayerId(), difficulty);
         return emitter;
     }
 

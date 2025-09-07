@@ -159,6 +159,7 @@ public class SingleplayerGameService {
             if (game.userWonGame(guess)) {
                 game.setFinished(true);
                 game.setResult(Result.WIN);
+
                 return "You Win!";
             }
             return String.format("You have %d numbers correct, in %d locations. %d guesses remaining.", game.totalCorrectNumbers(guess), game.numberOfCorrectLocations(guess), 10 - game.getGuesses()

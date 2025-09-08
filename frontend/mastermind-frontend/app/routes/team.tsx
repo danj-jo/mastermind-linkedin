@@ -15,14 +15,13 @@ import {useAuth} from "~/AuthContext";
      const clientRef = useRef(null);
      const [guesses,setGuesses]  = useState([])
      const[player,setPlayer] = useState()
-     const navigate = useNavigate()
-     const {isLoggedIn} = useAuth()
 
      // @ts-ignore
      useEffect(() => {
          if (typeof window === "undefined") return;
          const gameIdRaw = sessionStorage.getItem("gameId");
          const gameIdWithoutSpaces = gameIdRaw?.replace(/^"|"$/g, "");
+
          if (!gameIdWithoutSpaces) {
              console.warn("No gameId in sessionStorage");
              return;
@@ -74,14 +73,19 @@ import {useAuth} from "~/AuthContext";
 
      const handleSubmitGuess = async () => {
          try {
+
              const guessString = guessInputBoxes.toString().replace(/,/g, "");
              setGuess(guessString)
                  // @ts-ignore
              clientRef.current.publish({
                      destination: `/app/multiplayer/${sessionStorage.getItem("gameId")}/guess`,
-                     body: JSON.stringify({"guess": guessString})
+                     body: JSON.stringify({
+                         "guess": guessString,
+                         "gameId": sessionStorage.getItem("gameId"),
+                         "playerId": sessionStorage.getItem("playerId")
+                     })
                  });
-             console.log(guessString)
+             console.log(`Game: ${sessionStorage.getItem("gameId")} Player: ${sessionStorage.getItem("playerId")}`);
          }
          catch (error) {
              console.log("Maybe not connected?")

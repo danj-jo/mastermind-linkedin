@@ -25,7 +25,7 @@ const NewGame: React.FC = () => {
     }
     useEffect(() => {
         localStorage.setItem("fields",fields.toString())
-    })
+    },[])
 
     const multiplayerNavigate = () => {
         sessionStorage.setItem("difficulty", difficulty)

@@ -1,5 +1,5 @@
 package com.example.mastermind.services;
-
+import com.example.mastermind.models.GameMode;
 import com.example.mastermind.models.PastGame;
 import com.example.mastermind.models.Result;
 import com.example.mastermind.repositoryLayer.SingleplayerGameRepository;
@@ -9,16 +9,14 @@ import com.example.mastermind.models.entities.SinglePlayerGame;
 import com.example.mastermind.models.entities.Player;
 import com.example.mastermind.utils.GameUtils;
 import lombok.AllArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.example.mastermind.customExceptions.GameNotFoundException;
 import com.example.mastermind.customExceptions.PlayerNotFoundException;
-
 import java.util.*;
 
-import org.slf4j.Logger;
+
 /**
  * Service class for managing single-player Mastermind games.
  * <p>
@@ -26,10 +24,10 @@ import org.slf4j.Logger;
  * including game creation, guess submission, and game state persistence. It provides
  * methods for retrieving game history and managing game lifecycle.
  * <p>
- * Note: All exceptions thrown by methods in this service are automatically handled 
- * by the GlobalExceptionHandler, which converts them to appropriate HTTP responses 
+ * Note: All exceptions thrown by methods in this service are automatically handled
+ * by the GlobalExceptionHandler, which converts them to appropriate HTTP responses
  * with status codes and error messages when called from controllers.
- * 
+ *
  */
 
 @Service
@@ -38,10 +36,8 @@ import org.slf4j.Logger;
 public class SingleplayerGameService {
     private final SingleplayerGameRepository singleplayerGameRepository;
     private final PlayerRepository playerRepository;
-    private static final Logger logger = LoggerFactory.getLogger(SingleplayerGameService.class);
-    private final PlayerService playerService;
-
-
+    
+    
     /**
      * Creates a new single-player game for the specified player.
      * <p>
@@ -50,87 +46,95 @@ public class SingleplayerGameService {
      * The game is configured with the requesting player, a randomly generated winning number
      * based on the difficulty, and an empty list to store future guesses. The game is
      * persisted to the database to allow for later resumption.
-     * 
+     *
      * @param playerDifficulty the difficulty level for the game (e.g., "EASY", "MEDIUM", "HARD")
-     * @param playerId the unique identifier of the player creating the game
+     * @param playerId         the unique identifier of the player creating the game
      * @return the newly created SinglePlayerGame instance
      * @throws UsernameNotFoundException if no player is found with the specified player ID
      */
-    public SinglePlayerGame createNewGame(String playerDifficulty, UUID playerId){
-
-        Player player = playerRepository.findById(playerId).orElseThrow(() -> new UsernameNotFoundException("Player Not found."));
-        SinglePlayerGame singlePlayerGame = new SinglePlayerGame();
-
-        singlePlayerGame.setDifficulty(GameUtils.selectUserDifficulty(playerDifficulty));
-        singlePlayerGame.setPlayer(player);
-        singlePlayerGame.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(playerDifficulty)));
-        singlePlayerGame.setGuesses(new HashSet<>());
-        singleplayerGameRepository.saveAndFlush(singlePlayerGame);
-        return singlePlayerGame;
-
+    public SinglePlayerGame createNewGame(String playerDifficulty, UUID playerId) {
+        Player player = playerRepository.findById(playerId)
+                                        .orElseThrow(() -> new UsernameNotFoundException("Player Not found."));
+        Difficulty userDifficulty = GameUtils.selectUserDifficulty(playerDifficulty);
+        
+        String winningNumber = GameUtils.generateWinningNumber(userDifficulty);
+        
+        return singleplayerGameRepository.saveAndFlush(SinglePlayerGame.builder()
+                                                                       .difficulty(userDifficulty)
+                                                                       .player(player)
+                                                                       .winningNumber(winningNumber)
+                                                                       .guesses(new HashSet<>())
+                                                                        .mode(GameMode.SINGLE_PLAYER)
+                                                                       .build());
     }
+    
     /**
      * Submits a guess for a single-player game and returns feedback.
      * <p>
      * This method processes a player's guess by finding the game using the provided game ID,
      * applying the guess to the game, and persisting the updated game state to the database.
      * The method returns feedback indicating how close the guess is to the winning number.
-     * 
+     *
      * @param gameId the unique identifier of the game to submit the guess to
-     * @param guess the player's guess as a string representation
+     * @param guess  the player's guess as a string representation
      * @return a string containing feedback about the guess (e.g., "2 correct, 1 in wrong position") as well as the completion status of the game.
      * @throws GameNotFoundException if no game is found with the specified game ID
      */
-    public String handleGuess(UUID gameId, String guess){
+    public String handleGuess(UUID gameId, String guess) {
         SinglePlayerGame currentGame = singleplayerGameRepository.findById(gameId)
                                                                  .orElseThrow(() -> new GameNotFoundException("Game not found"));
-        String feedback = submitGuess(currentGame.getGameId(),guess);
-
+        String feedback = submitGuess(currentGame.getGameId(), guess);
         singleplayerGameRepository.saveAndFlush(currentGame);
         return feedback;
     }
-
-
-
-
-    public List<PastGame> getFinishedGamesByPlayerId(UUID playerId){
-        if (!playerRepository.existsById(playerId)) {
-            throw new PlayerNotFoundException("Player not found with ID: " + playerId);
-        }
-            // Find finished games and map to DTOs
-            return singleplayerGameRepository.findFinishedGames(playerId).stream().map((singlePlayerGame -> {
-                                                                                       return new PastGame(singlePlayerGame.getGameId()
-                                                                                                                           .toString(),
-                                                                                                           String.valueOf(singlePlayerGame.getDifficulty()),
-                                                                                                           String.valueOf(singlePlayerGame.getResult()),
-                                                                                                           singlePlayerGame.getWinningNumber(),
-                                                                                                           singlePlayerGame.getGuesses()
-                                                                                                                            .toString()
-                                                                                                          );
-                                                                                                            })).toList();
-    }
-    public List<PastGame> getUnfinishedGamesByPlayerId(UUID playerId){
+    
+    
+    public List<PastGame> getFinishedGamesByPlayerId(UUID playerId) {
         if (!playerRepository.existsById(playerId)) {
             throw new PlayerNotFoundException("Player not found with ID: " + playerId);
         }
         // Find finished games and map to DTOs
-        return singleplayerGameRepository.findUnfinishedGames(playerId).stream().map((singlePlayerGame -> {
-            return new PastGame(singlePlayerGame.getGameId()
-                                                .toString(),
-                                String.valueOf(singlePlayerGame.getDifficulty()),
-                                String.valueOf(singlePlayerGame.getResult()),
-                                "You must finish game to see results!",
-                                singlePlayerGame.getGuesses()
-                                                 .toString());
-        })).toList();
+        return singleplayerGameRepository.findFinishedGames(playerId)
+                                         .stream()
+                                         .map((singlePlayerGame -> PastGame.builder()
+                                                                       .gameId(singlePlayerGame.getGameId().toString())
+                                                                       .difficulty(String.valueOf(singlePlayerGame.getDifficulty()))
+                                                                       .result( String.valueOf(singlePlayerGame.getResult()))
+                                                                       .winningNumber(singlePlayerGame.getWinningNumber())
+                                                                       .previousGuesses(singlePlayerGame.getGuesses()
+                                                                                             .toString())
+                                                                       .build()))
+                                                                        .toList();
     }
+    
+    public List<PastGame> getUnfinishedGamesByPlayerId(UUID playerId) {
+        if (!playerRepository.existsById(playerId)) {
+            throw new PlayerNotFoundException("Player not found with ID: " + playerId);
+        }
+        // Find finished games and map to DTOs
+        return singleplayerGameRepository.findUnfinishedGames(playerId)
+                                         .stream()
+                                         .map((singlePlayerGame -> PastGame.builder()
+                                                                           .gameId(singlePlayerGame.getGameId().toString())
+                                                                           .difficulty(String.valueOf(singlePlayerGame.getDifficulty()))
+                                                                           .result( String.valueOf(singlePlayerGame.getResult()))
+                                                                           .winningNumber("You must finish this game to access the winning number!")
+                                                                           .previousGuesses(singlePlayerGame.getGuesses()
+                                                                                                            .toString())
+                                                                           .build()))
+                                         .toList();
+    }
+    
     public SinglePlayerGame findGameById(UUID gameId) {
-        return singleplayerGameRepository.findGameByGameId(gameId).orElseThrow(() -> new GameNotFoundException("Game not found."));
+        return singleplayerGameRepository.findGameByGameId(gameId)
+                                         .orElseThrow(() -> new GameNotFoundException("Game not found."));
     }
-    public boolean isGameFinished(UUID gameId){
+    
+    public boolean isGameFinished(UUID gameId) {
         return singleplayerGameRepository.existsByGameIdAndFinishedTrue(gameId);
     }
-    private String submitGuess(UUID gameId, String guess){
+    
+    public String submitGuess(UUID gameId, String guess) {
         SinglePlayerGame game = findGameById(gameId);
         synchronized (game) {
             if (game.getDifficulty() == Difficulty.EASY && game.guessIsOverLimit(guess)) {
@@ -140,8 +144,9 @@ public class SingleplayerGameService {
                 return "Guesses are numbers only";
             }
             if (game.inappropriateLength(guess)) {
-                return String.format("Guess is not the appropriate length. Please try again. Guess must %d numbers", game.getWinningNumber()
-                                                                                                                         .length());
+                return String.format("Guess is not the appropriate length. Please try again. Guess must %d numbers",
+                                     game.getWinningNumber()
+                                         .length());
             }
             if (game.guessAlreadyExists(guess)) {
                 return "We don't allow Duplicate guesses here.";
@@ -152,19 +157,18 @@ public class SingleplayerGameService {
             if (game.userLostGame()) {
                 game.setResult(Result.LOSS);
                 game.setFinished(true);
-                return String.format("Game Over! The correct number was: %s", game.getWinningNumber());
+                return String.format("Game Over! The correct number was: %s",
+                                     game.getWinningNumber());
             }
-            game.getGuesses()
-                .add(guess);
+            game.getGuesses().add(guess);
             if (game.userWonGame(guess)) {
                 game.setFinished(true);
                 game.setResult(Result.WIN);
-
+                
                 return "You Win!";
             }
-            return String.format("You have %d numbers correct, in %d locations. %d guesses remaining.", game.totalCorrectNumbers(guess), game.numberOfCorrectLocations(guess), 10 - game.getGuesses()
-                                                                                                                                                                                        .size());
+            return game.generateHint(guess);
         }
     }
-
+    
 }

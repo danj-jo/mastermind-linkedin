@@ -36,32 +36,30 @@ public class WebsocketChannel_Interceptor implements ChannelInterceptor {
      *
      * @param message the STOMP message being intercepted
      * @param channel the message channel (unused)
-     * @return the original message to continue processing
+     * @return - the original message to continue processing
      */
 
     @Override
     public Message<?> preSend( @NonNull Message<?> message, @NonNull MessageChannel channel) {
         StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        assert accessor != null;
         String sessionId = accessor.getSessionId();
         StompCommand command = accessor.getCommand();
 
         if (sessionId == null || command == null){
             return message;
         }
-// Here, I take the session and gameID before any guesses are sent to prevent null pointer exceptions in the event that games are disconnected before any guesses are sent. If the command is equal to CONNECT, then take the sessionId and gameID and store them in a map for deletion.
+        // Here, I take the session and gameID before any guesses are sent to prevent null pointer exceptions in the event that games are disconnected before any guesses are sent. If the command is equal to CONNECT, then take the sessionId and gameID and store them in a map for deletion.
         if (StompCommand.CONNECT.equals(command)) {
             String gameId = accessor.getFirstNativeHeader("gameId");
-            if (sessionId != null && gameId != null) {
                 sessionGameMap.put(sessionId, gameId);
                 logger.debug("Mapped session {} to game {} on CONNECT", sessionId, gameId);
             }
-        }
 
         // If the command is disconnect, remove the sessionID from the map (and the game)
             if (StompCommand.DISCONNECT.equals(accessor.getCommand())) {
                 sessionGameMap.remove(sessionId);
             }
-
         return message;
     }
 

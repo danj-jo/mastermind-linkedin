@@ -24,11 +24,11 @@ public interface SingleplayerGameRepository extends JpaRepository<SinglePlayerGa
          boolean existsByGameId(UUID gameId);
          Optional<SinglePlayerGame> findGameByGameId(UUID gameId);
 
-        @Query("SELECT g FROM games g WHERE g.player.playerId = :playerId AND g.finished = true")
-        List<SinglePlayerGame> findFinishedGames(@Param("playerId") UUID playerId);
+    @Query("SELECT g FROM SinglePlayerGame g WHERE g.player.playerId = :playerId AND g.finished = true")
+    List<SinglePlayerGame> findFinishedGames(@Param("playerId") UUID playerId);
 
-        @Query("SELECT g FROM games g WHERE g.player.playerId = :playerId AND g.finished = false")
-        List<SinglePlayerGame> findUnfinishedGames(@Param("playerId") UUID playerId);
+    @Query("SELECT g FROM SinglePlayerGame g WHERE g.player.playerId = :playerId AND g.finished = false")
+    List<SinglePlayerGame> findUnfinishedGames(@Param("playerId") UUID playerId);
 
 
 }

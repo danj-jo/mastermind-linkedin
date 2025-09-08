@@ -1,5 +1,7 @@
 package com.example.mastermind.services;
 
+import com.example.mastermind.dataTransferObjects.GameDTOs.multiplayer.GameAssignmentData;
+import com.example.mastermind.models.GameMode;
 import com.example.mastermind.models.Result;
 import com.example.mastermind.models.entities.MultiplayerGuess;
 import com.example.mastermind.repositoryLayer.MultiplayerGameRepository;
@@ -20,7 +22,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import com.example.mastermind.customExceptions.GameNotFoundException;
-
 
 /**
  * Service for managing multiplayer Mastermind games and player matchmaking.
@@ -68,7 +69,7 @@ public class MultiplayerGameService {
      * created and both players are removed from the queue. The game is then added
      * to the active games map, and both players receive "matched" events via SSE.
      *
-     * @param player the player joining the multiplayer queue
+     * @param playerId the player joining the multiplayer queue. They enter via playerID to ensure uniqueness.
      * @param difficulty the difficulty level for the game (EASY, MEDIUM, HARD)
      */
     public void joinMultiplayerGame(UUID playerId, String difficulty){
@@ -82,22 +83,21 @@ public class MultiplayerGameService {
         }
 
         waitingPlayerMap.forEach((key, value) -> {
-            /*
-             * Synchronize to prevent race conditions when multiple players join simultaneously.
- Without synchronization, two players could enter at the same time and each poll
-    2 users, leaving errors and empty lists on both ends.
-             */
-            synchronized (value){if (value.size() >= 2){
+            synchronized (value){
+                if (value.size() >= 2){
                 UUID playerOne = value.poll();
                 UUID playerTwo = value.poll();
                 Player playerOneObject = playerService.findPlayerById(playerOne);
                 Player playerTwoObject = playerService.findPlayerById(playerTwo);
                 assert playerTwo != null;
-                MultiplayerGame game = new MultiplayerGame();
-                game.setDifficulty(GameUtils.selectUserDifficulty(key));
-                game.setWinningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(difficulty.toUpperCase())));
-                game.setPlayer1(playerService.findPlayerById(playerOne));
-                game.setPlayer2(playerService.findPlayerById(playerTwo));
+                MultiplayerGame game = MultiplayerGame.builder()
+                                                      .difficulty(GameUtils.selectUserDifficulty(key))
+                                                      .winningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(difficulty.toUpperCase())))
+                                                      .player1(playerOneObject)
+                                                      .player2(playerTwoObject)
+                                                      .mode(GameMode.MULTIPLAYER)
+                                                      .build();
+
                 activeGames.put(game.getGameId(),game);
                 emitterDiagnostics.logMatchAttempt(playerOneObject, playerTwoObject);
                 // get emitter for player 1 and send them a "matched" event
@@ -105,7 +105,7 @@ public class MultiplayerGameService {
                     emitterRegistry.getEmitter(playerOne)
                                    .send(SseEmitter.event()
                                                    .name("matched")
-                                                   .data(game.getGameId()));
+                                                   .data(new GameAssignmentData(game.getGameId(),playerOne)));
                 }
                 catch(Exception e) {
                     // remove emitter from player 1 to prevent the storage of stale emitters.
@@ -120,7 +120,7 @@ public class MultiplayerGameService {
 
                 }
                 try {
-                    emitterRegistry.getEmitter(playerTwo).send(SseEmitter.event().name("matched").data(game.getGameId()));
+                    emitterRegistry.getEmitter(playerTwo).send(SseEmitter.event().name("matched").data(new GameAssignmentData(game.getGameId(),playerTwo)));
                 } catch (IOException e) {
                     // remove emitter from player 2 to prevent the storage of stale emitters.
                     emitterRegistry.removeEmitter(playerTwo);
@@ -145,13 +145,14 @@ public class MultiplayerGameService {
         return new HashMap<>(Map.of("numbersToGuess", winningNumber.length()));
     }
 
-    public String submitMultiplayerGuess(UUID gameId, Player player, String guess) {
+    public String submitMultiplayerGuess(UUID gameId, UUID playerId, String guess) {
         MultiplayerGame game = activeGames.get(gameId);
+        Player currentPlayer = playerService.findPlayerById(playerId);
         MultiplayerGuess newGuess = new MultiplayerGuess();
-        // link guess to this game
+        // links guess to this game
         newGuess.setGame(game);
-        // link guess to player
-        newGuess.setPlayer(player);
+        // links guess to player
+        newGuess.setPlayer(currentPlayer);
         // the guess itself
         newGuess.setGuess(guess);
         synchronized (game) {
@@ -189,14 +190,11 @@ public class MultiplayerGameService {
                 game.setFinished(true);
                 game.setResult(Result.WIN);
                 multiplayerGameRepository.save(game);
-                return String.format("Victory! %s gave the winning guess.", player);
+                return String.format("Victory! %s gave the winning guess.", currentPlayer);
             }
-            return game.generateHint(player, guess);
+            return game.generateHint(currentPlayer,guess);
         }
 
     }
 
-    public void saveMultiplayerGame(MultiplayerGame game){
-        multiplayerGameRepository.saveAndFlush(game);
-    }
 }

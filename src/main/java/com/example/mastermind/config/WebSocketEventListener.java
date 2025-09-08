@@ -24,9 +24,6 @@ public class WebSocketEventListener {
             UUID gameId = UUID.fromString(websocketChannelInterceptor.getSessionGameMap().get(sessionId));
             multiplayerGameService.activeGames.remove(gameId);
             websocketChannelInterceptor.removeSession(sessionId);
-            System.out.println(multiplayerGameService.activeGames);
-
-
     }
 
     /**
@@ -36,7 +33,7 @@ public class WebSocketEventListener {
     @EventListener
     public void handleConnectListener(SessionConnectEvent event) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
-        System.out.println(multiplayerGameService.activeGames);
+        System.out.println(multiplayerGameService.activeGames.size());
     }
 
 

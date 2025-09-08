@@ -32,8 +32,6 @@ import static com.example.mastermind.services.AuthService.getCurrentAuthenticate
 @AllArgsConstructor
 @RestController
 @RequestMapping("/me")
-
-
 public class PlayerController {
     private final PlayerService playerService;
     private final SingleplayerGameService singleplayerGameService;

@@ -15,17 +15,19 @@ export default function Lobby() {
             { withCredentials: true }
         );
         setIsClicked(true);
-        // ✅ Listen for "matched" event
+        //  Listen for "matched" event
         es.addEventListener("matched", (event) => {
             setIsClicked(true)
-             console.log(event.data)
-            const gameId = event.data;
+            console.log(event.data)
+            const res = JSON.parse(event.data);
+            const gameId = res.gameId
+            const playerId = res.playerId;
             sessionStorage.setItem("gameId", gameId.replace(/^"|"$/g, ""));
+            sessionStorage.setItem("playerId", playerId.replace(/^"|"$/g, ""));
+
             setTimeout(() => {
-                // Code to be executed after 4 seconds
                 navigate("/team")
             }, 3000);
-
 
             setEvents((prev) => [...prev, `🎉 Player matched! redirecting to game`]);
         });

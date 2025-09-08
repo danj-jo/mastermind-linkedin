@@ -18,7 +18,6 @@ const GameBoard: React.FC = () => {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    "gameId": id,
                     "guess": guess
                 }),
                 credentials: "include"
@@ -26,6 +25,7 @@ const GameBoard: React.FC = () => {
             const data = await response.json();
             console.log(guess)
             setFeedback(data.feedback);
+            console.log(data.feedback)
             if(data.finished == true){
                 setResult("done")
             }
@@ -38,7 +38,6 @@ const GameBoard: React.FC = () => {
     useEffect(() => {
        const response = async () =>
         {
-
                 let numsArray = []
                 const response = await fetch(`http://localhost:8080/singleplayer/games/${id}`, {
                     method: "GET",
@@ -70,7 +69,8 @@ const GameBoard: React.FC = () => {
             setGuesses(res.guesses)
             console.log(guesses)
         };
-    },[handleSubmitGuess()])
+        retrieveGuesses();
+    },[])
 
     // @ts-ignore
     const handleChange = (e, idx) => {
@@ -140,7 +140,7 @@ const GameBoard: React.FC = () => {
         <div>
             {feedback.length > 1 && <p> {feedback}</p>}
         </div>
-        <button style={{width: "25"}} onClick={handleSubmitGuess} className={result == "done" ? "hide-button" : "btn btn-primary"}>
+        <button style={{width: "25"}} onClick={() => handleSubmitGuess()} className={result == "done" ? "hide-button" : "btn btn-primary"}>
             Submit Guess
         </button>
         </div>

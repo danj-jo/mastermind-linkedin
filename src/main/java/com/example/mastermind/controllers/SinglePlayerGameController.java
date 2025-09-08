@@ -53,7 +53,7 @@ public class SinglePlayerGameController {
      */
     @PreAuthorize("hasRole('USER')")
     @PostMapping(value = "/new", produces = "application/json")
-    // Object is used instead of a int here beacyse the game id is a UUID, and int types aren't boxed (Integer for Maps)
+    // Object is used instead of an int here because the game id is a UUID, and int types aren't boxed (Integer for Maps)
     public ResponseEntity<Map<String,Object>> createNewSingleplayerGame(@RequestBody NewGameRequest newGameRequest) {
         try {
 
@@ -65,11 +65,11 @@ public class SinglePlayerGameController {
 
             // creates a singleplayer game with the return value of the createNewGame method
             SinglePlayerGame singlePlayerGame = singleplayerGameService.createNewGame(difficulty, playerId);
-            int amountOfnumbersToGuess = singlePlayerGame.getWinningNumber().length();
+            int amountOfNumbersToGuess = singlePlayerGame.getWinningNumber().length();
             // stores the gameID to the session to be used later.
             UUID gameId = singlePlayerGame.getGameId();
             // respond with the number of numbers to guess to lay out the game board on the frontend.
-            return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", amountOfnumbersToGuess, "gameId",gameId)), HttpStatus.CREATED);
+            return new ResponseEntity<>(new HashMap<>(Map.of("numbersToGuess", amountOfNumbersToGuess, "gameId",gameId)), HttpStatus.CREATED);
         } catch (Exception e) {
             throw new GameCreationException(e.getMessage());
         }
@@ -94,12 +94,12 @@ public class SinglePlayerGameController {
             UUID currentPlayerId = currentPlayer.getPlayerId();
             if (currentPlayerId == null) {
                 throw new UnauthenticatedUserException();
-            }  
+            }
             SinglePlayerGame game = singleplayerGameService.findGameById(gameId);
             if (game.getPlayer().getPlayerId() != currentPlayerId) {
                 throw new UnauthorizedGameAccessException("Error: User is not authorized to submit guesses to this game.");
             }
-           
+
             String guessFeedback = singleplayerGameService.handleGuess(gameId, guess.get("guess"));
             boolean finished = singleplayerGameService.isGameFinished(gameId);
             Set<String> guesses = game.getGuesses();
@@ -108,47 +108,6 @@ public class SinglePlayerGameController {
             throw new GuessProcessingException(e.getMessage());
         }
     }
-
-    /**
-     * Updates an existing single-player game with a new guess.
-     * <p>
-     * - Accepts a request containing the game ID and the player's guess.
-     * - Validates that the authenticated player is authorized to update the game.
-     * - Submits the guess to the game service and retrieves feedback.
-     * - Returns the feedback and indicates whether the game is finished.
-     * <p>
-     * This method has similar functionality to the guess submission endpoint,
-     * but is intended for resuming or updating ongoing games.
-     *
-     * @param updatedGameRequest DTO containing the game ID and the player's guess
-     * @return a ResponseEntity containing feedback on the guess and game status,
-     *         or an error if the player is unauthorized or another issue occurs
-     */
-    @PreAuthorize("hasRole('USER')")
-    @PostMapping("/singleplayer/games/{gameId}/resume")
-    public ResponseEntity<?> resumeGame(@PathVariable UUID gameId, String guess) {
-        try {
-            String username = getCurrentAuthenticatedPlayerUsername();
-            Player player = playerService.findPlayerByUsername(username);
-            UUID playerId = player.getPlayerId();
-            
-            // Retrieve the game using the path variable
-            SinglePlayerGame singlePlayerGame = singleplayerGameService.findGameById(gameId);
-            if (singlePlayerGame.getPlayer().getPlayerId() != playerId) {
-                throw new UnauthorizedGameAccessException();
-            }
-            String feedback = singleplayerGameService.handleGuess(singlePlayerGame.getGameId(),guess);
-            Set<String> guesses = singlePlayerGame.getGuesses();
-            boolean finished = singlePlayerGame.isFinished();
-            // Ensure the current player owns this game
-            
-            return ResponseEntity.ok(new GuessResponse(feedback, guesses, finished));
-            
-        } catch (Exception e) {
-            throw new GameUpdateException(e.getMessage());
-        }
-    }
-
     /**
      * Retrieves details of an existing single-player game by its ID.
      * <p>

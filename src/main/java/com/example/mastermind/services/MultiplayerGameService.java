@@ -1,11 +1,15 @@
 package com.example.mastermind.services;
 
+import com.example.mastermind.customExceptions.PlayerNotFoundException;
 import com.example.mastermind.dataTransferObjects.GameDTOs.multiplayer.GameAssignmentData;
 import com.example.mastermind.models.GameMode;
+import com.example.mastermind.models.PastGame;
 import com.example.mastermind.models.Result;
 import com.example.mastermind.models.entities.MultiplayerGuess;
+import com.example.mastermind.models.entities.SinglePlayerGame;
 import com.example.mastermind.repositoryLayer.MultiplayerGameRepository;
 import com.example.mastermind.models.Difficulty;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
 import com.example.mastermind.utils.EmitterRegistry;
 import com.example.mastermind.models.entities.MultiplayerGame;
 import com.example.mastermind.models.entities.Player;
@@ -14,6 +18,7 @@ import com.example.mastermind.utils.GameUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -26,7 +31,7 @@ import com.example.mastermind.customExceptions.GameNotFoundException;
 /**
  * Service for managing multiplayer Mastermind games and player matchmaking.
  * <p>
- * This service handles the complete lifecycle of multiplayer games including:
+ * This service handles the complete lifecycle of multiplayer games including
  * - Player queue management by difficulty level
  * - Automatic game creation when two players are matched
  * - Real-time game state tracking for active multiplayer sessions
@@ -46,6 +51,7 @@ import com.example.mastermind.customExceptions.GameNotFoundException;
 @AllArgsConstructor
 public class MultiplayerGameService {
     private final MultiplayerGameRepository multiplayerGameRepository;
+    private final PlayerRepository playerRepository;
     private static final Logger logger = LoggerFactory.getLogger(MultiplayerGameService.class);
     private final EmitterDiagnostics emitterDiagnostics;
     private final EmitterRegistry emitterRegistry;
@@ -95,6 +101,7 @@ public class MultiplayerGameService {
                                                       .winningNumber(GameUtils.generateWinningNumber(Difficulty.valueOf(difficulty.toUpperCase())))
                                                       .player1(playerOneObject)
                                                       .player2(playerTwoObject)
+                                                      .currentPlayerId(playerOne)
                                                       .mode(GameMode.MULTIPLAYER)
                                                       .build();
 
@@ -147,15 +154,26 @@ public class MultiplayerGameService {
 
     public String submitMultiplayerGuess(UUID gameId, UUID playerId, String guess) {
         MultiplayerGame game = activeGames.get(gameId);
+        if (game == null) {
+            throw new GameNotFoundException("Game not found with ID: " + gameId);
+        }
+
         Player currentPlayer = playerService.findPlayerById(playerId);
-        MultiplayerGuess newGuess = new MultiplayerGuess();
-        // links guess to this game
-        newGuess.setGame(game);
-        // links guess to player
-        newGuess.setPlayer(currentPlayer);
-        // the guess itself
-        newGuess.setGuess(guess);
+
         synchronized (game) {
+            if (!playerId.equals(game.getCurrentPlayerId())) {
+                try {
+                    emitterRegistry.getEmitter(playerId)
+                            .send(SseEmitter.event()
+                                    .name("not-your-turn")
+                                    .data("Wait for your turn!"));
+                } catch (IOException e) {
+                    emitterRegistry.removeEmitter(playerId);
+                }
+                return "It's not your turn.";
+            }
+
+
             if (game.getDifficulty() == Difficulty.EASY && game.guessIsOverLimit(guess)) {
                 return "Only numbers 0-7 are allowed. Please try again.";
             }
@@ -166,35 +184,89 @@ public class MultiplayerGameService {
 
             if (game.inappropriateLength(guess)) {
                 return String.format(
-                        "Guess is not the appropriate length. Please try again. Guess must be %d numbers",
-                        game.getWinningNumber()
-                            .length()
+                        "Guess is not the appropriate length. Guess must be %d numbers",
+                        game.getWinningNumber().length()
                 );
             }
+
             if (game.guessAlreadyExists(guess)) {
                 return "We don't allow duplicate guesses here.";
             }
 
-            if (game.isFinished()) {  // guard for already finished
+            if (game.isFinished()) {
                 return "Game is finished.";
             }
+
             if (game.userLostGame()) {
                 game.setFinished(true);
                 game.setResult(Result.LOSS);
                 multiplayerGameRepository.save(game);
                 return String.format("Game Over! The correct number was: %s", game.getWinningNumber());
             }
-            game.getGuesses()
-                .add(newGuess);
+
+
+            MultiplayerGuess newGuess = new MultiplayerGuess();
+            newGuess.setGame(game);
+            newGuess.setPlayer(currentPlayer);
+            newGuess.setGuess(guess);
+            game.getGuesses().add(newGuess);
+
+            // if win
             if (game.userWonGame(guess)) {
                 game.setFinished(true);
                 game.setResult(Result.WIN);
                 multiplayerGameRepository.save(game);
                 return String.format("Victory! %s gave the winning guess.", currentPlayer);
             }
-            return game.generateHint(currentPlayer,guess);
+
+            UUID nextPlayerId = game.getPlayer1().getPlayerId().equals(playerId) ? game.getPlayer2().getPlayerId() : game.getPlayer1().getPlayerId();
+            game.setCurrentPlayerId(nextPlayerId);
+
+
+            return game.generateHint(currentPlayer, guess);
+        }
+    }
+
+
+
+    public List<PastGame> getFinishedMultiplayerGamesByPlayerId(UUID playerId) {
+        if (!playerRepository.existsById(playerId)) {
+            throw new PlayerNotFoundException("Player not found with ID: " + playerId);
         }
 
+        // Find finished multiplayer games where the player is either player1 or player2
+        return multiplayerGameRepository.findFinishedGames(playerId)
+                .stream()
+                .map(game -> PastGame.builder()
+                        .gameId(game.getGameId().toString())
+                        .difficulty(String.valueOf(game.getDifficulty()))
+                        .result(String.valueOf(game.getResult()))
+                        .winningNumber(game.getWinningNumber())
+                        .previousGuesses(game.getGuesses().toString())
+                        .build())
+                .toList();
     }
+
+    public List<PastGame> getUnfinishedMultiplayerGamesByPlayerId(UUID playerId) {
+        if (!playerRepository.existsById(playerId)) {
+            throw new PlayerNotFoundException("Player not found with ID: " + playerId);
+        }
+
+        // Find unfinished multiplayer games where the player is either player1 or player2
+        return multiplayerGameRepository.findUnfinishedGames(playerId)
+                .stream()
+                .map(game -> PastGame.builder()
+                        .gameId(game.getGameId().toString())
+                        .difficulty(String.valueOf(game.getDifficulty()))
+                        .result(String.valueOf(game.getResult()))
+                        .winningNumber("You must finish this game to access the winning number!")
+                        .previousGuesses(game.getGuesses().toString())
+                        .build())
+                .toList();
+    }
+
+
+
+
 
 }

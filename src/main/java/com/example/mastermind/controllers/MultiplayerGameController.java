@@ -74,4 +74,6 @@ public class MultiplayerGameController {
     public ResponseEntity<?> returnGameDetails(@PathVariable UUID multiplayerGameId){
         return ResponseEntity.ok(multiplayerGameService.findMultiplayerGameDetails(multiplayerGameId));
     }
+
+
 }

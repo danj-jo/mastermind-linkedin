@@ -42,11 +42,11 @@ public class AuthService {
         String username = newUser.getUsername();
         String password = newUser.getPassword();
         String email = newUser.getEmail();
-            // checks if the username contains punction marks.
+            // checks if the username contains punctuation marks.
             if (!username.matches("^(?!.*\\.\\.)[a-zA-Z0-9._]{5,20}$")) {
                 throw new IllegalArgumentException("Invalid username. Username must be between 5 and 20 characters, and can only contain periods, underscores, letters & numbers.");
             }
-            //^[a-zA-Z0-9._]{5,20}$
+
 
             // checks if the username exists already
             if (playerRepository.existsByUsername(username)) {
@@ -76,6 +76,10 @@ public class AuthService {
      * @return the username of the currently authenticated user
      * @throws UnauthenticatedUserException if no user is authenticated or the authentication is invalid
      */
+    public static String getCurrentAuthenticatedPlayerUsername() {
+        Authentication auth = getAuthenticationContext();
+        return auth.getName();
+    }
 
     public static Authentication getAuthenticationContext(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -83,10 +87,6 @@ public class AuthService {
             throw new UnauthenticatedUserException("User is not authenticated.");
         }
         return auth;
-    }
-    public static String getCurrentAuthenticatedPlayerUsername() {
-        Authentication auth = getAuthenticationContext();
-        return auth.getName();
     }
 
     public UUID getCurrentAuthenticatedPlayerId(){

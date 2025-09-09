@@ -30,6 +30,9 @@ public class MultiplayerGame extends Game {
     @Builder.Default
     private Set <MultiplayerGuess> guesses = new HashSet<>();
 
+    @Transient
+    UUID currentPlayerId;
+
     public String generateHint(Player player, String guess){
         return String.format("%s has %d  numbers correct, in %d locations. %d guesses remaining.", player.getUsername(), totalCorrectNumbers(guess),numberOfCorrectLocations(guess), 10 - guesses.size());
     }

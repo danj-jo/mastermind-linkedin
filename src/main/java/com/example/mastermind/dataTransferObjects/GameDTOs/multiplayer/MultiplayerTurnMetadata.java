@@ -1,5 +1,7 @@
 package com.example.mastermind.dataTransferObjects.GameDTOs.multiplayer;
+
 import java.util.List;
+import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +13,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MultiplayerTurnMetadata {
-    private String player;
     private String feedback;
     private boolean finished;
-    private List<String> guesses;
+    private List<GuessDTO> guesses;
+
+
+    private UUID currentPlayerId;
+    private boolean notYourTurn;
 }

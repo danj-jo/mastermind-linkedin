@@ -30,7 +30,8 @@ public abstract class Game {
     @Builder.Default
     protected boolean finished = false;
 
-
+// winning number 1415
+// 1111
     /**
      * Here, I add each item in the winning number to a list of characters. I then transform the guess string into an array of characters, and track if the winning number has any characters that also exist in the guess. If no, I cast the index to null, so that if I encounter it again, it would not be counted twice.
      * @param guess - the user's guess represented as a string
@@ -46,16 +47,22 @@ public abstract class Game {
         }
         return locationCounter;
     }
+
+
     public int totalCorrectNumbers(String guess){
         int correctNumbers = 0;
         List<Character> winningNumberList = new ArrayList<>();
+        // winningNumberList = []
         for (char c : winningNumber.toCharArray()) {
             winningNumberList.add(c);
         }
+        // winningNumberList = [1,4,1,5]
         for (char guessDigit : guess.toCharArray()) {
-            int index = winningNumberList.indexOf(guessDigit); // find first occurrence
+            int index = winningNumberList.indexOf(guessDigit);// find first occurrence
+            //winningNumberList = [null,4,null,5]
+            // Guess = [1,1,1,1]
             if (index != -1) {                          // if found
-                correctNumbers++;                         // count it
+                correctNumbers++;  // count it
                 winningNumberList.set(index, null);            // mark as used
             }
         }

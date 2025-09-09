@@ -44,13 +44,6 @@ export default function Lobby() {
 
     };
 
-    // Cleanup on unmount
-    useEffect(() => {
-        return () => {
-            if (eventSource) eventSource.close();
-        };
-    }, [eventSource]);
-
     return (
         <>
         <div className="container">

@@ -1,5 +1,6 @@
 package com.example.mastermind.controllers;
 
+import com.example.mastermind.dataTransferObjects.GameDTOs.multiplayer.GuessDTO;
 import com.example.mastermind.dataTransferObjects.GameDTOs.multiplayer.MultiplayerGuessSubmission;
 import com.example.mastermind.dataTransferObjects.GameDTOs.multiplayer.MultiplayerTurnMetadata;
 import com.example.mastermind.models.entities.MultiplayerGame;
@@ -29,27 +30,40 @@ public class MultiplayerWebsocketController {
 
     /**
      *
-     * @param gameId - The game ID of the current game. This ensures that messages are published to the correct endpoint.
+     * @param gameId          - The game ID of the current game. This ensures that messages are published to the correct endpoint.
      * @param guessSubmission - DTO that represents the guess coming from the user. Its fields are playerID, which represents the player who is currently guessing, and the guess itself.
-     * @param auth - the current authenticated user
      * @return information about the current game: who guessed, the feedback given, completion status, and each guess associated.
      */
     @SendTo("/topic/mp")
     @MessageMapping("/multiplayer/{gameId}/guess")
-    public MultiplayerTurnMetadata submitGuess(@DestinationVariable String gameId, @Payload MultiplayerGuessSubmission guessSubmission) {
+    public MultiplayerTurnMetadata submitGuess(
+            @DestinationVariable String gameId,
+            @Payload MultiplayerGuessSubmission guessSubmission
+    ) {
         Player player = playerService.findPlayerById(guessSubmission.getPlayerId());
         UUID gameID = UUID.fromString(gameId);
         MultiplayerGame game = multiplayerGameService.activeGames.get(gameID);
+
         if (game == null) {
             throw new GameNotFoundException("Game not found for id: " + gameId);
         }
+
         String guess = guessSubmission.getGuess();
         UUID playerId = guessSubmission.getPlayerId();
 
+        // Submit guess
+        String feedback = multiplayerGameService.submitMultiplayerGuess(gameID, playerId, guess);
 
-        String feedback = multiplayerGameService.submitMultiplayerGuess(gameID,playerId,guess);
-        List<String> guesses = game.getGuesses().stream().map(MultiplayerGuess::getGuess).toList();
-        boolean finished = game.isFinished();
-        return new MultiplayerTurnMetadata(player.getUsername(), feedback, finished, guesses);
+        // Map guesses to DTO
+        List<GuessDTO> guesses = game.getGuesses().stream()
+                .map(g -> new GuessDTO(g.getPlayer().getUsername(), g.getGuess()))
+                .toList();
+
+        // current player turn info
+        UUID currentPlayerId = game.getCurrentPlayerId();
+        boolean notYourTurn = !currentPlayerId.equals(playerId);
+
+        //
+        return new MultiplayerTurnMetadata(feedback, game.isFinished(), guesses, currentPlayerId, notYourTurn);
     }
 }

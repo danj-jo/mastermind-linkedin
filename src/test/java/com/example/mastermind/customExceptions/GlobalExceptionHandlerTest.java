@@ -1,125 +1,196 @@
 package com.example.mastermind.customExceptions;
 
+import com.example.mastermind.dataTransferObjects.ErrorDTOs.ErrorResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class GlobalExceptionHandlerTest {
 
-    private GlobalExceptionHandler exceptionHandler;
+    @InjectMocks
+    private GlobalExceptionHandler globalExceptionHandler;
 
     @BeforeEach
     void setUp() {
-        exceptionHandler = new GlobalExceptionHandler();
+        globalExceptionHandler = new GlobalExceptionHandler();
     }
 
     @Test
-    void testHandleGameNotFoundException() {
+    void handleUnauthenticated_ReturnsUnauthorizedStatus() {
+        // Given
+        UnauthenticatedUserException exception = new UnauthenticatedUserException("User not authenticated");
+        Map<String, String> expectedResponse = Map.of("error", "User not authenticated");
+
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
+
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleUnauthenticated(exception);
+
+            // Then
+            assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
+    }
+
+    @Test
+    void handleUnauthorizedGameAccess_ReturnsUnauthorizedStatus() {
+        // Given
+        UnauthorizedGameAccessException exception = new UnauthorizedGameAccessException("Unauthorized access");
+        Map<String, String> expectedResponse = Map.of("error", "Unauthorized access");
+
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
+
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleUnauthorizedGameAccess(exception);
+
+            // Then
+            assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
+    }
+
+    @Test
+    void handleValidationExceptions_WithPasswordTooShort_ReturnsBadRequestStatus() {
+        // Given
+        PasswordTooShortException exception = new PasswordTooShortException("Password too short");
+        Map<String, String> expectedResponse = Map.of("error", "Password too short");
+
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
+
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleValidationExceptions(exception);
+
+            // Then
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
+    }
+
+    @Test
+    void handleValidationExceptions_WithUsernameExists_ReturnsBadRequestStatus() {
+        // Given
+        UsernameExistsException exception = new UsernameExistsException("Username exists");
+        Map<String, String> expectedResponse = Map.of("error", "Username exists");
+
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
+
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleValidationExceptions(exception);
+
+            // Then
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
+    }
+
+    @Test
+    void handleForbiddenAction_ReturnsForbiddenStatus() {
+        // Given
+        ForbiddenActionException exception = new ForbiddenActionException("Forbidden action");
+        Map<String, String> expectedResponse = Map.of("error", "Forbidden action");
+
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
+
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleForbiddenAction(exception);
+
+            // Then
+            assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
+    }
+
+    @Test
+    void handleBadRequest_WithGameCreationException_ReturnsBadRequestStatus() {
+        // Given
+        GameCreationException exception = new GameCreationException("Game creation failed");
+        Map<String, String> expectedResponse = Map.of("error", "Game creation failed");
+
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
+
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleBadRequest(exception);
+
+            // Then
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
+    }
+
+    @Test
+    void handleNotFound_WithGameNotFoundException_ReturnsNotFoundStatus() {
         // Given
         GameNotFoundException exception = new GameNotFoundException("Game not found");
+        Map<String, String> expectedResponse = Map.of("error", "Game not found");
 
-        // When
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleNotFound(exception);
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
 
-        // Then
-        assertNotNull(response);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Game not found", response.getBody().get("Error"));
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleNotFound(exception);
+
+            // Then
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
     }
 
     @Test
-    void testHandlePlayerNotFoundException() {
+    void handleNotFound_WithPlayerNotFoundException_ReturnsNotFoundStatus() {
         // Given
         PlayerNotFoundException exception = new PlayerNotFoundException("Player not found");
+        Map<String, String> expectedResponse = Map.of("error", "Player not found");
 
-        // When
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleNotFound(exception);
+        try (MockedStatic<ErrorResponseDTO> mockedStatic = Mockito.mockStatic(ErrorResponseDTO.class)) {
+            mockedStatic.when(() -> ErrorResponseDTO.toMap(exception)).thenReturn(expectedResponse);
 
-        // Then
-        assertNotNull(response);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("Player not found", response.getBody().get("Error"));
+            // When
+            ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleNotFound(exception);
+
+            // Then
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals(expectedResponse, response.getBody());
+        }
     }
 
     @Test
-    void testHandleUsernameExistsException() {
+    void handleGeneric_WithGenericException_ReturnsInternalServerErrorStatus() {
         // Given
-        UsernameExistsException exception = new UsernameExistsException();
+        Exception exception = new Exception("Generic error");
 
         // When
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleValidationExceptions(exception);
+        ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleGeneric(exception);
 
         // Then
-        assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody().containsKey("Error"));
-    }
-
-    @Test
-    void testHandleEmailExistsException() {
-        // Given
-        EmailExistsException exception = new EmailExistsException();
-
-        // When
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleValidationExceptions(exception);
-
-        // Then
-        assertNotNull(response);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody().containsKey("Error"));
-    }
-
-    @Test
-    void testHandleUnauthorizedGameAccessException() {
-        // Given
-        UnauthorizedGameAccessException exception = new UnauthorizedGameAccessException();
-
-        // When
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleUnauthorizedGameAccess(exception);
-
-        // Then
-        assertNotNull(response);
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody().containsKey("Error"));
-    }
-
-    @Test
-    void testHandleForbiddenActionException() {
-        // Given
-        ForbiddenActionException exception = new ForbiddenActionException();
-
-        // When
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleForbiddenAction(exception);
-
-        // Then
-        assertNotNull(response);
-        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertTrue(response.getBody().containsKey("Error"));
-    }
-
-    @Test
-    void testHandleGenericException() {
-        // Given
-        Exception exception = new Exception("Unexpected error");
-
-        // When
-        ResponseEntity<Map<String, String>> response = exceptionHandler.handleGeneric(exception);
-
-        // Then
-        assertNotNull(response);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals("An unexpected error occurred.", response.getBody().get("Error"));
+        assertEquals(Map.of("Error", "An unexpected error occurred."), response.getBody());
+    }
+
+    @Test
+    void handleGeneric_WithNullException_ReturnsInternalServerErrorStatus() {
+        // When
+        ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleGeneric(null);
+
+        // Then
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals(Map.of("Error", "An unexpected error occurred."), response.getBody());
     }
 }

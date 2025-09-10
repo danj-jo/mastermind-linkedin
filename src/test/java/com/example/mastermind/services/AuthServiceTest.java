@@ -1,23 +1,25 @@
 package com.example.mastermind.services;
 
-import com.example.mastermind.customExceptions.EmailExistsException;
-import com.example.mastermind.customExceptions.PasswordTooShortException;
-import com.example.mastermind.customExceptions.UsernameExistsException;
-import com.example.mastermind.customExceptions.UsernameTooShortException;
-import com.example.mastermind.repositoryLayer.PlayerRepository;
+import com.example.mastermind.customExceptions.*;
 import com.example.mastermind.dataTransferObjects.PlayerDTOs.UserRegistrationRequest;
 import com.example.mastermind.models.entities.Player;
-import org.apache.coyote.BadRequestException;
+import com.example.mastermind.repositoryLayer.PlayerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,84 +31,127 @@ class AuthServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private PlayerService playerService;
+
     @InjectMocks
     private AuthService authService;
 
     private UserRegistrationRequest validRequest;
-    public boolean isValidUsername(String username) {
-        // 5-20 chars, letters/numbers/._ allowed, no consecutive dots
-        String regex = "^(?!.*\\.\\.)[a-zA-Z0-9._]{5,20}$";
-        return username.matches(regex);
-    }
+    private Player testPlayer;
 
     @BeforeEach
     void setUp() {
         validRequest = new UserRegistrationRequest();
-        validRequest.setUsername("testuser");
+        validRequest.setUsername("validuser");
         validRequest.setPassword("password123");
-        validRequest.setEmail("test@example.com");
+        validRequest.setEmail("valid@example.com");
+
+        testPlayer = new Player(
+                UUID.randomUUID(),
+                "validuser",
+                "encodedpassword",
+                "valid@example.com",
+                "USER"
+        );
     }
 
     @Test
-    public void testInvalidUsernames() {
-        assertFalse(isValidUsername("user..name")); // consecutive dots
-        assertFalse(isValidUsername("us")); // too short
-        assertFalse(isValidUsername("thisusernameiswaytoolongtobevalid")); // too long
-        assertFalse(isValidUsername("user!name")); // invalid character
-    }
-    @Test
-    void testRegisterNewUser_Success() {
+    void registerNewUser_WithValidData_RegistersUser() {
         // Given
-        when(playerRepository.existsByUsername("testuser")).thenReturn(false);
-        when(playerRepository.existsByEmail("test@example.com")).thenReturn(false);
+        when(playerRepository.existsByUsername("validuser")).thenReturn(false);
+        when(playerRepository.existsByEmail("valid@example.com")).thenReturn(false);
         when(passwordEncoder.encode("password123")).thenReturn("encodedpassword");
-        when(playerRepository.saveAndFlush(any(Player.class))).thenReturn(new Player());
 
-        // When & Then
-        assertDoesNotThrow(() -> authService.registerNewUser(validRequest));
-        
+        // When
+        authService.registerNewUser(validRequest);
+
+        // Then
+        verify(playerRepository).existsByUsername("validuser");
+        verify(playerRepository).existsByEmail("valid@example.com");
         verify(passwordEncoder).encode("password123");
         verify(playerRepository).saveAndFlush(any(Player.class));
     }
 
     @Test
-    void testRegisterNewUser_UsernameTooShort() {
+    void registerNewUser_WithExistingUsername_ThrowsUsernameExistsException() {
         // Given
-        validRequest.setUsername("abc");
+        when(playerRepository.existsByUsername("validuser")).thenReturn(true);
 
         // When & Then
-        assertThrows(UsernameTooShortException.class, () -> authService.registerNewUser(validRequest));
+        assertThrows(UsernameExistsException.class, () -> 
+                authService.registerNewUser(validRequest));
+        verify(playerRepository).existsByUsername("validuser");
         verify(playerRepository, never()).saveAndFlush(any());
     }
 
     @Test
-    void testRegisterNewUser_UsernameExists() {
+    void registerNewUser_WithExistingEmail_ThrowsEmailExistsException() {
         // Given
-        when(playerRepository.existsByUsername("testuser")).thenReturn(true);
+        when(playerRepository.existsByUsername("validuser")).thenReturn(false);
+        when(playerRepository.existsByEmail("valid@example.com")).thenReturn(true);
 
         // When & Then
-        assertThrows(UsernameExistsException.class, () -> authService.registerNewUser(validRequest));
+        assertThrows(EmailExistsException.class, () -> 
+                authService.registerNewUser(validRequest));
+        verify(playerRepository).existsByUsername("validuser");
+        verify(playerRepository).existsByEmail("valid@example.com");
         verify(playerRepository, never()).saveAndFlush(any());
     }
 
     @Test
-    void testRegisterNewUser_EmailExists() {
-        // Given
-        when(playerRepository.existsByUsername("testuser")).thenReturn(false);
-        when(playerRepository.existsByEmail("test@example.com")).thenReturn(true);
-
-        // When & Then
-        assertThrows(EmailExistsException.class, () -> authService.registerNewUser(validRequest));
-        verify(playerRepository, never()).saveAndFlush(any());
-    }
-
-    @Test
-    void testRegisterNewUser_PasswordTooShort() {
+    void registerNewUser_WithShortPassword_ThrowsPasswordTooShortException() {
         // Given
         validRequest.setPassword("123");
 
         // When & Then
-        assertThrows(PasswordTooShortException.class, () -> authService.registerNewUser(validRequest));
+        assertThrows(PasswordTooShortException.class, () -> 
+                authService.registerNewUser(validRequest));
         verify(playerRepository, never()).saveAndFlush(any());
+    }
+
+    @Test
+    void registerNewUser_WithInvalidUsername_ThrowsIllegalArgumentException() {
+        // Given
+        validRequest.setUsername("ab"); // Too short
+
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> 
+                authService.registerNewUser(validRequest));
+        verify(playerRepository, never()).saveAndFlush(any());
+    }
+
+    @Test
+    void getCurrentAuthenticatedPlayerId_WithValidAuth_ReturnsPlayerId() {
+        // Given
+        when(playerRepository.findByUsername("testuser")).thenReturn(Optional.of(testPlayer));
+
+        try (MockedStatic<AuthService> mockedStatic = Mockito.mockStatic(AuthService.class)) {
+            mockedStatic.when(AuthService::getCurrentAuthenticatedPlayerUsername).thenReturn("testuser");
+
+            // When
+            UUID result = authService.getCurrentAuthenticatedPlayerId();
+
+            // Then
+            assertEquals(testPlayer.getPlayerId(), result);
+            verify(playerRepository).findByUsername("testuser");
+        }
+    }
+
+    @Test
+    void getCurrentAuthenticatedPlayer_WithValidAuth_ReturnsPlayer() {
+        // Given
+        when(playerService.findPlayerByUsername("testuser")).thenReturn(testPlayer);
+
+        try (MockedStatic<AuthService> mockedStatic = Mockito.mockStatic(AuthService.class)) {
+            mockedStatic.when(AuthService::getCurrentAuthenticatedPlayerUsername).thenReturn("testuser");
+
+            // When
+            Player result = authService.getCurrentAuthenticatedPlayer();
+
+            // Then
+            assertEquals(testPlayer, result);
+            verify(playerService).findPlayerByUsername("testuser");
+        }
     }
 }

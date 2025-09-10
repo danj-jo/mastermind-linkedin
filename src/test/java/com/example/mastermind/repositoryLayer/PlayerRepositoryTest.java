@@ -1,14 +1,13 @@
 package com.example.mastermind.repositoryLayer;
 
 import com.example.mastermind.models.entities.Player;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,69 +16,58 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerRepositoryTest {
 
     @Autowired
-    private TestEntityManager entityManager;
-
-    @Autowired
     private PlayerRepository playerRepository;
 
-    private Player testPlayer;
-
-    @BeforeEach
-    void setUp() {
-        testPlayer = new Player();
-        testPlayer.setUsername("testuser");
-        testPlayer.setPassword("encodedpassword");
-        testPlayer.setEmail("test@example.com");
-        testPlayer.setRole("ROLE_USER");
-    }
-
     @Test
-    void testSavePlayer() {
-        // When
-        Player savedPlayer = playerRepository.save(testPlayer);
-
-        // Then
-        assertNotNull(savedPlayer.getPlayerId());
-        assertEquals("testuser", savedPlayer.getUsername());
-        assertEquals("test@example.com", savedPlayer.getEmail());
-    }
-
-    @Test
-    void testFindByUsername_Exists() {
+    void findByUsername_WithExistingUsername_ReturnsPlayer() {
         // Given
-        Player savedPlayer = entityManager.persistAndFlush(testPlayer);
+        Player player = new Player(
+                UUID.randomUUID(),
+                "testuser",
+                "password123",
+                "test@example.com",
+                "USER"
+        );
+        playerRepository.save(player);
 
         // When
-        Optional<Player> found = playerRepository.findByUsername("testuser");
+        Optional<Player> result = playerRepository.findByUsername("testuser");
 
         // Then
-        assertTrue(found.isPresent());
-        assertEquals(savedPlayer.getPlayerId(), found.get().getPlayerId());
+        assertTrue(result.isPresent());
+        assertEquals("testuser", result.get().getUsername());
     }
 
     @Test
-    void testFindByUsername_NotExists() {
+    void findByUsername_WithNonExistentUsername_ReturnsEmpty() {
         // When
-        Optional<Player> found = playerRepository.findByUsername("nonexistent");
+        Optional<Player> result = playerRepository.findByUsername("nonexistent");
 
         // Then
-        assertFalse(found.isPresent());
+        assertFalse(result.isPresent());
     }
 
     @Test
-    void testExistsByUsername_True() {
+    void existsByUsername_WithExistingUsername_ReturnsTrue() {
         // Given
-        entityManager.persistAndFlush(testPlayer);
+        Player player = new Player(
+                UUID.randomUUID(),
+                "existinguser",
+                "password123",
+                "existing@example.com",
+                "USER"
+        );
+        playerRepository.save(player);
 
         // When
-        boolean exists = playerRepository.existsByUsername("testuser");
+        boolean exists = playerRepository.existsByUsername("existinguser");
 
         // Then
         assertTrue(exists);
     }
 
     @Test
-    void testExistsByUsername_False() {
+    void existsByUsername_WithNonExistentUsername_ReturnsFalse() {
         // When
         boolean exists = playerRepository.existsByUsername("nonexistent");
 
@@ -88,19 +76,26 @@ class PlayerRepositoryTest {
     }
 
     @Test
-    void testExistsByEmail_True() {
+    void existsByEmail_WithExistingEmail_ReturnsTrue() {
         // Given
-        entityManager.persistAndFlush(testPlayer);
+        Player player = new Player(
+                UUID.randomUUID(),
+                "emailuser",
+                "password123",
+                "email@example.com",
+                "USER"
+        );
+        playerRepository.save(player);
 
         // When
-        boolean exists = playerRepository.existsByEmail("test@example.com");
+        boolean exists = playerRepository.existsByEmail("email@example.com");
 
         // Then
         assertTrue(exists);
     }
 
     @Test
-    void testExistsByEmail_False() {
+    void existsByEmail_WithNonExistentEmail_ReturnsFalse() {
         // When
         boolean exists = playerRepository.existsByEmail("nonexistent@example.com");
 

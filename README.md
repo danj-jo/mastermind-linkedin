@@ -28,7 +28,6 @@ Welcome to Mastermind! This is my version of the classic Mastermind game that fe
   - [MultiplayerGame](#multiplayergame)
   - [Enums](#enums)
 - [🔧 Services & Controllers](#services--controllers)
-- [🧪 Testing Strategy](#testing-strategy)
 - [🔒 Security Features](#security-features)
 - [🚀 Key Achievements](#key-achievements)
 - [🔮 Future Enhancements](#future-enhancements)

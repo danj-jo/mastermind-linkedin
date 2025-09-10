@@ -2,6 +2,7 @@ package com.example.mastermind.models.entities;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
@@ -15,68 +16,92 @@ class PlayerTest {
 
     @BeforeEach
     void setUp() {
-        player = new Player();
-        player.setPlayerId(UUID.randomUUID());
-        player.setUsername("testuser");
-        player.setPassword("encodedpassword");
-        player.setEmail("test@example.com");
-        player.setRole("ROLE_USER");
+        player = new Player(
+                UUID.randomUUID(),
+                "testuser",
+                "password123",
+                "test@example.com",
+                "USER"
+        );
     }
 
     @Test
-    void testPlayerCreation() {
+    void playerConstructor_CreatesCorrectInstance() {
         // Then
+        assertNotNull(player);
         assertNotNull(player.getPlayerId());
         assertEquals("testuser", player.getUsername());
-        assertEquals("encodedpassword", player.getPassword());
+        assertEquals("password123", player.getPassword());
         assertEquals("test@example.com", player.getEmail());
-        assertEquals("ROLE_USER", player.getRole());
+        assertEquals("USER", player.getRole());
     }
 
     @Test
-    void testGetAuthorities() {
+    void getAuthorities_ReturnsCorrectAuthority() {
         // When
-        Collection<?> authorities = player.getAuthorities();
+        Collection<? extends GrantedAuthority> authorities = player.getAuthorities();
 
         // Then
         assertNotNull(authorities);
         assertEquals(1, authorities.size());
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_USER")));
+        assertTrue(authorities.contains(new SimpleGrantedAuthority("USER")));
     }
 
     @Test
-    void testAccountStatus() {
-        // Then
+    void isAccountNonExpired_ReturnsTrue() {
+        // When & Then
         assertTrue(player.isAccountNonExpired());
+    }
+
+    @Test
+    void isAccountNonLocked_ReturnsTrue() {
+        // When & Then
         assertTrue(player.isAccountNonLocked());
+    }
+
+    @Test
+    void isCredentialsNonExpired_ReturnsTrue() {
+        // When & Then
         assertTrue(player.isCredentialsNonExpired());
+    }
+
+    @Test
+    void isEnabled_ReturnsTrue() {
+        // When & Then
         assertTrue(player.isEnabled());
     }
 
     @Test
-    void testPlayerEquality() {
+    void playerSetters_UpdateValuesCorrectly() {
         // Given
-        Player samePlayer = new Player();
-        samePlayer.setPlayerId(player.getPlayerId());
-        samePlayer.setUsername("testuser");
-        samePlayer.setPassword("encodedpassword");
-        samePlayer.setEmail("test@example.com");
-        samePlayer.setRole("ROLE_USER");
+        UUID newId = UUID.randomUUID();
+
+        // When
+        player.setPlayerId(newId);
+        player.setUsername("newuser");
+        player.setPassword("newpassword");
+        player.setEmail("new@example.com");
+        player.setRole("ADMIN");
 
         // Then
-        assertEquals(player.getPlayerId(), samePlayer.getPlayerId());
-        assertEquals(player.getUsername(), samePlayer.getUsername());
+        assertEquals(newId, player.getPlayerId());
+        assertEquals("newuser", player.getUsername());
+        assertEquals("newpassword", player.getPassword());
+        assertEquals("new@example.com", player.getEmail());
+        assertEquals("ADMIN", player.getRole());
     }
 
     @Test
-    void testPlayerWithDifferentRole() {
-        // Given
-        player.setRole("ROLE_ADMIN");
-
+    void playerNoArgsConstructor_CreatesEmptyInstance() {
         // When
-        Collection<?> authorities = player.getAuthorities();
+        Player emptyPlayer = new Player();
 
         // Then
-        assertTrue(authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN")));
+        assertNotNull(emptyPlayer);
+        assertNull(emptyPlayer.getPlayerId());
+        assertNull(emptyPlayer.getUsername());
+        assertNull(emptyPlayer.getPassword());
+        assertNull(emptyPlayer.getEmail());
+        assertNull(emptyPlayer.getRole());
     }
 }
